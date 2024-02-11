@@ -14,3 +14,4 @@ export * from "./InscriptionChercheur";
 export * from "./Abonnements";
 export * from "./CadreAbonnement";
 export * from "./Paiement";
+export * from "./BarreRecherche";

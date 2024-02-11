@@ -10,6 +10,15 @@ export function Inscription({ onClose }) {
 		setSelectedOption(option);
 	};
 
+	const handleRedirection = () => {
+		if (selectedOption == "option1") {
+			window.location.href = "/register/chercheur";
+		}
+		if (selectedOption == "option2") {
+			window.location.href = "/register/employeur";
+		}
+	};
+
 	return (
 		<div className='fixed z-50 overlay flex flex-col justify-center items-center p-4 w-1/4 h-4/5 bg-bleuF left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg'>
 			<div className='flex justify-end w-full'>
@@ -72,6 +81,7 @@ export function Inscription({ onClose }) {
 				contenu={"Continuer"}
 				width={"w-3/4"}
 				height={"fit"}
+				onClick={handleRedirection}
 			></ButtonRond>
 
 			<div className='flex mt-8'>

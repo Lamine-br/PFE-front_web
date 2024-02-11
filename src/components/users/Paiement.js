@@ -1,15 +1,12 @@
 import React from "react";
 import { ButtonCarre } from "./ButtonCarre";
 
-export function Paiement() {
+export function Paiement({ onPass, onChange }) {
 	return (
-		<div className='overlay flex justify-center mt-10'>
-			<div
-				className={`fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40`}
-			/>
+		<div className='overlay flex justify-center'>
 			<div className='z-50 justify-center items-center p-4 w-1/2 h-4/5 bg-bleuF rounded-lg'>
 				<h1 className='text-xl text-violet font-bold mb-6 ml-4'>
-					Compléter votre paiement
+					Complétez votre paiement
 				</h1>
 
 				<p className='text-sm text-violet font-bold m-4'>Payer avec : </p>
@@ -69,8 +66,13 @@ export function Paiement() {
 
 				<div className='w-1/3 bg-violet mb-10 rounded-lg mx-auto'>
 					<div className='flex justify-between px-4 py-2'>
-						<p className='text-bleuF'>30£/Mois</p>
-						<p className='text-rouge underline text-sm'>Changer</p>
+						<p className='text-bleuF'>30£/mois</p>
+						<p
+							className='text-rouge underline text-sm cursor-pointer'
+							onClick={onChange}
+						>
+							Changer
+						</p>
 					</div>
 				</div>
 

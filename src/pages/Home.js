@@ -7,6 +7,7 @@ import {
 	Cadres,
 	Connexion,
 	Inscription,
+	BarreRecherche,
 } from "../components/users";
 
 export function Home() {
@@ -32,6 +33,7 @@ export function Home() {
 				onConnexionToggle={handleConnexionToggle}
 				onInscriptionToggle={handleInscriptionToggle}
 			/>
+			<BarreRecherche></BarreRecherche>
 			<WelcomeDiv></WelcomeDiv>
 			<BarreEmployeurs></BarreEmployeurs>
 			<Cadres></Cadres>

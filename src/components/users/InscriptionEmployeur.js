@@ -1,18 +1,15 @@
 import React from "react";
 import { ButtonRond } from "./ButtonRond";
 
-export function InscriptionEmployeur() {
+export function InscriptionEmployeur({ onPass }) {
 	return (
-		<div className='overlay flex justify-center mt-10'>
-			<div
-				className={`fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40`}
-			/>
+		<div className='overlay flex justify-center'>
 			<div className='z-50 justify-center items-center p-4 w-3/4 h-4/5 bg-bleuF rounded-lg'>
 				<h1 className='text-xl text-violet font-bold mb-6 ml-4'>
 					S'inscrire - Employeur
 				</h1>
 
-				<div className='grid grid-cols-3 gap-8 mx-4 mb-10'>
+				<div className='grid grid-cols-3 gap-8 mx-4 mb-4'>
 					<div className='flex flex-col'>
 						<label className='text-violet text-xs font-bold'>
 							Nom de l'entreprise
@@ -61,7 +58,7 @@ export function InscriptionEmployeur() {
 					</div>
 				</div>
 
-				<div className='grid grid-cols-3 gap-8 mx-4 mb-10'>
+				<div className='grid grid-cols-3 gap-8 mx-4 mb-4'>
 					<div className='flex flex-col'>
 						<label className='text-violet text-xs font-bold'>
 							Nom personne contact 1
@@ -121,9 +118,9 @@ export function InscriptionEmployeur() {
 					</div>
 				</div>
 
-				<p className='text-violet text-sm font-bold ml-4 mb-5'>Liens publics</p>
+				<p className='text-violet text-sm font-bold ml-4 mb-2'>Liens publics</p>
 
-				<div className='grid grid-cols-3 gap-8 mx-4 mb-10'>
+				<div className='grid grid-cols-3 gap-8 mx-4 mb-6'>
 					<div className='flex flex-col'>
 						<label className='text-violet text-xs font-bold'>Site web</label>
 						<input
@@ -154,6 +151,7 @@ export function InscriptionEmployeur() {
 						contenu={"Continuer"}
 						width={"w-1/4"}
 						height={"fit"}
+						onClick={onPass}
 					></ButtonRond>
 				</div>
 			</div>
