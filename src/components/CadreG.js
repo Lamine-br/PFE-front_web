@@ -1,0 +1,91 @@
+import React from "react";
+import { FaEllipsisV, FaDollarSign } from "react-icons/fa";
+import { MdLocationOn } from "react-icons/md";
+import { TiTime } from "react-icons/ti";
+import { ButtonRond } from "./ButtonRond";
+
+export function CadreG() {
+	let Offre = {
+		employeur: "KPMG",
+		"Date de publication": "12 Décembre, 20:20",
+		titre: "Jardinier",
+		Localisation: "Alger",
+		Salaire: "10$/heure",
+		Duree: "2 semaines",
+		Description:
+			"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
+	};
+
+	return (
+		<div className='w-full bg-violet rounded-lg'>
+			<div className='flex px-10 py-2'>
+				<div>
+					<p className='text-bleuF font-bold text-xl'>{Offre.titre}</p>
+					<div className='flex'>
+						<p className='text-bleuF'>{Offre.employeur}</p>
+						<p className='text-bleuF ml-4'>{Offre["Date de publication"]}</p>
+						<p className='text-bleuF ml-4'>{Offre.Localisation}</p>
+						<p className='text-bleuF ml-4'>Plus de 200 condidats</p>
+					</div>
+				</div>
+				<div className='ml-auto my-auto'>
+					<FaEllipsisV />
+				</div>
+			</div>
+			<div>
+				<img className=' bg-rouge w-full h-48'></img>
+			</div>
+
+			<div className='px-10 py-2'>
+				<p className='text-bleuF font-bold text-lg'>A propos de l'offre</p>
+				<div className='mt-2'>
+					<p className='text-bleuF font-bold'>Description</p>
+					<p className='text-sm text-bleuF'>{Offre.Description} </p>
+				</div>
+				<div className='mt-2'>
+					<p className='text-bleuF font-bold'>Conditions</p>
+					<ul className='list-disc text-bleuF'>
+						<li>
+							<p className='text-sm text-bleuF'>+5 ans d’éxpérience</p>
+						</li>
+						<li>
+							<p className='text-sm text-bleuF'>De métier jardinier</p>
+						</li>
+						<li>
+							<p className='text-sm text-bleuF'>Excellent en communication</p>
+						</li>
+						<li>
+							<p className='text-sm text-bleuF'>
+								A l’habitude de travailler sur de grands espaces
+							</p>
+						</li>
+					</ul>
+				</div>
+				<div className='mt-2'>
+					<p className='text-bleuF font-bold'>Notes importantes</p>
+					<ul className='list-disc text-bleuF'>
+						<li>
+							<p className='text-sm text-bleuF'>
+								On accepte seulement les condidats originaires d’Alger
+							</p>
+						</li>
+						<li>
+							<p className='text-sm text-bleuF'>Salaire attractif</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div></div>
+			<div className='flex justify-end m-4'>
+				<ButtonRond
+					couleur={"rouge"}
+					couleurTexte={"violet"}
+					contenu={"Condidater"}
+					width={"fit"}
+					height={"fit"}
+				></ButtonRond>
+			</div>
+		</div>
+	);
+}

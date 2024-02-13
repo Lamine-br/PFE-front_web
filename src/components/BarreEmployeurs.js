@@ -1,12 +1,12 @@
 import React from "react";
-import amazon from "../../assets/amazon.png";
-import tiktok from "../../assets/tiktok.png";
-import adidas from "../../assets/adidas.png";
-import netflix from "../../assets/netflix.png";
-import google from "../../assets/google.png";
-import adobe from "../../assets/adobe.png";
-import spotify from "../../assets/spotify.png";
-import canva from "../../assets/canva.png";
+import amazon from "../assets/amazon.png";
+import tiktok from "../assets/tiktok.png";
+import adidas from "../assets/adidas.png";
+import netflix from "../assets/netflix.png";
+import google from "../assets/google.png";
+import adobe from "../assets/adobe.png";
+import spotify from "../assets/spotify.png";
+import canva from "../assets/canva.png";
 
 export function BarreEmployeurs() {
 	return (

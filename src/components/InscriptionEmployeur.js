@@ -12,7 +12,7 @@ export function InscriptionEmployeur({ onPass }) {
 				<div className='grid grid-cols-3 gap-8 mx-4 mb-4'>
 					<div className='flex flex-col'>
 						<label className='text-violet text-xs font-bold'>
-							Nom de l'entreprise
+							Nom de l'entreprise / Employeur
 						</label>
 						<input
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'

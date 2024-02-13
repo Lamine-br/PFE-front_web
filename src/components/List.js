@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { axiosInstance } from "../../util/axios";
+import { axiosInstance } from "../util/axios";
 import { FaTrash } from "react-icons/fa";
 
 export function List() {

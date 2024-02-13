@@ -12,9 +12,9 @@ export function BarreRecherche() {
 
 	return (
 		<div className='mt-20 mb-40 w-1/2 mx-auto flex items-center justify-center'>
-			<div className={`flex bg-white items-center rounded-lg`}>
+			<div className={`flex bg-white items-center rounded-full`}>
 				<FaSearch
-					className={`text-gray-500 ml-2 cursor-pointer ${
+					className={`text-gray-500 ml-4 mr-2 cursor-pointer ${
 						inputActive && "text-blue-500"
 					}`}
 					onClick={handleSearchIconClick}
@@ -29,7 +29,7 @@ export function BarreRecherche() {
 					onBlur={() => setInputActive(false)}
 				/>
 				<FaMicrophone className='text-gray-500 mx-2 cursor-pointer' />
-				<FaCog className='text-gray-500 mx-2 cursor-pointer'></FaCog>
+				<FaCog className='text-gray-500 mx-2 mr-4 cursor-pointer'></FaCog>
 			</div>
 		</div>
 	);

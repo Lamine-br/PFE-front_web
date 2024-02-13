@@ -4,3 +4,7 @@ export * from "./Login";
 export * from "./Users";
 export * from "./RegisterEmployeur";
 export * from "./RegisterChercheur";
+export * from "./Offre";
+export * from "./HomeEmployeur";
+export * from "./OffresEmployeur";
+export * from "./CandidaturesEmployeur";

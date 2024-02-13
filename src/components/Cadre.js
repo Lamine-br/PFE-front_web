@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaEllipsisV, FaDollarSign } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { TiTime } from "react-icons/ti";
 import { ButtonRond } from "./ButtonRond";
+import esi from "../assets/logo_esi.png";
 
 export function Cadre() {
 	let Offre = {
-		employeur: "KPMG",
+		employeur: "ESI",
 		"Date de publication": "12 Décembre, 20:20",
 		titre: "Jardinier",
 		Localisation: "Alger",
@@ -16,20 +17,44 @@ export function Cadre() {
 			"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
 	};
 
+	const [showOptions, setShowOptions] = useState(false);
+
+	const toggleOptions = () => {
+		setShowOptions(!showOptions);
+	};
+
+	const redirect = () => {
+		window.location.href = "/offres/1";
+	};
+
 	return (
 		<div className='bg-violet rounded-lg'>
 			<div className='flex px-4 py-2'>
-				<img className='rounded-full bg-rouge w-12 h-12'></img>
+				<img className='rounded-full  w-12 h-12' src={esi}></img>
 				<div className='ml-4'>
 					<p className='text-bleuF font-bold'>{Offre.employeur}</p>
 					<p className='text-bleuF'>{Offre["Date de publication"]}</p>
 				</div>
 				<div className='ml-auto my-auto'>
-					<FaEllipsisV />
+					<div
+						className='flex items-center justify-center w-8 h-8 cursor-pointer transition duration-300 ease-in-out hover:shadow-sm rounded-full hover:bg-gray-200'
+						onClick={toggleOptions}
+					>
+						<FaEllipsisV className='' />
+					</div>
+					{showOptions && (
+						<div className='relative left-0 top-0 bg-white rounded shadow'>
+							<p className='cursor-pointer hover:text-blue-500'>Option 1</p>
+							<p className='cursor-pointer hover:text-blue-500'>Option 2</p>
+						</div>
+					)}
 				</div>
 			</div>
 			<div>
-				<img className=' bg-rouge w-full h-48'></img>
+				<img
+					className='border-t border-b border-black w-full h-48'
+					src={esi}
+				></img>
 			</div>
 			<div className='w-full px-4'>
 				<p className='text-bleuF font-bold'>{Offre.titre}</p>
@@ -60,6 +85,7 @@ export function Cadre() {
 					contenu={"Condidater"}
 					width={"fit"}
 					height={"fit"}
+					onClick={redirect}
 				></ButtonRond>
 			</div>
 		</div>

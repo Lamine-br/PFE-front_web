@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, List } from "../components/users";
+import { Form, List } from "../components";
 
 export function Users() {
 	return (

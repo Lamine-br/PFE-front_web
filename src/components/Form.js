@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef, useState } from "react";
-import { axiosInstance } from "../../util/axios";
+import { axiosInstance } from "../util/axios";
 
 export function Form() {
 	const firstNameRef = useRef();

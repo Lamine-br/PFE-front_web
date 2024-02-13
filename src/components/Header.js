@@ -4,7 +4,7 @@ import { ButtonCarre } from "./ButtonCarre";
 export function Header({ onConnexionToggle, onInscriptionToggle }) {
 	return (
 		<div className='py-4'>
-			<div className='container flex mx-auto justify-between'>
+			<div className='flex mx-20 justify-between'>
 				<h1 className='text-2xl font-bold text-bleuF mt-2'>Intérim</h1>
 				<nav className='mt-2'>
 					<ul className='flex space-x-4'>

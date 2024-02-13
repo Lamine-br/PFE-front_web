@@ -6,6 +6,10 @@ import {
 	Users,
 	RegisterEmployeur,
 	RegisterChercheur,
+	Offre,
+	HomeEmployeur,
+	OffresEmployeur,
+	CandidaturesEmployeur,
 } from "./pages";
 
 function App() {
@@ -16,6 +20,13 @@ function App() {
 				<Route path='/login' element={<Login />} />
 				<Route path='/register/employeur' element={<RegisterEmployeur />} />
 				<Route path='/register/chercheur' element={<RegisterChercheur />} />
+				<Route path='/offres/:id' element={<Offre />} />
+				<Route path='/employeur' element={<HomeEmployeur />} />
+				<Route path='/employeur/offres' element={<OffresEmployeur />} />
+				<Route
+					path='/employeur/candidatures'
+					element={<CandidaturesEmployeur />}
+				/>
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/users' element={<Users />} />
 			</Routes>
