@@ -14,48 +14,56 @@ export function CandidaturesEmployeur() {
 			Id: "1",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
+			Statut: "En attente",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
 			Id: "2",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
+			Statut: "En attente",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
 			Id: "3",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
+			Statut: "Refusée",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
 			Id: "4",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
+			Statut: "Acceptée",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
 			Id: "5",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
+			Statut: "En attente",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
 			Id: "6",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
+			Statut: "Refusée",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
 			Id: "7",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
+			Statut: "Acceptée",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
 			Id: "8",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
+			Statut: "En attente",
 			"Date d'envoi": "13 Février 2024",
 		},
 	];
@@ -70,6 +78,10 @@ export function CandidaturesEmployeur() {
 
 	const handleSearchChange = (event) => {
 		setSearchTerm(event.target.value);
+	};
+
+	const handleClick = (id) => {
+		window.location.href = `/employeur/candidatures/${id}`;
 	};
 
 	return (
@@ -117,7 +129,11 @@ export function CandidaturesEmployeur() {
 					</div>
 				</div>
 				<div>
-					<Tableau data={data} type={"candidatures"}></Tableau>
+					<Tableau
+						data={data}
+						type={"candidatures"}
+						onRowClick={handleClick}
+					></Tableau>
 				</div>
 			</div>
 		</div>

@@ -51,7 +51,11 @@ export function OffresEmployeur() {
 					</div>
 				</div>
 				<div>
-					<Tableau data={data} type={"offres"} onClick={handleClick}></Tableau>
+					<Tableau
+						data={data}
+						type={"offres"}
+						onRowClick={handleClick}
+					></Tableau>
 				</div>
 			</div>
 		</div>

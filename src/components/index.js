@@ -23,3 +23,4 @@ export * from "./Tableau";
 export * from "./Notifications";
 export * from "./Compte";
 export * from "./CadreGEmployeur";
+export * from "./Candidature";

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	FaTrash,
 	FaPen,
@@ -7,9 +7,14 @@ import {
 	FaTimes,
 	FaTag,
 } from "react-icons/fa";
+import { ButtonCarre } from "./ButtonCarre";
 
-export function Tableau({ data, type, onClick }) {
+export function Tableau({ data, type, onRowClick }) {
 	const headers = Object.keys(data[0]);
+
+	const [numCols, setNumCols] = useState(headers.length + 1);
+
+	const [showConfirmation, setShowConfirmation] = useState(false);
 
 	return (
 		<div className='w-full mt-6 space-y-1'>
@@ -29,10 +34,8 @@ export function Tableau({ data, type, onClick }) {
 				{data.map((item, itemIndex) => (
 					<div
 						key={itemIndex}
-						className={`grid grid-cols-${
-							headers.length + 1
-						} text-center justify-center bg-violet items-center p-2 rounded-lg cursor-pointer`}
-						onClick={() => onClick(item.Id)}
+						className={`grid grid-cols-${numCols} text-center justify-center bg-violet items-center p-2 rounded-lg cursor-pointer`}
+						onClick={() => onRowClick(item.Id)}
 					>
 						{headers.map((header, index) => (
 							<p key={index} className='text-bleuF text-sm font-semibold'>
@@ -56,6 +59,10 @@ export function Tableau({ data, type, onClick }) {
 										size={12}
 										className='cursor-pointer'
 										color='#FF584D'
+										onClick={(e) => {
+											e.stopPropagation();
+											setShowConfirmation(true);
+										}}
 									/>
 								</>
 							) : (
@@ -63,12 +70,16 @@ export function Tableau({ data, type, onClick }) {
 									<FaTag size={12} color='#465475' className='cursor-pointer' />
 									<FaCheck
 										size={12}
-										color='#30CA3F'
+										color={
+											item["Statut"] === "En attente" ? "#30CA3F" : "#CCCCCC"
+										}
 										className='cursor-pointer'
 									/>
 									<FaTimes
 										size={14}
-										color='#FF584D'
+										color={
+											item["Statut"] === "En attente" ? "#FF584D" : "#CCCCCC"
+										}
 										className='cursor-pointer'
 									/>
 								</>
@@ -77,6 +88,31 @@ export function Tableau({ data, type, onClick }) {
 					</div>
 				))}
 			</div>
+			{showConfirmation && (
+				<div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
+					<div className=' w-1/4 h-fit bg-white p-4 rounded-md space-y-8'>
+						<p>Êtes-vous sûr de vouloir supprimer cette offre?</p>
+						<div className='flex justify-between'>
+							<ButtonCarre
+								couleur={"bleuF"}
+								couleurTexte={"violet"}
+								contenu={"Annuler"}
+								width={"fit text-xs"}
+								height={"fit"}
+								onclick={() => setShowConfirmation(false)}
+							></ButtonCarre>
+							<ButtonCarre
+								couleur={"rouge"}
+								couleurTexte={"violet"}
+								contenu={"Supprimer"}
+								width={"fit text-xs"}
+								height={"fit"}
+								onclick={() => setShowConfirmation(false)}
+							></ButtonCarre>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
