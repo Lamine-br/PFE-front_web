@@ -96,7 +96,7 @@ export default function Notifications() {
 					<Box sx={{ flexGrow: 1 }}>
 						<Typography variant='subtitle1'>Notifications</Typography>
 						<Typography variant='body2' sx={{ color: "text.secondary" }}>
-							You have {totalUnRead} unread messages
+							Vous avez {totalUnRead} messages non lus
 						</Typography>
 					</Box>
 
@@ -118,7 +118,7 @@ export default function Notifications() {
 							disableSticky
 							sx={{ py: 1, px: 2.5, typography: "overline" }}
 						>
-							New
+							Nouveau
 						</ListSubheader>
 					}
 				>
@@ -134,7 +134,7 @@ export default function Notifications() {
 
 				<Box sx={{ p: 1 }}>
 					<Button fullWidth disableRipple>
-						View All
+						Voir tout
 					</Button>
 				</Box>
 			</Popover>
@@ -183,8 +183,8 @@ function NotificationItem({ notification }) {
 							color: "text.disabled",
 						}}
 					>
-						<FaClock className='mr-1' />
-						{fToNow(notification.createdAt)}
+						{/* <FaClock className='mr-1' /> */}
+						{/* {fToNow(notification.createdAt)} */}
 					</Typography>
 				}
 			/>
