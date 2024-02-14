@@ -11,41 +11,49 @@ import { FaSearch } from "react-icons/fa";
 export function CandidaturesEmployeur() {
 	let data = [
 		{
+			Id: "1",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
+			Id: "2",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
+			Id: "3",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
+			Id: "4",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
+			Id: "5",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
+			Id: "6",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
+			Id: "7",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
 			"Date d'envoi": "13 Février 2024",
 		},
 		{
+			Id: "8",
 			Candidat: "Brahami Lamine",
 			"Titre de l'offre": "Jardinier",
 			"Date d'envoi": "13 Février 2024",

@@ -20,7 +20,7 @@ export function Header({ onConnexionToggle, onInscriptionToggle }) {
 							<ButtonCarre
 								couleur={"rouge"}
 								couleurTexte={"violet"}
-								contenu={"Inscrivez vous gratuitement"}
+								contenu={"Inscrivez vous"}
 								width={"fit"}
 								height={"fit"}
 								onclick={onInscriptionToggle}

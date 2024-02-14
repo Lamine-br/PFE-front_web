@@ -8,7 +8,7 @@ import {
 	FaTag,
 } from "react-icons/fa";
 
-export function Tableau({ data, type }) {
+export function Tableau({ data, type, onClick }) {
 	const headers = Object.keys(data[0]);
 
 	return (
@@ -31,7 +31,8 @@ export function Tableau({ data, type }) {
 						key={itemIndex}
 						className={`grid grid-cols-${
 							headers.length + 1
-						} text-center justify-center bg-violet items-center p-2 rounded-lg`}
+						} text-center justify-center bg-violet items-center p-2 rounded-lg cursor-pointer`}
+						onClick={() => onClick(item.Id)}
 					>
 						{headers.map((header, index) => (
 							<p key={index} className='text-bleuF text-sm font-semibold'>

@@ -8,3 +8,4 @@ export * from "./Offre";
 export * from "./HomeEmployeur";
 export * from "./OffresEmployeur";
 export * from "./CandidaturesEmployeur";
+export * from "./OffreEmployeur";

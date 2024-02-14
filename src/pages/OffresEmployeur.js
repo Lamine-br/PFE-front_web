@@ -8,16 +8,20 @@ import {
 
 export function OffresEmployeur() {
 	let data = [
-		{ Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Titre: "Jardinier", "Date de création": "13 Février 2024" },
+		{ Id: "1", Titre: "Jardinier", "Date de création": "13 Février 2024" },
+		{ Id: "2", Titre: "Jardinier", "Date de création": "13 Février 2024" },
+		{ Id: "3", Titre: "Jardinier", "Date de création": "13 Février 2024" },
+		{ Id: "4", Titre: "Jardinier", "Date de création": "13 Février 2024" },
+		{ Id: "5", Titre: "Jardinier", "Date de création": "13 Février 2024" },
+		{ Id: "6", Titre: "Jardinier", "Date de création": "13 Février 2024" },
+		{ Id: "7", Titre: "Jardinier", "Date de création": "13 Février 2024" },
+		{ Id: "8", Titre: "Jardinier", "Date de création": "13 Février 2024" },
+		{ Id: "9", Titre: "Jardinier", "Date de création": "13 Février 2024" },
 	];
+
+	const handleClick = (id) => {
+		window.location.href = `/employeur/offres/${id}`;
+	};
 
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
@@ -47,7 +51,7 @@ export function OffresEmployeur() {
 					</div>
 				</div>
 				<div>
-					<Tableau data={data} type={"offres"}></Tableau>
+					<Tableau data={data} type={"offres"} onClick={handleClick}></Tableau>
 				</div>
 			</div>
 		</div>

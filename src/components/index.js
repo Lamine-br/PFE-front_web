@@ -22,3 +22,4 @@ export * from "./NavBarEmployeur";
 export * from "./Tableau";
 export * from "./Notifications";
 export * from "./Compte";
+export * from "./CadreGEmployeur";
