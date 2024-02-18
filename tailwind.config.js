@@ -8,7 +8,7 @@ module.exports = {
 				bleuF: "#465475",
 				violet: "#EEEDFF",
 				rouge: "#FF584D",
-				vert: "#30CA3F",
+				vertF: "#30CA3F",
 			},
 		},
 	},

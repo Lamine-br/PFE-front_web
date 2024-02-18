@@ -4,7 +4,7 @@ import {
 	NavBarEmployeur,
 	ButtonCarre,
 	Tableau,
-} from "../components";
+} from "../../components";
 
 export function HomeEmployeur() {
 	return (

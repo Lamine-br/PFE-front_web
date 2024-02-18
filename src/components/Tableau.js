@@ -7,6 +7,7 @@ import {
 	FaTimes,
 	FaTag,
 } from "react-icons/fa";
+import { Popup } from "./Popup";
 import { ButtonCarre } from "./ButtonCarre";
 
 export function Tableau({ data, type, onRowClick }) {
@@ -14,14 +15,13 @@ export function Tableau({ data, type, onRowClick }) {
 
 	const [numCols, setNumCols] = useState(headers.length + 1);
 
-	const [showConfirmation, setShowConfirmation] = useState(false);
+	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+	const [showRefusConfirmation, setShowRefusConfirmation] = useState(false);
 
 	return (
 		<div className='w-full mt-6 space-y-1'>
 			<div
-				className={`grid grid-cols-${
-					headers.length + 1
-				} text-center bg-bleuF items-center p-2 rounded-lg`}
+				className={`grid grid-cols-${numCols} text-center bg-bleuF items-center p-2 rounded-lg`}
 			>
 				{headers.map((header, index) => (
 					<p key={index} className='text-violet text-sm font-bold'>
@@ -42,7 +42,7 @@ export function Tableau({ data, type, onRowClick }) {
 								{item[header]}
 							</p>
 						))}
-						<div className='col-span-1 flex justify-center items-center space-x-4'>
+						<div className='flex justify-center items-center space-x-4'>
 							{type === "offres" ? (
 								<>
 									<FaFolder
@@ -61,7 +61,7 @@ export function Tableau({ data, type, onRowClick }) {
 										color='#FF584D'
 										onClick={(e) => {
 											e.stopPropagation();
-											setShowConfirmation(true);
+											setShowDeleteConfirmation(true);
 										}}
 									/>
 								</>
@@ -81,6 +81,10 @@ export function Tableau({ data, type, onRowClick }) {
 											item["Statut"] === "En attente" ? "#FF584D" : "#CCCCCC"
 										}
 										className='cursor-pointer'
+										onClick={(e) => {
+											e.stopPropagation();
+											setShowRefusConfirmation(true);
+										}}
 									/>
 								</>
 							)}
@@ -88,30 +92,22 @@ export function Tableau({ data, type, onRowClick }) {
 					</div>
 				))}
 			</div>
-			{showConfirmation && (
-				<div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
-					<div className=' w-1/4 h-fit bg-white p-4 rounded-md space-y-8'>
-						<p>Êtes-vous sûr de vouloir supprimer cette offre?</p>
-						<div className='flex justify-between'>
-							<ButtonCarre
-								couleur={"bleuF"}
-								couleurTexte={"violet"}
-								contenu={"Annuler"}
-								width={"fit text-xs"}
-								height={"fit"}
-								onclick={() => setShowConfirmation(false)}
-							></ButtonCarre>
-							<ButtonCarre
-								couleur={"rouge"}
-								couleurTexte={"violet"}
-								contenu={"Supprimer"}
-								width={"fit text-xs"}
-								height={"fit"}
-								onclick={() => setShowConfirmation(false)}
-							></ButtonCarre>
-						</div>
-					</div>
-				</div>
+			{showDeleteConfirmation && (
+				<Popup
+					Titre={"Confirmation"}
+					Texte={"Êtes-vous sur de vouloir supprimer cette offre ?"}
+					onConfirm={() => {}}
+					onDismiss={() => setShowDeleteConfirmation(false)}
+				/>
+			)}
+
+			{showRefusConfirmation && (
+				<Popup
+					Titre={"Confirmation"}
+					Texte={"Êtes-vous sur de vouloir refuser cette candidature ?"}
+					onConfirm={() => setShowRefusConfirmation(false)}
+					onDismiss={() => setShowRefusConfirmation(false)}
+				/>
 			)}
 		</div>
 	);

@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, InscriptionChercheur } from "../components";
+import { Header, InscriptionChercheur } from "../../components";
 
 export function RegisterChercheur() {
 	return (

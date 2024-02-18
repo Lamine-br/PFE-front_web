@@ -14,7 +14,7 @@ export function ButtonCarre({
 	return (
 		<div>
 			<button
-				className={`rounded ${buttonWidth} ${buttonHeight} bg-${couleur} text-${couleurTexte} font-bold px-4 py-2 justify-center items-center`}
+				className={`rounded ${buttonWidth} ${buttonHeight} bg-${couleur} text-${couleurTexte} text-sm font-bold px-4 py-2`}
 				onClick={onclick}
 			>
 				{contenu}

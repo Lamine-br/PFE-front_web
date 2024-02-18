@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	HeaderEmployeur,
 	NavBarEmployeur,
 	ButtonCarre,
 	Tableau,
-} from "../components";
+	NouvelleOffre,
+	NouvelleCategorie,
+} from "../../components";
 
 export function OffresEmployeur() {
 	let data = [
@@ -23,6 +25,9 @@ export function OffresEmployeur() {
 		window.location.href = `/employeur/offres/${id}`;
 	};
 
+	const [showNouvelleOffre, setShowNouvelleOffre] = useState(false);
+	const [showNouvelleCategorie, setShowNouvelleCategorie] = useState(false);
+
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderEmployeur></HeaderEmployeur>
@@ -37,7 +42,7 @@ export function OffresEmployeur() {
 							contenu={"Nouvelle catégorie"}
 							width={"fit text-sm"}
 							height={"fit"}
-							onclick={() => {}}
+							onclick={() => setShowNouvelleCategorie(true)}
 						></ButtonCarre>
 
 						<ButtonCarre
@@ -46,7 +51,7 @@ export function OffresEmployeur() {
 							contenu={"Nouvelle offre"}
 							width={"fit text-sm"}
 							height={"fit"}
-							onclick={() => {}}
+							onclick={() => setShowNouvelleOffre(true)}
 						></ButtonCarre>
 					</div>
 				</div>
@@ -58,6 +63,14 @@ export function OffresEmployeur() {
 					></Tableau>
 				</div>
 			</div>
+
+			{showNouvelleOffre && (
+				<NouvelleOffre onClose={() => setShowNouvelleOffre(false)} />
+			)}
+
+			{showNouvelleCategorie && (
+				<NouvelleCategorie onClose={() => setShowNouvelleCategorie(false)} />
+			)}
 		</div>
 	);
 }

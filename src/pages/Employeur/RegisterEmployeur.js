@@ -5,7 +5,7 @@ import {
 	InscriptionEmployeur,
 	Abonnements,
 	Paiement,
-} from "../components";
+} from "../../components";
 
 export function RegisterEmployeur() {
 	const [afficherInscription, setAfficherInscription] = useState(true);

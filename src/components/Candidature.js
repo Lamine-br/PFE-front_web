@@ -91,13 +91,15 @@ export function Candidature() {
 						contenu={"Refuser"}
 						width={"fit"}
 						height={"fit"}
+						onClick={() => {}}
 					/>
 					<ButtonRond
-						couleur={"vert"}
+						couleur={"bleuF"}
 						couleurTexte={"violet"}
 						contenu={"Accepter"}
 						width={"fit"}
 						height={"fit"}
+						onClick={() => {}}
 					/>
 				</div>
 			) : null}

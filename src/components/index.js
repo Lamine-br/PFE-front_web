@@ -24,3 +24,8 @@ export * from "./Notifications";
 export * from "./Compte";
 export * from "./CadreGEmployeur";
 export * from "./Candidature";
+export * from "./Popup";
+export * from "./NouvelleOffre";
+export * from "./NouvelleCategorie";
+export * from "./NouvelleEtiquette";
+export * from "./Spinner";

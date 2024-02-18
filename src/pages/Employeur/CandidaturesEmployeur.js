@@ -4,7 +4,8 @@ import {
 	NavBarEmployeur,
 	ButtonCarre,
 	Tableau,
-} from "../components";
+	NouvelleEtiquette,
+} from "../../components";
 import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
 
@@ -84,6 +85,8 @@ export function CandidaturesEmployeur() {
 		window.location.href = `/employeur/candidatures/${id}`;
 	};
 
+	const [showNouvelleEtiquette, setShowNouvelleEtiquette] = useState(false);
+
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderEmployeur></HeaderEmployeur>
@@ -124,7 +127,7 @@ export function CandidaturesEmployeur() {
 							contenu={"Nouvelle étiquette"}
 							width={"fit text-sm"}
 							height={"fit"}
-							onclick={() => {}}
+							onclick={() => setShowNouvelleEtiquette(true)}
 						></ButtonCarre>
 					</div>
 				</div>
@@ -136,6 +139,10 @@ export function CandidaturesEmployeur() {
 					></Tableau>
 				</div>
 			</div>
+
+			{showNouvelleEtiquette && (
+				<NouvelleEtiquette onClose={() => setShowNouvelleEtiquette(false)} />
+			)}
 		</div>
 	);
 }
