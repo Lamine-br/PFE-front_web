@@ -29,3 +29,6 @@ export * from "./NouvelleOffre";
 export * from "./NouvelleCategorie";
 export * from "./NouvelleEtiquette";
 export * from "./Spinner";
+export * from "./HeaderGestionnaire";
+export * from "./NavBarGestionnaire";
+export * from "./TableauGestionnaire";

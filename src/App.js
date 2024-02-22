@@ -12,6 +12,8 @@ import {
 	CandidaturesEmployeur,
 	OffreEmployeur,
 	CandidatureEmployeur,
+	HomeGestionnaire,
+	InscriptionsGestionnaire,
 } from "./pages";
 
 function App() {
@@ -33,6 +35,11 @@ function App() {
 				<Route
 					path='/employeur/candidatures/:id'
 					element={<CandidatureEmployeur />}
+				/>
+				<Route path='/gestionnaire' element={<HomeGestionnaire />} />
+				<Route
+					path='/gestionnaire/inscriptions'
+					element={<InscriptionsGestionnaire />}
 				/>
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/users' element={<Users />} />

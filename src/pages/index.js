@@ -10,3 +10,5 @@ export * from "./Employeur/OffresEmployeur";
 export * from "./Employeur/CandidaturesEmployeur";
 export * from "./Employeur/OffreEmployeur";
 export * from "./Employeur/CandidatureEmployeur";
+export * from "./Gestionnaire/HomeGestionnaire";
+export * from "./Gestionnaire/InscriptionsGestionnaire";
