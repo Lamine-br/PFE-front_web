@@ -32,3 +32,5 @@ export * from "./Spinner";
 export * from "./HeaderGestionnaire";
 export * from "./NavBarGestionnaire";
 export * from "./TableauGestionnaire";
+export * from "./CadreInscription";
+export * from "./CadreUtilisateur";

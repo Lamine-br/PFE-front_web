@@ -21,7 +21,7 @@ export function NavBarGestionnaire({ selected }) {
 								selectedItem === 1 ? "bg-bleuF text-violet" : "text-bleuF"
 							}`}
 						>
-							<NavLink to={"/"}>Utilisateurs</NavLink>
+							<NavLink to={"/gestionnaire/utilisateurs"}>Utilisateurs</NavLink>
 						</li>
 						<li
 							className={`px-2 py-1 cursor-pointer text-base font-bold ${

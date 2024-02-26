@@ -7,31 +7,31 @@ import {
 import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
 
-export function InscriptionsGestionnaire() {
+export function UtilisateursGestionnaire() {
 	let data = [
 		{
 			Id: "1",
 			Nom: "Brahami Lamine",
 			Type: "Chercheur d'emplois",
-			"Date d'envoi": "13 Février 2024",
+			Etat: "Bloqué",
 		},
 		{
 			Id: "2",
 			Nom: "ESI",
 			Type: "Agence",
-			"Date d'envoi": "22 Février 2024",
+			Etat: "Actif",
 		},
 		{
 			Id: "3",
 			Nom: "LIRMM",
 			Type: "Agence",
-			"Date d'envoi": "22 Février 2024",
+			Etat: "Actif",
 		},
 		{
 			Id: "4",
 			Nom: "KPMG",
 			Type: "Employeur",
-			"Date d'envoi": "22 Février 2024",
+			Etat: "Bloqué",
 		},
 	];
 
@@ -48,16 +48,16 @@ export function InscriptionsGestionnaire() {
 	};
 
 	const handleClick = (id) => {
-		window.location.href = `/gestionnaire/inscriptions/${id}`;
+		window.location.href = `/gestionnaire/utilisateurs/${id}`;
 	};
 
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderGestionnaire></HeaderGestionnaire>
-			<NavBarGestionnaire selected={0}></NavBarGestionnaire>
+			<NavBarGestionnaire selected={1}></NavBarGestionnaire>
 			<div className='m-6 bg-white rounded-lg p-4'>
 				<div className='flex justify-between'>
-					<p className='text-xl font-bold text-bleuF'>Inscriptions</p>
+					<p className='text-xl font-bold text-bleuF'>Utilisateurs</p>
 					<div className='flex space-x-4'>
 						<div className='relative'>
 							<input
@@ -90,7 +90,6 @@ export function InscriptionsGestionnaire() {
 				<div>
 					<TableauGestionnaire
 						data={data}
-						type={"inscriptions"}
 						onRowClick={handleClick}
 					></TableauGestionnaire>
 				</div>

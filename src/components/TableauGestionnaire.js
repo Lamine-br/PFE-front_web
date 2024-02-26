@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
 import { FaFlag, FaCheck, FaTimes, FaTag } from "react-icons/fa";
 import { Popup } from "./Popup";
-import { ButtonCarre } from "./ButtonCarre";
 
-export function TableauGestionnaire({ data, onRowClick }) {
+export function TableauGestionnaire({ data, type, onRowClick }) {
 	const headers = Object.keys(data[0]);
 	const numCols = headers.length + 1;
 
@@ -30,28 +28,57 @@ export function TableauGestionnaire({ data, onRowClick }) {
 						onClick={() => onRowClick(item.Id)}
 					>
 						{headers.map((header, index) => (
-							<p key={index} className='text-bleuF text-sm font-semibold'>
+							<p
+								key={index}
+								className={`text-bleuF text-sm font-semibold ${
+									header === "Etat" && item[header] === "Bloqué"
+										? "text-rouge"
+										: ""
+								} ${
+									header === "Etat" && item[header] === "Actif"
+										? "text-vertF"
+										: ""
+								}`}
+							>
 								{item[header]}
 							</p>
 						))}
 						<div className='flex justify-center items-center space-x-4'>
-							<>
-								<FaFlag size={12} color='#465475' className='cursor-pointer' />
-								<FaCheck
-									size={12}
-									color={"#30CA3F"}
-									className='cursor-pointer'
-								/>
-								<FaTimes
-									size={14}
-									color={"#FF584D"}
-									className='cursor-pointer'
-									onClick={(e) => {
-										e.stopPropagation();
-										setShowRefusConfirmation(true);
-									}}
-								/>
-							</>
+							{type === "inscriptions" ? (
+								<>
+									<FaCheck
+										size={12}
+										color={"#30CA3F"}
+										className='cursor-pointer'
+									/>
+									<FaTimes
+										size={14}
+										color={"#FF584D"}
+										className='cursor-pointer'
+										onClick={(e) => {
+											e.stopPropagation();
+											setShowRefusConfirmation(true);
+										}}
+									/>
+								</>
+							) : (
+								<>
+									<FaFlag
+										size={12}
+										color='#465475'
+										className='cursor-pointer'
+									/>
+									<FaTimes
+										size={14}
+										color={"#FF584D"}
+										className='cursor-pointer'
+										onClick={(e) => {
+											e.stopPropagation();
+											setShowRefusConfirmation(true);
+										}}
+									/>
+								</>
+							)}
 						</div>
 					</div>
 				))}
@@ -60,7 +87,7 @@ export function TableauGestionnaire({ data, onRowClick }) {
 			{showRefusConfirmation && (
 				<Popup
 					Titre={"Confirmation"}
-					Texte={"Êtes-vous sur de vouloir refuser cette candidature ?"}
+					Texte={"Êtes-vous sur de vouloir refuser cette inscription ?"}
 					onConfirm={() => setShowRefusConfirmation(false)}
 					onDismiss={() => setShowRefusConfirmation(false)}
 				/>

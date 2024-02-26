@@ -14,6 +14,9 @@ import {
 	CandidatureEmployeur,
 	HomeGestionnaire,
 	InscriptionsGestionnaire,
+	InscriptionGestionnaire,
+	UtilisateursGestionnaire,
+	UtilisateurGestionnaire,
 } from "./pages";
 
 function App() {
@@ -40,6 +43,18 @@ function App() {
 				<Route
 					path='/gestionnaire/inscriptions'
 					element={<InscriptionsGestionnaire />}
+				/>
+				<Route
+					path='/gestionnaire/inscriptions/:id'
+					element={<InscriptionGestionnaire />}
+				/>
+				<Route
+					path='/gestionnaire/utilisateurs'
+					element={<UtilisateursGestionnaire />}
+				/>
+				<Route
+					path='/gestionnaire/utilisateurs/:id'
+					element={<UtilisateurGestionnaire />}
 				/>
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/users' element={<Users />} />

@@ -13,7 +13,7 @@ export function ButtonRond({
 
 	return (
 		<button
-			className={`rounded-3xl ${buttonWidth} ${buttonHeight} bg-${couleur} text-${couleurTexte} text-sm font-bold px-4 pt-1 pb-2`}
+			className={`rounded-3xl ${buttonWidth} ${buttonHeight} bg-${couleur} text-${couleurTexte} text-sm font-bold px-4 pt-1 pb-2 hover:filter hover:brightness-90 transition-all duration-300`}
 			onClick={onClick}
 		>
 			{contenu}
