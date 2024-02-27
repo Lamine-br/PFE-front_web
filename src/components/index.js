@@ -34,3 +34,5 @@ export * from "./NavBarGestionnaire";
 export * from "./TableauGestionnaire";
 export * from "./CadreInscription";
 export * from "./CadreUtilisateur";
+export * from "./LineChart";
+export * from "./ColumnChart";

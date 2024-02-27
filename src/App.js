@@ -17,6 +17,7 @@ import {
 	InscriptionGestionnaire,
 	UtilisateursGestionnaire,
 	UtilisateurGestionnaire,
+	StatistiquesGestionnaire,
 } from "./pages";
 
 function App() {
@@ -55,6 +56,10 @@ function App() {
 				<Route
 					path='/gestionnaire/utilisateurs/:id'
 					element={<UtilisateurGestionnaire />}
+				/>
+				<Route
+					path='/gestionnaire/statistiques'
+					element={<StatistiquesGestionnaire />}
 				/>
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/users' element={<Users />} />

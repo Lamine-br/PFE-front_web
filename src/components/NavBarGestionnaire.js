@@ -28,7 +28,7 @@ export function NavBarGestionnaire({ selected }) {
 								selectedItem === 2 ? "bg-bleuF text-violet" : "text-bleuF"
 							}`}
 						>
-							<NavLink to={"/"}>Statistiques</NavLink>
+							<NavLink to={"/gestionnaire/statistiques"}>Statistiques</NavLink>
 						</li>
 					</ul>
 				</nav>

@@ -15,3 +15,4 @@ export * from "./Gestionnaire/InscriptionsGestionnaire";
 export * from "./Gestionnaire/InscriptionGestionnaire";
 export * from "./Gestionnaire/UtilisateursGestionnaire";
 export * from "./Gestionnaire/UtilisateurGestionnaire";
+export * from "./Gestionnaire/StatistiquesGestionnaire";
