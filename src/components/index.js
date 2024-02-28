@@ -36,3 +36,7 @@ export * from "./CadreInscription";
 export * from "./CadreUtilisateur";
 export * from "./LineChart";
 export * from "./ColumnChart";
+export * from "./HeaderAgence";
+export * from "./NavBarAgence";
+export * from "./Modal";
+export * from "./TableauAgence";

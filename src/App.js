@@ -18,6 +18,9 @@ import {
 	UtilisateursGestionnaire,
 	UtilisateurGestionnaire,
 	StatistiquesGestionnaire,
+	HomeAgence,
+	FichiersAgence,
+	FichierAgence,
 } from "./pages";
 
 function App() {
@@ -61,6 +64,9 @@ function App() {
 					path='/gestionnaire/statistiques'
 					element={<StatistiquesGestionnaire />}
 				/>
+				<Route path='/agence' element={<HomeAgence />} />
+				<Route path='/agence/fichiers' element={<FichiersAgence />} />
+				<Route path='/agence/fichiers/:id' element={<FichierAgence />} />
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/users' element={<Users />} />
 			</Routes>
