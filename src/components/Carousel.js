@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Spinner } from "./Spinner";
 
-export const Carousel = ({ items }) => {
+export const Carousel = ({ items, onClick }) => {
 	const [selectedItem, setSelectedItem] = useState(null);
 
-	const handleClick = (index) => {
+	const handleClick = (item, index) => {
 		setSelectedItem(index);
+		onClick(item);
 	};
 
 	return (
@@ -15,12 +16,12 @@ export const Carousel = ({ items }) => {
 					{items.map((item, index) => (
 						<p
 							key={index}
-							onClick={() => handleClick(index)}
+							onClick={() => handleClick(item, index)}
 							className={`${
 								selectedItem === index
 									? "bg-bleuF text-white"
 									: "bg-white text-bleuF"
-							} px-2 py-1 rounded-lg font-semibold cursor-pointer hover:filter hover:brightness-90 transition-all duration-300`}
+							} px-2 py-1 rounded-lg text-sm font-semibold cursor-pointer hover:filter hover:brightness-90 transition-all duration-300`}
 						>
 							{item}
 						</p>

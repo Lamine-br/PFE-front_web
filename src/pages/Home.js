@@ -8,11 +8,77 @@ import {
 	Connexion,
 	Inscription,
 	BarreRecherche,
+	Spinner,
 } from "../components";
 
 export function Home() {
+	let data = [
+		{
+			employeur: "ESI",
+			"Date de publication": "12 Décembre, 20:20",
+			titre: "Jardinier",
+			Localisation: "Alger",
+			Salaire: "10$/heure",
+			Duree: "2 semaines",
+			Description:
+				"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
+		},
+		{
+			employeur: "ESI",
+			"Date de publication": "12 Décembre, 20:20",
+			titre: "Jardinier",
+			Localisation: "Alger",
+			Salaire: "10$/heure",
+			Duree: "2 semaines",
+			Description:
+				"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
+		},
+	];
+
+	const [offres, setOffres] = useState(data);
+
+	const getResults = (search) => {
+		return [
+			{
+				employeur: "ESI",
+				"Date de publication": "12 Décembre, 20:20",
+				titre: "Jardinier",
+				Localisation: "Alger",
+				Salaire: "10$/heure",
+				Duree: "2 semaines",
+				Description:
+					"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
+			},
+			{
+				employeur: "ESI",
+				"Date de publication": "12 Décembre, 20:20",
+				titre: "Jardinier",
+				Localisation: "Alger",
+				Salaire: "10$/heure",
+				Duree: "2 semaines",
+				Description:
+					"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
+			},
+		];
+	};
+
 	const [connexionVisible, setConnexionVisible] = useState(false);
 	const [inscriptionVisible, setInscriptionVisible] = useState(false);
+
+	const [searchOn, setSearchOn] = useState(false);
+	const [showLoading, setShowLoading] = useState(false);
+
+	const [search, setSearch] = useState("");
+
+	const handleSearch = (search) => {
+		setShowLoading(true);
+		setTimeout(() => {
+			setOffres(getResults(search));
+			setSearch(search);
+			setSearchOn(true);
+			setShowLoading(false);
+		}, 1000);
+	};
 
 	const handleConnexionToggle = () => {
 		setConnexionVisible(!connexionVisible);
@@ -33,10 +99,18 @@ export function Home() {
 				onConnexionToggle={handleConnexionToggle}
 				onInscriptionToggle={handleInscriptionToggle}
 			/>
-			<BarreRecherche></BarreRecherche>
-			<WelcomeDiv></WelcomeDiv>
-			<Cadres></Cadres>
-			<BarreEmployeurs></BarreEmployeurs>
+			<BarreRecherche onClick={handleSearch}></BarreRecherche>
+			{!searchOn && (
+				<>
+					<WelcomeDiv></WelcomeDiv>
+					<Cadres search={search} data={offres}></Cadres>
+					<BarreEmployeurs></BarreEmployeurs>
+				</>
+			)}
+
+			{searchOn && <Cadres search={search} data={offres}></Cadres>}
+			{showLoading && <Spinner />}
+
 			{connexionVisible && <Connexion onClose={handleConnexionToggle} />}
 			{inscriptionVisible && <Inscription onClose={handleInscriptionToggle} />}
 		</div>

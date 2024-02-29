@@ -26,7 +26,7 @@ export function Spinner() {
 						fill='#1C64F2'
 					/>
 				</svg>
-				Loading...
+				Chargement...
 			</button>
 		</div>
 	);

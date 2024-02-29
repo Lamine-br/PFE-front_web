@@ -2,7 +2,7 @@ import React from "react";
 
 export function WelcomeDiv() {
 	return (
-		<div className='relative'>
+		<div className='relative mt-40'>
 			<div className='w-1/2 h-60 bg-bleuF text-violet rounded-lg mt-20 ml-20'>
 				<h1 className='text-2xl font-bold p-10'>
 					Bienvenue sur Intérim.

@@ -5,18 +5,7 @@ import { TiTime } from "react-icons/ti";
 import { ButtonRond } from "./ButtonRond";
 import esi from "../assets/logo_esi.png";
 
-export function Cadre() {
-	let Offre = {
-		employeur: "ESI",
-		"Date de publication": "12 Décembre, 20:20",
-		titre: "Jardinier",
-		Localisation: "Alger",
-		Salaire: "10$/heure",
-		Duree: "2 semaines",
-		Description:
-			"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
-	};
-
+export function Cadre({ Offre }) {
 	const [showOptions, setShowOptions] = useState(false);
 
 	const toggleOptions = () => {

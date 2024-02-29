@@ -1,30 +1,54 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FaSearch, FaMicrophone, FaCog } from "react-icons/fa";
 import { Carousel } from "./Carousel";
 
-export function BarreRecherche() {
+export function BarreRecherche({ onClick }) {
 	const [inputActive, setInputActive] = useState(false);
 	const inputRef = useRef(null);
+	const suggestionsRef = useRef(null);
 
 	const handleSearchIconClick = () => {
 		setInputActive(true);
 		inputRef.current.focus();
 	};
 
+	const handleClick = (item) => {
+		onClick(item);
+		setInputActive(false);
+	};
+
 	const [showSuggestions, setShowSuggestions] = useState(false);
-	const suggestions = ["Option 1", "Option 2", "Option 3"];
+	const suggestions = ["Développeur", "Jardinier", "Peintre"];
 
 	const carouselItems = [
-		"Mix",
-		"Musique",
-		"Soolking",
-		"En direct",
-		"Lounis Aït Menguellet",
-		"Hikaru Nakamura",
+		"Développeur Web",
+		"Assistant Administratif",
+		"Technicien de Maintenance",
+		"Agent de Sécurité",
+		"Infirmier Intérimaire",
+		"Magasinier",
+		"Serveur/Serveuse en Intérim",
 	];
 
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (
+				suggestionsRef.current &&
+				!suggestionsRef.current.contains(event.target)
+			) {
+				setShowSuggestions(false);
+			}
+		};
+
+		document.addEventListener("mousedown", handleClickOutside);
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
+
 	return (
-		<div className='mb-40'>
+		<div>
 			<div className='mt-20 mb-10 flex items-center justify-center w-full'>
 				<div className={`relative flex bg-white items-center rounded-full`}>
 					<FaSearch
@@ -34,7 +58,7 @@ export function BarreRecherche() {
 						onClick={handleSearchIconClick}
 					/>
 
-					<div className='w-1/2'>
+					<div className='w-1/2' ref={suggestionsRef}>
 						<input
 							ref={inputRef}
 							placeholder='Rechercher ...'
@@ -43,7 +67,6 @@ export function BarreRecherche() {
 							}`}
 							autoFocus={inputActive}
 							onFocus={() => setShowSuggestions(true)}
-							onBlur={() => setShowSuggestions(false)}
 						/>
 
 						{showSuggestions && (
@@ -52,6 +75,10 @@ export function BarreRecherche() {
 									<div
 										key={index}
 										className='p-2 cursor-pointer hover:bg-gray-100 transition'
+										onClick={() => {
+											handleClick(suggestion);
+											setShowSuggestions(false);
+										}}
 									>
 										{suggestion}
 									</div>
@@ -74,7 +101,7 @@ export function BarreRecherche() {
 				</div>
 			</div>
 			<div className='flex justify-center'>
-				<Carousel items={carouselItems}></Carousel>
+				<Carousel items={carouselItems} onClick={onClick}></Carousel>
 			</div>
 		</div>
 	);
