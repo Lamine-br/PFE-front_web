@@ -40,3 +40,4 @@ export * from "./HeaderAgence";
 export * from "./NavBarAgence";
 export * from "./Modal";
 export * from "./TableauAgence";
+export * from "./Carousel";
