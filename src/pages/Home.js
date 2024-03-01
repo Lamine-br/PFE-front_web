@@ -80,6 +80,16 @@ export function Home() {
 		}, 1000);
 	};
 
+	const handleAdvancedSearch = () => {
+		setShowLoading(true);
+		setTimeout(() => {
+			setOffres(getResults("Votre recherche"));
+			setSearch("Votre recherche avancée");
+			setSearchOn(true);
+			setShowLoading(false);
+		}, 1000);
+	};
+
 	const handleConnexionToggle = () => {
 		setConnexionVisible(!connexionVisible);
 	};
@@ -99,7 +109,11 @@ export function Home() {
 				onConnexionToggle={handleConnexionToggle}
 				onInscriptionToggle={handleInscriptionToggle}
 			/>
-			<BarreRecherche onClick={handleSearch}></BarreRecherche>
+			<BarreRecherche
+				onSuggestionClick={handleSearch}
+				onAdvancedSearchClick={handleAdvancedSearch}
+			></BarreRecherche>
+
 			{!searchOn && (
 				<>
 					<WelcomeDiv></WelcomeDiv>

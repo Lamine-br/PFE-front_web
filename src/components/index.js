@@ -41,3 +41,6 @@ export * from "./NavBarAgence";
 export * from "./Modal";
 export * from "./TableauAgence";
 export * from "./Carousel";
+export * from "./VoiceRecognition";
+export * from "./RechercheAvancee";
+export * from "./Criteres";

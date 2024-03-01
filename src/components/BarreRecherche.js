@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaSearch, FaMicrophone, FaCog } from "react-icons/fa";
 import { Carousel } from "./Carousel";
+import { VoiceRecognition } from "./VoiceRecognition";
+import { RechercheAvancee } from "./RechercheAvancee";
 
-export function BarreRecherche({ onClick }) {
+export function BarreRecherche({ onSuggestionClick, onAdvancedSearchClick }) {
 	const [inputActive, setInputActive] = useState(false);
 	const inputRef = useRef(null);
 	const suggestionsRef = useRef(null);
@@ -12,13 +14,21 @@ export function BarreRecherche({ onClick }) {
 		inputRef.current.focus();
 	};
 
+	const handleAdvancedSearch = () => {
+		onAdvancedSearchClick();
+		setShowRechercheAvancee(false);
+	};
+
 	const handleClick = (item) => {
-		onClick(item);
+		onSuggestionClick(item);
 		setInputActive(false);
 	};
 
 	const [showSuggestions, setShowSuggestions] = useState(false);
 	const suggestions = ["Développeur", "Jardinier", "Peintre"];
+
+	const [showVocal, setShowVocal] = useState(false);
+	const [showRechercheAvancee, setShowRechercheAvancee] = useState(false);
 
 	const carouselItems = [
 		"Développeur Web",
@@ -56,6 +66,7 @@ export function BarreRecherche({ onClick }) {
 							inputActive && "text-blue-500"
 						}`}
 						onClick={handleSearchIconClick}
+						title={"Recherche textuelle"}
 					/>
 
 					<div className='w-1/2' ref={suggestionsRef}>
@@ -96,13 +107,35 @@ export function BarreRecherche({ onClick }) {
 						placeholder='Lieu'
 						className={`w-1/4 p-2 border-l bg-white outline-none rounded-r-full`}
 					/>
-					<FaMicrophone className='text-gray-500 mx-2 cursor-pointer' />
-					<FaCog className='text-gray-500 mx-2 mr-4 cursor-pointer'></FaCog>
+					<FaMicrophone
+						className='text-gray-500 mx-2 cursor-pointer'
+						onClick={() => setShowVocal(true)}
+						title={"Recherche vocale"}
+					/>
+					<FaCog
+						className='text-gray-500 mx-2 mr-4 cursor-pointer'
+						onClick={() => setShowRechercheAvancee(true)}
+						title={"Recherche avancée"}
+					></FaCog>
 				</div>
 			</div>
 			<div className='flex justify-center'>
-				<Carousel items={carouselItems} onClick={onClick}></Carousel>
+				<Carousel items={carouselItems} onClick={onSuggestionClick}></Carousel>
 			</div>
+
+			{showVocal && (
+				<VoiceRecognition
+					onClose={() => setShowVocal(false)}
+					onConfirm={onSuggestionClick}
+				/>
+			)}
+
+			{showRechercheAvancee && (
+				<RechercheAvancee
+					onClose={() => setShowRechercheAvancee(false)}
+					onConfirm={handleAdvancedSearch}
+				/>
+			)}
 		</div>
 	);
 }

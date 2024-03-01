@@ -3,6 +3,7 @@ import { FaEllipsisV, FaDollarSign } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { TiTime } from "react-icons/ti";
 import { ButtonRond } from "./ButtonRond";
+import esi from "../assets/logo_esi.png";
 
 export function CadreG() {
 	let Offre = {
@@ -33,7 +34,7 @@ export function CadreG() {
 				</div>
 			</div>
 			<div>
-				<img className=' bg-rouge w-full h-48'></img>
+				<img className=' bg-white w-full h-48' src={esi}></img>
 			</div>
 
 			<div className='px-10 py-2'>
