@@ -24,15 +24,11 @@ const account = {
 
 const MENU_OPTIONS = [
 	{
-		label: "Home",
-		icon: "eva:home-fill",
-	},
-	{
 		label: "Profile",
 		icon: "eva:person-fill",
 	},
 	{
-		label: "Settings",
+		label: "Paramètres",
 		icon: "eva:settings-2-fill",
 	},
 ];
@@ -48,6 +44,10 @@ export default function Compte() {
 
 	const handleClose = () => {
 		setOpen(null);
+	};
+
+	const deconnexion = () => {
+		window.location.href = "/";
 	};
 
 	return (
@@ -112,8 +112,8 @@ export default function Compte() {
 
 				<Divider sx={{ borderStyle: "dashed" }} />
 
-				<MenuItem onClick={handleClose} sx={{ m: 1 }}>
-					Logout
+				<MenuItem onClick={deconnexion} sx={{ m: 1 }}>
+					Déconnexion
 				</MenuItem>
 			</Popover>
 		</>

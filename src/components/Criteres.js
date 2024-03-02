@@ -24,7 +24,7 @@ export function Criteres({ onConfirm, onDismiss }) {
 				<div className='h-1/2'>
 					{[
 						"Dates",
-						"Salaires",
+						"Salaire",
 						"Entreprise",
 						"Lieu",
 						"Horaires de travail",

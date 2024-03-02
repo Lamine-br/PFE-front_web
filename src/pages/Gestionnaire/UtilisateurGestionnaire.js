@@ -17,7 +17,7 @@ export function UtilisateurGestionnaire() {
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderGestionnaire></HeaderGestionnaire>
-			<NavBarGestionnaire selected={0}></NavBarGestionnaire>
+			<NavBarGestionnaire selected={1}></NavBarGestionnaire>
 			<div className='m-6 bg-white rounded-lg p-4'>
 				<div className='flex'>
 					<p
