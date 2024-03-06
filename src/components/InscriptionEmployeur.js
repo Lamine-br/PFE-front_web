@@ -1,11 +1,12 @@
-import React, { useState, useRef } from "react";
-import { useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ButtonRond } from "./ButtonRond";
 import { FaTimes, FaPlus } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
 
 export function InscriptionEmployeur({ onPass }) {
 	const [formData, setFormData] = useState({
+		email: "",
+		password: "",
 		entreprise: "",
 		service: "",
 		sous_service: "",
@@ -21,6 +22,8 @@ export function InscriptionEmployeur({ onPass }) {
 	});
 
 	const inputRefs = {
+		email: useRef(),
+		password: useRef(),
 		entreprise: useRef(),
 		service: useRef(),
 		sous_service: useRef(),
@@ -41,76 +44,69 @@ export function InscriptionEmployeur({ onPass }) {
 		linkedin: useRef(),
 	};
 
-	const handleInputChange = (e, index) => {
-		const { name, value } = e.target;
-
-		if (index !== undefined) {
-			const newContacts = [...formData.contacts];
-			newContacts[index][name] = value;
-
-			setFormData((prevData) => ({
-				...prevData,
-				contacts: newContacts,
-			}));
-		} else {
-			setFormData((prevData) => ({
-				...prevData,
-				[name]: value,
-			}));
-		}
-	};
-
-	const handleRemoveContact = (index) => {
-		const newContacts = [...formData.contacts];
-		newContacts.splice(index, 1);
-
-		setFormData((prevData) => ({
-			...prevData,
-			contacts: newContacts,
-		}));
-	};
-
 	async function register() {
-		const response = await axiosInstance.post(`/auth/register/chercheur`, {
-			formData,
-		});
+		const response = await axiosInstance.post(
+			`/auth/register/employeur`,
+			formData
+		);
 
 		if (response.data.statusCode === 200) {
 			console.log(response.data.data);
 		}
 	}
 
-	function handleClick() {
-		const entrepriseValue = inputRefs.entreprise.current.value;
-		const serviceValue = inputRefs.service.current.value;
-		const sousServiceValue = inputRefs.sous_service.current.value;
-		const numeroEDAValue = inputRefs.numero_EDA.current.value;
-		const rueValue = inputRefs.adresse.rue.current.value;
-		const villeValue = inputRefs.adresse.ville.current.value;
-		const siteWebValue = inputRefs.site_web.current.value;
-		const facebookValue = inputRefs.facebook.current.value;
-		const linkedinValue = inputRefs.linkedin.current.value;
-		const contactValue = {
-			nom: inputRefs.contacts[0].nom.current.value,
-			email: inputRefs.contacts[0].email.current.value,
-			numero: inputRefs.contacts[0].numero.current.value,
-		};
+	function handleInputChange(event, field, nestedField) {
+		const value = event.target.value;
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			[field]: nestedField
+				? {
+						...prevFormData[field],
+						[nestedField]: value,
+				  }
+				: value,
+		}));
+	}
 
-		setFormData({
-			entreprise: entrepriseValue,
-			service: serviceValue,
-			sous_service: sousServiceValue,
-			numero_EDA: numeroEDAValue,
-			adresse: {
-				rue: rueValue,
-				ville: villeValue,
-			},
-			site_web: siteWebValue,
-			facebook: facebookValue,
-			linkedin: linkedinValue,
-			contacts: [contactValue],
+	function handleContactChange(event, index, field) {
+		const value = event.target.value;
+		setFormData((prevFormData) => {
+			const newContacts = [...prevFormData.contacts];
+			newContacts[index] = {
+				...newContacts[index],
+				[field]: value,
+			};
+			return {
+				...prevFormData,
+				contacts: newContacts,
+			};
 		});
+	}
+
+	function addContact() {
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			contacts: [
+				...prevFormData.contacts,
+				{
+					nom: "",
+					email: "",
+					numero: "",
+				},
+			],
+		}));
+	}
+
+	function removeContact(index) {
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			contacts: prevFormData.contacts.filter((_, i) => i !== index),
+		}));
+	}
+
+	function handleClick() {
 		console.log(formData);
+		register();
 	}
 
 	return (
@@ -122,6 +118,29 @@ export function InscriptionEmployeur({ onPass }) {
 
 				<div className='grid grid-cols-3 gap-8 mx-4 mb-4'>
 					<div className='flex flex-col'>
+						<label className='text-violet text-xs font-bold'>Email</label>
+						<input
+							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+							type='email'
+							ref={inputRefs.email}
+							onChange={(e) => handleInputChange(e, "email")}
+						></input>
+					</div>
+					<div className='flex flex-col'>
+						<label className='text-violet text-xs font-bold'>
+							Mot de passe
+						</label>
+						<input
+							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+							type='password'
+							ref={inputRefs.password}
+							onChange={(e) => handleInputChange(e, "password")}
+						></input>
+					</div>
+				</div>
+
+				<div className='grid grid-cols-3 gap-8 mx-4 mb-4'>
+					<div className='flex flex-col'>
 						<label className='text-violet text-xs font-bold'>
 							Nom de l'entreprise / Employeur
 						</label>
@@ -129,6 +148,7 @@ export function InscriptionEmployeur({ onPass }) {
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='text'
 							ref={inputRefs.entreprise}
+							onChange={(e) => handleInputChange(e, "entreprise")}
 						></input>
 					</div>
 					<div className='flex flex-col'>
@@ -139,6 +159,7 @@ export function InscriptionEmployeur({ onPass }) {
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='text'
 							ref={inputRefs.service}
+							onChange={(e) => handleInputChange(e, "service")}
 						></input>
 					</div>
 					<div className='flex flex-col'>
@@ -149,6 +170,7 @@ export function InscriptionEmployeur({ onPass }) {
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='text'
 							ref={inputRefs.sous_service}
+							onChange={(e) => handleInputChange(e, "sous_service")}
 						></input>
 					</div>
 				</div>
@@ -162,6 +184,7 @@ export function InscriptionEmployeur({ onPass }) {
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='text'
 							ref={inputRefs.numero_EDA}
+							onChange={(e) => handleInputChange(e, "numero_EDA")}
 						></input>
 					</div>
 					<div className='flex flex-col'>
@@ -170,6 +193,7 @@ export function InscriptionEmployeur({ onPass }) {
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='text'
 							ref={inputRefs.adresse.rue}
+							onChange={(e) => handleInputChange(e, "adresse", "rue")}
 						></input>
 					</div>
 					<div className='flex flex-col'>
@@ -178,38 +202,55 @@ export function InscriptionEmployeur({ onPass }) {
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='text'
 							ref={inputRefs.adresse.ville}
+							onChange={(e) => handleInputChange(e, "adresse", "ville")}
 						></input>
 					</div>
 				</div>
 
 				<p className='text-violet text-sm font-bold ml-4 mb-2'>Contacts</p>
 
-				<div className='grid grid-cols-3 gap-8 mx-4 mb-4'>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>Nom</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
-							ref={inputRefs.contacts[0].nom}
-						></input>
+				{formData.contacts.map((contact, index) => (
+					<div key={index} className='grid grid-cols-3 gap-8 mx-4 mb-4'>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>Nom</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='text'
+								value={contact.nom}
+								onChange={(e) => handleContactChange(e, index, "nom")}
+								ref={inputRefs.contacts[index].nom}
+							></input>
+						</div>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>Email</label>
+							<input
+								className=' bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='email'
+								value={contact.email}
+								onChange={(e) => handleContactChange(e, index, "email")}
+								ref={inputRefs.contacts[index].email}
+							></input>
+						</div>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>Numero</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='tel'
+								value={contact.numero}
+								onChange={(e) => handleContactChange(e, index, "numero")}
+								ref={inputRefs.contacts[index].numero}
+							></input>
+						</div>
+						{index > 0 && (
+							<div className='flex items-center'>
+								<FaTimes
+									className='text-red-500 cursor-pointer'
+									onClick={() => removeContact(index)}
+								/>
+							</div>
+						)}
 					</div>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>Email</label>
-						<input
-							className=' bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='email'
-							ref={inputRefs.contacts[0].email}
-						></input>
-					</div>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>Numero</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='tel'
-							ref={inputRefs.contacts[0].numero}
-						></input>
-					</div>
-				</div>
+				))}
 
 				<p className='text-violet text-sm font-bold ml-4 mb-2'>Liens publics</p>
 
@@ -220,6 +261,7 @@ export function InscriptionEmployeur({ onPass }) {
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='text'
 							ref={inputRefs.site_web}
+							onChange={(e) => handleInputChange(e, "site_web")}
 						></input>
 					</div>
 					<div className='flex flex-col'>
@@ -228,6 +270,7 @@ export function InscriptionEmployeur({ onPass }) {
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='text'
 							ref={inputRefs.facebook}
+							onChange={(e) => handleInputChange(e, "facebook")}
 						></input>
 					</div>
 					<div className='flex flex-col'>
@@ -236,6 +279,7 @@ export function InscriptionEmployeur({ onPass }) {
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='text'
 							ref={inputRefs.linkedin}
+							onChange={(e) => handleInputChange(e, "linkedin")}
 						></input>
 					</div>
 				</div>
