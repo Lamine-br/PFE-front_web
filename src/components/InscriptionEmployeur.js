@@ -106,7 +106,7 @@ export function InscriptionEmployeur({ onPass }) {
 
 	function handleClick() {
 		console.log(formData);
-		register();
+		//register();
 	}
 
 	return (
@@ -153,7 +153,7 @@ export function InscriptionEmployeur({ onPass }) {
 					</div>
 					<div className='flex flex-col'>
 						<label className='text-violet text-xs font-bold'>
-							Nom d’un service/département
+							Nom d’un service / département
 						</label>
 						<input
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
@@ -164,7 +164,7 @@ export function InscriptionEmployeur({ onPass }) {
 					</div>
 					<div className='flex flex-col'>
 						<label className='text-violet text-xs font-bold'>
-							Nom d’un sous service/sous département
+							Nom d’un sous service / sous département
 						</label>
 						<input
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
@@ -175,10 +175,10 @@ export function InscriptionEmployeur({ onPass }) {
 					</div>
 				</div>
 
-				<div className='grid grid-cols-5 gap-8 mx-4 mb-10'>
-					<div className='flex flex-col col-span-3'>
+				<div className='grid grid-cols-3 gap-8 mx-4 mb-10'>
+					<div className='flex flex-col'>
 						<label className='text-violet text-xs font-bold'>
-							Numéro nationale de l’entité dépositaire d’annonces
+							Numéro national de l’EDA
 						</label>
 						<input
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
@@ -207,46 +207,53 @@ export function InscriptionEmployeur({ onPass }) {
 					</div>
 				</div>
 
-				<p className='text-violet text-sm font-bold ml-4 mb-2'>Contacts</p>
+				<div className='flex space-x-4'>
+					<p className='text-violet text-sm font-bold ml-4 mb-2'>Contacts</p>
+					<button
+						className='flex justify-center items-center bg-rouge text-violet w-6 h-6 rounded-full'
+						onClick={addContact}
+					>
+						<FaPlus size={15} />
+					</button>
+				</div>
 
 				{formData.contacts.map((contact, index) => (
-					<div key={index} className='grid grid-cols-3 gap-8 mx-4 mb-4'>
-						<div className='flex flex-col'>
+					<div key={index} className='grid grid-cols-7 gap-8 mx-4 mb-4'>
+						<div className='flex flex-col col-span-2'>
 							<label className='text-violet text-xs font-bold'>Nom</label>
 							<input
 								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 								type='text'
 								value={contact.nom}
 								onChange={(e) => handleContactChange(e, index, "nom")}
-								ref={inputRefs.contacts[index].nom}
 							></input>
 						</div>
-						<div className='flex flex-col'>
+						<div className='flex flex-col col-span-2'>
 							<label className='text-violet text-xs font-bold'>Email</label>
 							<input
 								className=' bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 								type='email'
 								value={contact.email}
 								onChange={(e) => handleContactChange(e, index, "email")}
-								ref={inputRefs.contacts[index].email}
 							></input>
 						</div>
-						<div className='flex flex-col'>
+						<div className='flex flex-col col-span-2'>
 							<label className='text-violet text-xs font-bold'>Numero</label>
 							<input
 								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 								type='tel'
 								value={contact.numero}
 								onChange={(e) => handleContactChange(e, index, "numero")}
-								ref={inputRefs.contacts[index].numero}
 							></input>
 						</div>
 						{index > 0 && (
-							<div className='flex items-center'>
-								<FaTimes
-									className='text-red-500 cursor-pointer'
+							<div className='flex items-center justify-center'>
+								<p
+									className='text-rouge cursor-pointer underline'
 									onClick={() => removeContact(index)}
-								/>
+								>
+									Supprimer
+								</p>
 							</div>
 						)}
 					</div>
