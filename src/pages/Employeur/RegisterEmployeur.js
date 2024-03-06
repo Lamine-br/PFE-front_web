@@ -33,7 +33,7 @@ export function RegisterEmployeur() {
 	};
 
 	return (
-		<div className='min-h-screen bg-bleu p-5'>
+		<div className='min-h-screen bg-bleu p-5 items-center justify-center flex w-full'>
 			{afficherInscription && (
 				<InscriptionEmployeur onPass={passerAbonnement}></InscriptionEmployeur>
 			)}

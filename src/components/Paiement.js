@@ -3,7 +3,7 @@ import { ButtonCarre } from "./ButtonCarre";
 
 export function Paiement({ onPass, onChange }) {
 	return (
-		<div className='overlay flex justify-center'>
+		<div className='overlay flex justify-center w-full'>
 			<div className='z-50 justify-center items-center p-4 w-1/2 h-4/5 bg-bleuF rounded-lg'>
 				<h1 className='text-xl text-violet font-bold mb-6 ml-4'>
 					Complétez votre paiement
