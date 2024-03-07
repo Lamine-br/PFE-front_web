@@ -17,7 +17,11 @@ export function TableauOffres({ data, onRowClick }) {
 	return (
 		<div className='w-full mt-6 space-y-1'>
 			{data.length === 0 ? (
-				<p className='text-bleuF text-lg font-bold'>Pas d'offre disponible</p>
+				<div
+					className={`grid grid-cols-6 text-center bg-bleuF items-center p-2 rounded-lg`}
+				>
+					<p className='text-bleuF text-lg font-bold'>Pas d'offre disponible</p>
+				</div>
 			) : (
 				<>
 					<div
