@@ -6,14 +6,17 @@ import {
 	TableauOffres,
 	NouvelleOffre,
 	NouvelleCategorie,
+	Spinner,
 } from "../../components";
 import { axiosInstance } from "../../util/axios";
 
 export function OffresEmployeur() {
 	let [data, setData] = useState([]);
+	let [loading, setLoading] = useState(false);
 
 	async function getOffres() {
 		try {
+			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.get("/employeur/offres", {
 				headers: {
@@ -25,6 +28,7 @@ export function OffresEmployeur() {
 
 			if (response.request.status === 200) {
 				setData(response.data);
+				setLoading(false);
 			}
 		} catch (e) {
 			console.log(e);
@@ -72,6 +76,8 @@ export function OffresEmployeur() {
 			{showNouvelleCategorie && (
 				<NouvelleCategorie onClose={() => setShowNouvelleCategorie(false)} />
 			)}
+
+			{loading && <Spinner />}
 		</div>
 	);
 }
