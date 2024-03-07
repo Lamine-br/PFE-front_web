@@ -10,18 +10,28 @@ import {
 import { Popup } from "./Popup";
 import { ButtonCarre } from "./ButtonCarre";
 
-export function TableauOffres({ data, onRowClick }) {
+export function TableauOffres({ data, onRowClick, vide }) {
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 	const [showRefusConfirmation, setShowRefusConfirmation] = useState(false);
 
 	return (
 		<div className='w-full mt-6 space-y-1'>
 			{data.length === 0 ? (
-				<div
-					className={`grid grid-cols-6 text-center bg-bleuF items-center p-2 rounded-lg`}
-				>
-					<p className='text-bleuF text-lg font-bold'>Pas d'offre disponible</p>
-				</div>
+				<>
+					<div
+						className={`grid grid-cols-6 text-center bg-bleuF items-center p-2 rounded-lg`}
+					>
+						<p className='text-violet text-sm font-bold'>Titre</p>
+						<p className='text-violet text-sm font-bold'>Métier</p>
+						<p className='text-violet text-sm font-bold'>Début</p>
+						<p className='text-violet text-sm font-bold'>Fin</p>
+						<p className='text-violet text-sm font-bold'>Date de publication</p>
+						<p className='text-violet text-sm font-bold'>Actions</p>
+					</div>
+					<p className='text-bleuF text-lg font-bold'>
+						{vide ? "Pas d'offre disponible" : ""}
+					</p>
+				</>
 			) : (
 				<>
 					<div

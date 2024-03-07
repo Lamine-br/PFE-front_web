@@ -13,6 +13,7 @@ import { axiosInstance } from "../../util/axios";
 export function OffresEmployeur() {
 	let [data, setData] = useState([]);
 	let [loading, setLoading] = useState(false);
+	let [vide, setVide] = useState(false);
 
 	async function getOffres() {
 		try {
@@ -32,6 +33,8 @@ export function OffresEmployeur() {
 			}
 		} catch (e) {
 			console.log(e);
+			setLoading(false);
+			setVide(true);
 		}
 	}
 
@@ -65,7 +68,11 @@ export function OffresEmployeur() {
 					</div>
 				</div>
 				<div>
-					<TableauOffres data={data} onRowClick={handleClick}></TableauOffres>
+					<TableauOffres
+						data={data}
+						onRowClick={handleClick}
+						vide={vide}
+					></TableauOffres>
 				</div>
 			</div>
 
