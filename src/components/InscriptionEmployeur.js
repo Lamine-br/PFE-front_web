@@ -106,7 +106,7 @@ export function InscriptionEmployeur({ onPass }) {
 
 	function handleClick() {
 		console.log(formData);
-		//register();
+		register();
 	}
 
 	return (

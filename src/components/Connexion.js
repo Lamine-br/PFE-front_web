@@ -1,9 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { ButtonRond } from "./ButtonRond";
 import { FaTimes } from "react-icons/fa";
+import { axiosInstance } from "../util/axios";
 
 export function Connexion({ onClose }) {
 	const [selectedOption, setSelectedOption] = useState(null);
+
+	const emailRef = useRef();
+	const passwordRef = useRef();
+	const [err, setErr] = useState("");
+
+	async function handleLogin(e) {
+		setErr("");
+		e.preventDefault();
+		const email = emailRef.current.value;
+		const password = passwordRef.current.value;
+
+		try {
+			console.log({
+				email,
+				password,
+			});
+			const response = await axiosInstance.post("/auth/login/employeur", {
+				email,
+				password,
+			});
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+				localStorage.setItem("accessToken", response.data.accessToken);
+				window.location.href = "/employeur";
+			} else {
+				setErr(
+					"There was an error, verify your credentials or contact the admin"
+				);
+			}
+		} catch (e) {
+			console.log(e);
+			setErr(
+				"There was an error, verify your credentials or contact the admin"
+			);
+		}
+	}
 
 	const handleOptionChange = (option) => {
 		setSelectedOption(option);
@@ -108,20 +147,27 @@ export function Connexion({ onClose }) {
 						<input
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='email'
+							ref={emailRef}
+							onFocus={() => setErr("")}
 						></input>
 					</div>
-					<div className='flex flex-col m-2 w-3/4 mb-10'>
+					<div className='flex flex-col m-2 w-3/4 mb-4'>
 						<label className='text-violet text-xs font-bold'>
 							Mot de passe
 						</label>
 						<input
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='password'
+							ref={passwordRef}
+							onFocus={() => setErr("")}
 						></input>
 						<p className='text-violet text-xs underline'>
 							Mot de passe oublié ?
 						</p>
+						<p className='text-rouge text-xs mt-4'>{err}</p>
 					</div>
+
+					<div className='flex items-center justify-center'></div>
 
 					<ButtonRond
 						couleur={"rouge"}
@@ -129,7 +175,7 @@ export function Connexion({ onClose }) {
 						contenu={"Se connecter"}
 						width={"w-3/4"}
 						height={"fit"}
-						onClick={() => redirect(selectedOption)}
+						onClick={(e) => handleLogin(e)}
 					></ButtonRond>
 
 					<div className='flex items-center w-3/4 mx-2 my-1'>

@@ -37,15 +37,6 @@ export function OffresEmployeur() {
 					<p className='text-xl font-bold text-bleuF'>Mes offres</p>
 					<div className='flex space-x-4'>
 						<ButtonCarre
-							couleur='bleuF'
-							couleurTexte={"violet"}
-							contenu={"Nouvelle catégorie"}
-							width={"fit text-sm"}
-							height={"fit"}
-							onclick={() => setShowNouvelleCategorie(true)}
-						></ButtonCarre>
-
-						<ButtonCarre
 							couleur='rouge'
 							couleurTexte={"violet"}
 							contenu={"Nouvelle offre"}
