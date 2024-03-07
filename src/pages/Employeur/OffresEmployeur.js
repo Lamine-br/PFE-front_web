@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	HeaderEmployeur,
 	NavBarEmployeur,
@@ -7,19 +7,32 @@ import {
 	NouvelleOffre,
 	NouvelleCategorie,
 } from "../../components";
+import { axiosInstance } from "../../util/axios";
 
 export function OffresEmployeur() {
-	let data = [
-		{ Id: "1", Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Id: "2", Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Id: "3", Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Id: "4", Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Id: "5", Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Id: "6", Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Id: "7", Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Id: "8", Titre: "Jardinier", "Date de création": "13 Février 2024" },
-		{ Id: "9", Titre: "Jardinier", "Date de création": "13 Février 2024" },
-	];
+	let [data, setData] = useState([]);
+
+	async function getOffres() {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/employeur/offres", {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getOffres();
+	}, []);
 
 	const handleClick = (id) => {
 		window.location.href = `/employeur/offres/${id}`;
