@@ -3,7 +3,7 @@ import {
 	HeaderEmployeur,
 	NavBarEmployeur,
 	ButtonCarre,
-	Tableau,
+	TableauOffres,
 	NouvelleOffre,
 	NouvelleCategorie,
 } from "../../components";
@@ -24,6 +24,7 @@ export function OffresEmployeur() {
 			console.log(response);
 
 			if (response.request.status === 200) {
+				setData(response.data);
 			}
 		} catch (e) {
 			console.log(e);
@@ -60,11 +61,7 @@ export function OffresEmployeur() {
 					</div>
 				</div>
 				<div>
-					<Tableau
-						data={data}
-						type={"offres"}
-						onRowClick={handleClick}
-					></Tableau>
+					<TableauOffres data={data} onRowClick={handleClick}></TableauOffres>
 				</div>
 			</div>
 

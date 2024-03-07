@@ -44,3 +44,4 @@ export * from "./Carousel";
 export * from "./VoiceRecognition";
 export * from "./RechercheAvancee";
 export * from "./Criteres";
+export * from "./TableauOffres";
