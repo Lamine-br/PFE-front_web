@@ -1,9 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { ButtonRond } from "./ButtonRond";
 import { FaTimes, FaPlus } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
+import { Spinner } from "./Spinner";
 
 export function InscriptionEmployeur({ onPass }) {
+	const [loading, setLoading] = useState(false);
+
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
@@ -106,7 +109,11 @@ export function InscriptionEmployeur({ onPass }) {
 
 	function handleClick() {
 		console.log(formData);
+		setLoading(true);
 		register();
+		setTimeout(() => {
+			setLoading(false);
+		}, 1000);
 	}
 
 	return (
@@ -301,6 +308,8 @@ export function InscriptionEmployeur({ onPass }) {
 						onClick={handleClick}
 					></ButtonRond>
 				</div>
+
+				{loading && <Spinner />}
 			</div>
 		</div>
 	);
