@@ -63,11 +63,6 @@ export function TableauOffres({ data, onRowClick, onDelete, vide }) {
 
 								<div className='flex justify-center items-center space-x-4'>
 									<>
-										<FaFolder
-											size={14}
-											color={"#465475"}
-											className='cursor-pointer'
-										/>
 										<FaPen
 											size={12}
 											color={"#465475"}
