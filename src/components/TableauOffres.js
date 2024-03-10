@@ -51,7 +51,7 @@ export function TableauOffres({ data, onRowClick, onDelete, vide }) {
 							<div
 								key={itemIndex}
 								className={`grid grid-cols-6 text-center justify-center bg-violet items-center p-2 rounded-lg cursor-pointer`}
-								onClick={() => onRowClick(item.Id)}
+								onClick={() => onRowClick(item._id)}
 							>
 								<p className='text-bleuF text-sm font-semibold'>{item.titre}</p>
 								<p className='text-bleuF text-sm font-semibold'>

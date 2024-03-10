@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
 	HeaderEmployeur,
 	NavBarEmployeur,
@@ -6,10 +6,36 @@ import {
 	CadreGEmployeur,
 } from "../../components";
 import { useParams } from "react-router-dom";
+import { axiosInstance } from "../../util/axios";
 
 export function OffreEmployeur() {
-	let data = [{ Titre: "Jardinier", "Date de création": "13 Février 2024" }];
+	const [data, setData] = useState(null);
+
 	let { id } = useParams();
+
+	async function getDetails() {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/employeur/offres/" + id, {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+				setData(response.data);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getDetails();
+		console.log(data);
+	}, []);
 
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
