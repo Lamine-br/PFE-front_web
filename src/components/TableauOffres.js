@@ -10,7 +10,9 @@ import {
 import { Popup } from "./Popup";
 import { ButtonCarre } from "./ButtonCarre";
 
-export function TableauOffres({ data, onRowClick, vide }) {
+export function TableauOffres({ data, onRowClick, onDelete, vide }) {
+	const [selectedId, setSelectedId] = useState(null);
+
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 	const [showRefusConfirmation, setShowRefusConfirmation] = useState(false);
 
@@ -76,6 +78,8 @@ export function TableauOffres({ data, onRowClick, vide }) {
 											className='cursor-pointer'
 											color='#FF584D'
 											onClick={(e) => {
+												setSelectedId(item._id);
+												console.log(item._id);
 												e.stopPropagation();
 												setShowDeleteConfirmation(true);
 											}}
@@ -92,7 +96,7 @@ export function TableauOffres({ data, onRowClick, vide }) {
 				<Popup
 					Titre={"Confirmation"}
 					Texte={"Êtes-vous sûr de vouloir supprimer cette offre ?"}
-					onConfirm={() => {}}
+					onConfirm={() => onDelete(selectedId)}
 					onDismiss={() => setShowDeleteConfirmation(false)}
 				/>
 			)}

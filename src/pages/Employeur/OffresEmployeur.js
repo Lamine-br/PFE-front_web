@@ -29,6 +29,9 @@ export function OffresEmployeur() {
 
 			if (response.request.status === 200) {
 				setData(response.data);
+				if (response.data.length === 0) {
+					setVide(true);
+				}
 				setLoading(false);
 			}
 		} catch (e) {
@@ -38,12 +41,39 @@ export function OffresEmployeur() {
 		}
 	}
 
+	async function deleteOffre(id) {
+		const accessToken = localStorage.getItem("accessToken");
+		const response = await axiosInstance.delete(`/employeur/offres/${id}`, {
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+		});
+
+		if (response.data.statusCode === 200) {
+			console.log(response.data.data);
+		}
+	}
+
 	useEffect(() => {
 		getOffres();
 	}, []);
 
 	const handleClick = (id) => {
 		window.location.href = `/employeur/offres/${id}`;
+	};
+
+	const handleAddOffre = async () => {
+		setLoading(true);
+		await getOffres();
+		setLoading(false);
+		setShowNouvelleOffre(false);
+	};
+
+	const handleDeleteOffre = async (id) => {
+		deleteOffre(id);
+		setLoading(true);
+		await getOffres();
+		setLoading(false);
 	};
 
 	const [showNouvelleOffre, setShowNouvelleOffre] = useState(false);
@@ -71,13 +101,17 @@ export function OffresEmployeur() {
 					<TableauOffres
 						data={data}
 						onRowClick={handleClick}
+						onDelete={handleDeleteOffre}
 						vide={vide}
 					></TableauOffres>
 				</div>
 			</div>
 
 			{showNouvelleOffre && (
-				<NouvelleOffre onClose={() => setShowNouvelleOffre(false)} />
+				<NouvelleOffre
+					onClose={() => setShowNouvelleOffre(false)}
+					onConfirm={handleAddOffre}
+				/>
 			)}
 
 			{showNouvelleCategorie && (

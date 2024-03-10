@@ -1,8 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { ButtonRond } from "./ButtonRond";
+import { axiosInstance } from "../util/axios";
 
-export function NouvelleOffre({ onClose }) {
+export function NouvelleOffre({ onClose, onConfirm }) {
+	const [selected, setSelected] = useState("");
+
+	const [formData, setFormData] = useState({
+		titre: "",
+		metier: "",
+		description: "",
+		debut: "",
+		fin: "",
+		remuneration: "",
+	});
+
+	function handleInputChange(event, field) {
+		const value = event.target.value;
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			[field]: value,
+		}));
+	}
+
+	async function addOffre() {
+		const accessToken = localStorage.getItem("accessToken");
+		const response = await axiosInstance.post(
+			`/employeur/offres/add`,
+			formData,
+			{
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			}
+		);
+
+		if (response.data.statusCode === 200) {
+			console.log(response.data.data);
+		}
+	}
+
+	function handleClick() {
+		addOffre();
+		console.log(formData);
+		onConfirm();
+	}
+
 	return (
 		<div>
 			<div
@@ -20,38 +63,62 @@ export function NouvelleOffre({ onClose }) {
 
 				<div className='grid grid-cols-3 gap-8 mb-10 w-full'>
 					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>Nom</label>
+						<label className='text-violet text-xs font-bold'>Titre</label>
 						<input
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='text'
+							onChange={(e) => handleInputChange(e, "titre")}
 						></input>
 					</div>
 					<div className='flex flex-col'>
 						<label className='text-violet text-xs font-bold'>
 							Métier cible
 						</label>
-						<input
+						<select
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
-						></input>
+							onChange={(e) => {
+								handleInputChange(e, "metier");
+								setSelected(e.target.value);
+							}}
+						>
+							<option value=''>Sélectionnez un métier</option>
+							<option value='Développeur'>Développeur</option>
+							<option value='Serveur'>Serveur</option>
+							<option value='Designer'>Designer</option>
+							<option value='Autre'>Autre</option>
+						</select>
 					</div>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>Description</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
-						></input>
-					</div>
+					{selected === "Autre" && (
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>Autre</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='text'
+								onChange={(e) => handleInputChange(e, "metier")}
+							></input>
+						</div>
+					)}
 				</div>
 
 				<div className='grid grid-cols-3 gap-8 mx-4 mb-10 w-full'>
 					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>Période</label>
+						<label className='text-violet text-xs font-bold'>Début</label>
 						<input
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
+							type='date'
+							onChange={(e) => handleInputChange(e, "debut")}
 						></input>
 					</div>
+					<div className='flex flex-col'>
+						<label className='text-violet text-xs font-bold'>Fin</label>
+						<input
+							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+							type='date'
+							onChange={(e) => handleInputChange(e, "fin")}
+						></input>
+					</div>
+				</div>
+				<div className='grid grid-cols-3 gap-8 mb-10 w-full'>
 					<div className='flex flex-col'>
 						<label className='text-violet text-xs font-bold'>
 							Rémunération
@@ -59,9 +126,22 @@ export function NouvelleOffre({ onClose }) {
 						<input
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='text'
+							onChange={(e) => handleInputChange(e, "remuneration")}
 						></input>
 					</div>
 				</div>
+
+				<div className='grid grid-cols-3 gap-8 mb-10 w-full'>
+					<div className='flex flex-col col-span-2'>
+						<label className='text-violet text-xs font-bold'>Description</label>
+						<textarea
+							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+							rows='4'
+							onChange={(e) => handleInputChange(e, "description")}
+						></textarea>
+					</div>
+				</div>
+
 				<div className='w-full'>
 					<div className='flex justify-end'>
 						<ButtonRond
@@ -70,6 +150,7 @@ export function NouvelleOffre({ onClose }) {
 							contenu={"Ajouter"}
 							width={"fit"}
 							height={"fit"}
+							onClick={handleClick}
 						></ButtonRond>
 					</div>
 				</div>
