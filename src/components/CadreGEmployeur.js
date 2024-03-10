@@ -1,30 +1,17 @@
 import React from "react";
-import { FaEllipsisV, FaDollarSign } from "react-icons/fa";
-import { MdLocationOn } from "react-icons/md";
-import { TiTime } from "react-icons/ti";
+import { FaEllipsisV } from "react-icons/fa";
 import { ButtonRond } from "./ButtonRond";
 import esi from "../assets/logo_esi.png";
 
-export function CadreGEmployeur() {
-	let Offre = {
-		employeur: "ESI",
-		"Date de publication": "12 Décembre, 20:20",
-		titre: "Jardinier",
-		Localisation: "Alger",
-		Salaire: "10$/heure",
-		Duree: "2 semaines",
-		Description:
-			"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
-	};
-
+export function CadreGEmployeur({ Offre }) {
 	return (
 		<div className='w-full bg-violet rounded-lg p-4'>
 			<div className='flex'>
 				<div>
 					<p className='text-bleuF font-bold text-xl'>{Offre.titre}</p>
 					<div className='flex'>
-						<p className='text-bleuF'>{Offre["Date de publication"]}</p>
-						<p className='text-bleuF ml-4'>{Offre.Localisation}</p>
+						<p className='text-bleuF'>{Offre.date}</p>
+						<p className='text-bleuF ml-4'>Alger</p>
 						<p className='text-bleuF ml-4'>Plus de 200 condidats</p>
 					</div>
 				</div>
@@ -40,7 +27,7 @@ export function CadreGEmployeur() {
 					<p className='text-bleuF font-bold text-lg'>A propos de l'offre</p>
 					<div className='mt-2'>
 						<p className='text-bleuF font-bold'>Description</p>
-						<p className='text-sm text-bleuF'>{Offre.Description} </p>
+						<p className='text-sm text-bleuF'>{Offre.description} </p>
 					</div>
 					<div className='mt-2'>
 						<p className='text-bleuF font-bold'>Conditions</p>
