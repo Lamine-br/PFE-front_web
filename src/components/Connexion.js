@@ -33,13 +33,13 @@ export function Connexion({ onClose }) {
 				window.location.href = "/employeur";
 			} else {
 				setErr(
-					"There was an error, verify your credentials or contact the admin"
+					"Une erreur s'est produite, vérifiez vos identifiants ou contactez l'admin."
 				);
 			}
 		} catch (e) {
 			console.log(e);
 			setErr(
-				"There was an error, verify your credentials or contact the admin"
+				"Une erreur s'est produite, vérifiez vos identifiants ou contactez l'admin."
 			);
 		}
 	}
