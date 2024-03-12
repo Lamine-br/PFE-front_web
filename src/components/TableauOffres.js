@@ -10,11 +10,10 @@ import {
 import { Popup } from "./Popup";
 import { ButtonCarre } from "./ButtonCarre";
 
-export function TableauOffres({ data, onRowClick, onDelete, vide }) {
+export function TableauOffres({ data, onRowClick, onDelete, onModify, vide }) {
 	const [selectedId, setSelectedId] = useState(null);
 
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-	const [showRefusConfirmation, setShowRefusConfirmation] = useState(false);
 
 	return (
 		<div className='w-full mt-6 space-y-1'>
@@ -67,6 +66,12 @@ export function TableauOffres({ data, onRowClick, onDelete, vide }) {
 											size={12}
 											color={"#465475"}
 											className='cursor-pointer'
+											onClick={(e) => {
+												setSelectedId(item._id);
+												console.log(item._id);
+												e.stopPropagation();
+												onModify(item._id);
+											}}
 										/>
 										<FaTrash
 											size={12}
@@ -93,15 +98,6 @@ export function TableauOffres({ data, onRowClick, onDelete, vide }) {
 					Texte={"Êtes-vous sûr de vouloir supprimer cette offre ?"}
 					onConfirm={() => onDelete(selectedId)}
 					onDismiss={() => setShowDeleteConfirmation(false)}
-				/>
-			)}
-
-			{showRefusConfirmation && (
-				<Popup
-					Titre={"Confirmation"}
-					Texte={"Êtes-vous sûr de vouloir refuser cette candidature ?"}
-					onConfirm={() => setShowRefusConfirmation(false)}
-					onDismiss={() => setShowRefusConfirmation(false)}
 				/>
 			)}
 		</div>

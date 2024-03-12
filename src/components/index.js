@@ -45,3 +45,4 @@ export * from "./VoiceRecognition";
 export * from "./RechercheAvancee";
 export * from "./Criteres";
 export * from "./TableauOffres";
+export * from "./ModifierOffre";

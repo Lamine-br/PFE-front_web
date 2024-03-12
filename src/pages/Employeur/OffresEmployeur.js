@@ -5,6 +5,7 @@ import {
 	ButtonCarre,
 	TableauOffres,
 	NouvelleOffre,
+	ModifierOffre,
 	NouvelleCategorie,
 	Spinner,
 } from "../../components";
@@ -14,6 +15,7 @@ export function OffresEmployeur() {
 	let [data, setData] = useState([]);
 	let [loading, setLoading] = useState(false);
 	let [vide, setVide] = useState(false);
+	let [idOffre, setIdOffre] = useState(null);
 
 	async function getOffres() {
 		try {
@@ -49,8 +51,8 @@ export function OffresEmployeur() {
 			},
 		});
 
-		if (response.data.statusCode === 200) {
-			console.log(response.data.data);
+		if (response.request.status === 200) {
+			console.log(response.data);
 		}
 	}
 
@@ -69,6 +71,11 @@ export function OffresEmployeur() {
 		setShowNouvelleOffre(false);
 	};
 
+	const handleModifyOffre = async (id) => {
+		setShowModifyOffre(true);
+		setIdOffre(id);
+	};
+
 	const handleDeleteOffre = async (id) => {
 		deleteOffre(id);
 		setLoading(true);
@@ -77,6 +84,7 @@ export function OffresEmployeur() {
 	};
 
 	const [showNouvelleOffre, setShowNouvelleOffre] = useState(false);
+	const [showModifyOffre, setShowModifyOffre] = useState(false);
 	const [showNouvelleCategorie, setShowNouvelleCategorie] = useState(false);
 
 	return (
@@ -102,6 +110,7 @@ export function OffresEmployeur() {
 						data={data}
 						onRowClick={handleClick}
 						onDelete={handleDeleteOffre}
+						onModify={handleModifyOffre}
 						vide={vide}
 					></TableauOffres>
 				</div>
@@ -114,8 +123,8 @@ export function OffresEmployeur() {
 				/>
 			)}
 
-			{showNouvelleCategorie && (
-				<NouvelleCategorie onClose={() => setShowNouvelleCategorie(false)} />
+			{showModifyOffre && (
+				<ModifierOffre id={idOffre} onClose={() => setShowModifyOffre(false)} />
 			)}
 
 			{loading && <Spinner />}
