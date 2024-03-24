@@ -3,9 +3,41 @@ import { ButtonRond } from "./ButtonRond";
 import { FaTimes, FaPlus } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
 import { Spinner } from "./Spinner";
+import { InscriptionConfirmation } from "./InscriptionConfirmation";
 
 export function InscriptionEmployeur({ onPass }) {
 	const [loading, setLoading] = useState(false);
+	const [showConfirmation, setShowConfirmation] = useState(false);
+
+	const [emailError, setEmailError] = useState("");
+	const [passwordError, setPasswordError] = useState("");
+	const [entrepriseError, setEntrepriseError] = useState("");
+
+	function validateForm() {
+		let isValid = true;
+
+		if (formData.email.trim() === "") {
+			setEmailError("Email est requis");
+			isValid = false;
+		} else {
+			setEmailError("");
+		}
+
+		if (formData.password.trim() === "") {
+			setPasswordError("Mot de passe est requis");
+			isValid = false;
+		} else {
+			setPasswordError("");
+		}
+
+		if (formData.entreprise.trim() === "") {
+			setEntrepriseError("Nom de l'entreprise est requis");
+			isValid = false;
+		} else {
+			setEntrepriseError("");
+		}
+		return isValid;
+	}
 
 	const [formData, setFormData] = useState({
 		email: "",
@@ -53,8 +85,17 @@ export function InscriptionEmployeur({ onPass }) {
 			formData
 		);
 
-		if (response.data.statusCode === 200) {
-			console.log(response.data.data);
+		if (response.request.status === 200) {
+			console.log(response.data);
+		}
+	}
+
+	async function sendCode() {
+		const email = formData.email;
+		const response = await axiosInstance.post(`/auth/code`, { email });
+
+		if (response.request.status === 200) {
+			console.log(response.data);
 		}
 	}
 
@@ -109,208 +150,231 @@ export function InscriptionEmployeur({ onPass }) {
 
 	function handleClick() {
 		console.log(formData);
-		setLoading(true);
-		register();
-		setTimeout(() => {
-			setLoading(false);
-		}, 1000);
+		const isValid = validateForm();
+
+		if (isValid) {
+			setLoading(true);
+			sendCode();
+			setTimeout(() => {
+				setLoading(false);
+				setShowConfirmation(true);
+			}, 1000);
+		}
 	}
 
 	return (
 		<div className='overlay flex justify-center items-center w-full'>
-			<div className='z-50 justify-center items-center p-4 w-3/4 h-4/5 bg-bleuF rounded-lg'>
-				<h1 className='text-xl text-violet font-bold mb-6 ml-4'>
-					S'inscrire - Employeur
-				</h1>
+			{!showConfirmation && (
+				<div className='z-50 justify-center items-center p-4 w-3/4 h-4/5 bg-bleuF rounded-lg'>
+					<h1 className='text-xl text-violet font-bold mb-6 ml-4'>
+						S'inscrire - Employeur
+					</h1>
 
-				<div className='grid grid-cols-3 gap-8 mx-4 mb-4'>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>Email</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='email'
-							ref={inputRefs.email}
-							onChange={(e) => handleInputChange(e, "email")}
-						></input>
+					<div className='grid grid-cols-3 gap-8 mx-4 mb-4'>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>
+								Email <span className='text-rouge'>*</span>
+							</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='email'
+								ref={inputRefs.email}
+								onChange={(e) => handleInputChange(e, "email")}
+								onFocus={() => setEmailError("")}
+							></input>
+							<p className='text-rouge text-xs'>{emailError}</p>
+						</div>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>
+								Mot de passe <span className='text-rouge'>*</span>
+							</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='password'
+								ref={inputRefs.password}
+								onChange={(e) => handleInputChange(e, "password")}
+								onFocus={() => setPasswordError("")}
+							></input>
+							<p className='text-rouge text-xs'>{passwordError}</p>
+						</div>
 					</div>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>
-							Mot de passe
-						</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='password'
-							ref={inputRefs.password}
-							onChange={(e) => handleInputChange(e, "password")}
-						></input>
-					</div>
-				</div>
 
-				<div className='grid grid-cols-3 gap-8 mx-4 mb-4'>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>
-							Nom de l'entreprise / Employeur
-						</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
-							ref={inputRefs.entreprise}
-							onChange={(e) => handleInputChange(e, "entreprise")}
-						></input>
-					</div>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>
-							Nom d’un service / département
-						</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
-							ref={inputRefs.service}
-							onChange={(e) => handleInputChange(e, "service")}
-						></input>
-					</div>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>
-							Nom d’un sous service / sous département
-						</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
-							ref={inputRefs.sous_service}
-							onChange={(e) => handleInputChange(e, "sous_service")}
-						></input>
-					</div>
-				</div>
-
-				<div className='grid grid-cols-3 gap-8 mx-4 mb-10'>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>
-							Numéro national de l’EDA
-						</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
-							ref={inputRefs.numero_EDA}
-							onChange={(e) => handleInputChange(e, "numero_EDA")}
-						></input>
-					</div>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>Adresse</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
-							ref={inputRefs.adresse.rue}
-							onChange={(e) => handleInputChange(e, "adresse", "rue")}
-						></input>
-					</div>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>Ville</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
-							ref={inputRefs.adresse.ville}
-							onChange={(e) => handleInputChange(e, "adresse", "ville")}
-						></input>
-					</div>
-				</div>
-
-				<div className='flex space-x-4'>
-					<p className='text-violet text-sm font-bold ml-4 mb-2'>Contacts</p>
-					<button
-						className='flex justify-center items-center bg-rouge text-violet w-6 h-6 rounded-full'
-						onClick={addContact}
-					>
-						<FaPlus size={15} />
-					</button>
-				</div>
-
-				{formData.contacts.map((contact, index) => (
-					<div key={index} className='grid grid-cols-7 gap-8 mx-4 mb-4'>
-						<div className='flex flex-col col-span-2'>
-							<label className='text-violet text-xs font-bold'>Nom</label>
+					<div className='grid grid-cols-3 gap-8 mx-4 mb-4'>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>
+								Nom de l'entreprise / Employeur{" "}
+								<span className='text-rouge'>*</span>
+							</label>
 							<input
 								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 								type='text'
-								value={contact.nom}
-								onChange={(e) => handleContactChange(e, index, "nom")}
+								ref={inputRefs.entreprise}
+								onChange={(e) => handleInputChange(e, "entreprise")}
+								onFocus={() => setEntrepriseError("")}
 							></input>
+							<p className='text-rouge text-xs'>{entrepriseError}</p>
 						</div>
-						<div className='flex flex-col col-span-2'>
-							<label className='text-violet text-xs font-bold'>Email</label>
-							<input
-								className=' bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-								type='email'
-								value={contact.email}
-								onChange={(e) => handleContactChange(e, index, "email")}
-							></input>
-						</div>
-						<div className='flex flex-col col-span-2'>
-							<label className='text-violet text-xs font-bold'>Numero</label>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>
+								Nom d’un service / département
+							</label>
 							<input
 								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-								type='tel'
-								value={contact.numero}
-								onChange={(e) => handleContactChange(e, index, "numero")}
+								type='text'
+								ref={inputRefs.service}
+								onChange={(e) => handleInputChange(e, "service")}
 							></input>
 						</div>
-						{index > 0 && (
-							<div className='flex items-center justify-center'>
-								<p
-									className='text-rouge cursor-pointer underline'
-									onClick={() => removeContact(index)}
-								>
-									Supprimer
-								</p>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>
+								Nom d’un sous service / sous département
+							</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='text'
+								ref={inputRefs.sous_service}
+								onChange={(e) => handleInputChange(e, "sous_service")}
+							></input>
+						</div>
+					</div>
+
+					<div className='grid grid-cols-3 gap-8 mx-4 mb-10'>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>
+								Numéro national de l’EDA
+							</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='text'
+								ref={inputRefs.numero_EDA}
+								onChange={(e) => handleInputChange(e, "numero_EDA")}
+							></input>
+						</div>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>Adresse</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='text'
+								ref={inputRefs.adresse.rue}
+								onChange={(e) => handleInputChange(e, "adresse", "rue")}
+							></input>
+						</div>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>Ville</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='text'
+								ref={inputRefs.adresse.ville}
+								onChange={(e) => handleInputChange(e, "adresse", "ville")}
+							></input>
+						</div>
+					</div>
+
+					<div className='flex space-x-4'>
+						<p className='text-violet text-sm font-bold ml-4 mb-2'>Contacts</p>
+						<button
+							className='flex justify-center items-center bg-rouge text-violet w-6 h-6 rounded-full'
+							onClick={addContact}
+						>
+							<FaPlus size={15} />
+						</button>
+					</div>
+
+					{formData.contacts.map((contact, index) => (
+						<div key={index} className='grid grid-cols-7 gap-8 mx-4 mb-4'>
+							<div className='flex flex-col col-span-2'>
+								<label className='text-violet text-xs font-bold'>Nom</label>
+								<input
+									className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+									type='text'
+									value={contact.nom}
+									onChange={(e) => handleContactChange(e, index, "nom")}
+								></input>
 							</div>
-						)}
-					</div>
-				))}
+							<div className='flex flex-col col-span-2'>
+								<label className='text-violet text-xs font-bold'>Email</label>
+								<input
+									className=' bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+									type='email'
+									value={contact.email}
+									onChange={(e) => handleContactChange(e, index, "email")}
+								></input>
+							</div>
+							<div className='flex flex-col col-span-2'>
+								<label className='text-violet text-xs font-bold'>Numero</label>
+								<input
+									className=' bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+									type='tel'
+									value={contact.numero}
+									onChange={(e) => handleContactChange(e, index, "numero")}
+								></input>
+							</div>
 
-				<p className='text-violet text-sm font-bold ml-4 mb-2'>Liens publics</p>
+							{index > 0 && (
+								<div className='flex items-center justify-center'>
+									<p
+										className='text-rouge cursor-pointer underline'
+										onClick={() => removeContact(index)}
+									>
+										Supprimer
+									</p>
+								</div>
+							)}
+						</div>
+					))}
 
-				<div className='grid grid-cols-3 gap-8 mx-4 mb-6'>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>Site web</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
-							ref={inputRefs.site_web}
-							onChange={(e) => handleInputChange(e, "site_web")}
-						></input>
+					<p className='text-violet text-sm font-bold ml-4 mb-2'>
+						Liens publics
+					</p>
+
+					<div className='grid grid-cols-3 gap-8 mx-4 mb-6'>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>Site web</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='text'
+								ref={inputRefs.site_web}
+								onChange={(e) => handleInputChange(e, "site_web")}
+							></input>
+						</div>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>Facebook</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='text'
+								ref={inputRefs.facebook}
+								onChange={(e) => handleInputChange(e, "facebook")}
+							></input>
+						</div>
+						<div className='flex flex-col'>
+							<label className='text-violet text-xs font-bold'>Linkedin</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='text'
+								ref={inputRefs.linkedin}
+								onChange={(e) => handleInputChange(e, "linkedin")}
+							></input>
+						</div>
 					</div>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>Facebook</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
-							ref={inputRefs.facebook}
-							onChange={(e) => handleInputChange(e, "facebook")}
-						></input>
-					</div>
-					<div className='flex flex-col'>
-						<label className='text-violet text-xs font-bold'>Linkedin</label>
-						<input
-							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							type='text'
-							ref={inputRefs.linkedin}
-							onChange={(e) => handleInputChange(e, "linkedin")}
-						></input>
+
+					<div className='flex justify-end mr-4'>
+						<ButtonRond
+							couleur={"rouge"}
+							couleurTexte={"violet"}
+							contenu={"Continuer"}
+							width={"w-1/4"}
+							height={"fit"}
+							onClick={handleClick}
+						></ButtonRond>
 					</div>
 				</div>
+			)}
 
-				<div className='flex justify-end mr-4'>
-					<ButtonRond
-						couleur={"rouge"}
-						couleurTexte={"violet"}
-						contenu={"Continuer"}
-						width={"w-1/4"}
-						height={"fit"}
-						onClick={handleClick}
-					></ButtonRond>
-				</div>
+			{loading && <Spinner />}
 
-				{loading && <Spinner />}
-			</div>
+			{showConfirmation && (
+				<InscriptionConfirmation data={formData.email} onConfirm={register} />
+			)}
 		</div>
 	);
 }

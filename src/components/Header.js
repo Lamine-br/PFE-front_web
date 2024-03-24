@@ -10,7 +10,7 @@ export function Header({ onConnexionToggle, onInscriptionToggle }) {
 					<ul className='flex space-x-4'>
 						<li className='mt-2'>
 							<p
-								className='hover:underline cursor-pointer text-bleuF'
+								className='hover:underline cursor-pointer text-bleuF text-sm'
 								onClick={onConnexionToggle}
 							>
 								Connexion

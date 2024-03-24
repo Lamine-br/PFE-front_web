@@ -1,14 +1,6 @@
 import React, { useState } from "react";
-import {
-	FaTrash,
-	FaPen,
-	FaFolder,
-	FaCheck,
-	FaTimes,
-	FaTag,
-} from "react-icons/fa";
+import { FaTrash, FaPen } from "react-icons/fa";
 import { Popup } from "./Popup";
-import { ButtonCarre } from "./ButtonCarre";
 
 export function TableauOffres({ data, onRowClick, onDelete, onModify, vide }) {
 	const [selectedId, setSelectedId] = useState(null);

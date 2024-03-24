@@ -20,7 +20,7 @@ export function Inscription({ onClose }) {
 	};
 
 	return (
-		<div className='fixed z-50 overlay flex flex-col justify-center items-center p-4 w-1/4 h-4/5 bg-bleuF left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg'>
+		<div className='fixed z-50 overlay flex flex-col justify-center items-center p-4 w-1/3 h-4/5 bg-bleuF left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg'>
 			<div className='flex justify-end w-full'>
 				<FaTimes
 					className='cursor-pointer absolute top-4 right-4'

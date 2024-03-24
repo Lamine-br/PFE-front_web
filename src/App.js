@@ -1,9 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
 	Home,
-	Profile,
-	Login,
-	Users,
 	RegisterEmployeur,
 	RegisterChercheur,
 	Offre,
@@ -28,7 +25,6 @@ function App() {
 		<BrowserRouter>
 			<Routes>
 				<Route path='/' element={<Home />} />
-				<Route path='/login' element={<Login />} />
 				<Route path='/register/employeur' element={<RegisterEmployeur />} />
 				<Route path='/register/chercheur' element={<RegisterChercheur />} />
 				<Route path='/offres/:id' element={<Offre />} />
@@ -67,8 +63,6 @@ function App() {
 				<Route path='/agence' element={<HomeAgence />} />
 				<Route path='/agence/fichiers' element={<FichiersAgence />} />
 				<Route path='/agence/fichiers/:id' element={<FichierAgence />} />
-				<Route path='/profile' element={<Profile />} />
-				<Route path='/users' element={<Users />} />
 			</Routes>
 		</BrowserRouter>
 	);

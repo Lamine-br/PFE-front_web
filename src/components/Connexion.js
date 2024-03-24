@@ -130,7 +130,7 @@ export function Connexion({ onClose }) {
 						couleur={"rouge"}
 						couleurTexte={"violet"}
 						contenu={"Continuer"}
-						width={"w-3/4 mt-2"}
+						width={"w-full mt-2"}
 						height={"fit"}
 						onClick={() => setShow(true)}
 					></ButtonRond>

@@ -3,7 +3,7 @@ import { ButtonCarre } from "./ButtonCarre";
 
 export function Spinner() {
 	return (
-		<div className='fixed z-50 top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
+		<div className='fixed z-50 top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center justify-center'>
 			<button
 				disabled
 				type='button'

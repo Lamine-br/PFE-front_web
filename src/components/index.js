@@ -46,3 +46,6 @@ export * from "./RechercheAvancee";
 export * from "./Criteres";
 export * from "./TableauOffres";
 export * from "./ModifierOffre";
+export * from "./InscriptionConfirmation";
+export * from "./TableauInscriptions";
+export * from "./MessageTab";

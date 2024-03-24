@@ -1,7 +1,4 @@
 export * from "./Home";
-export * from "./Profile";
-export * from "./Login";
-export * from "./Users";
 export * from "./Employeur/RegisterEmployeur";
 export * from "./Chercheur/RegisterChercheur";
 export * from "./Offre";
