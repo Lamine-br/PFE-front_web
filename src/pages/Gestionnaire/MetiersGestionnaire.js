@@ -5,6 +5,7 @@ import {
 	TableauMetiers,
 	ButtonCarre,
 	MetierForm,
+	Spinner,
 } from "../../components";
 import { FaSearch } from "react-icons/fa";
 import { axiosInstance } from "../../util/axios";
@@ -159,6 +160,7 @@ export function MetiersGestionnaires() {
 					onDismiss={() => setShowForm(false)}
 				/>
 			)}
+			{loading && <Spinner />}
 		</div>
 	);
 }

@@ -26,6 +26,7 @@ export function ModifierOffre({ id, onClose, onConfirm }) {
 
 		if (response.request.status === 200) {
 			setFormData(response.data);
+			console.log(formData);
 		}
 	}
 
@@ -48,6 +49,7 @@ export function ModifierOffre({ id, onClose, onConfirm }) {
 
 	useEffect(() => {
 		getOffre(id);
+		console.log(formData);
 	}, [id]);
 
 	function handleClick() {

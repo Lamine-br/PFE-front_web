@@ -77,7 +77,7 @@ export function OffresEmployeur() {
 	};
 
 	const handleDeleteOffre = async (id) => {
-		deleteOffre(id);
+		await deleteOffre(id);
 		setLoading(true);
 		await getOffres();
 		setLoading(false);

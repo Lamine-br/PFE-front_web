@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 import { ButtonRond } from "./ButtonRond";
 import { axiosInstance } from "../util/axios";
 
 export function NouvelleOffre({ onClose, onConfirm }) {
 	const [selected, setSelected] = useState("");
+	const [metiers, setMetiers] = useState([]);
 
 	const [formData, setFormData] = useState({
 		titre: "",
@@ -14,6 +15,24 @@ export function NouvelleOffre({ onClose, onConfirm }) {
 		fin: "",
 		remuneration: "",
 	});
+
+	async function getMetiers() {
+		try {
+			const response = await axiosInstance.get("/metiers");
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+				setMetiers(response.data);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getMetiers();
+	}, []);
 
 	function handleInputChange(event, field) {
 		const value = event.target.value;
@@ -40,8 +59,8 @@ export function NouvelleOffre({ onClose, onConfirm }) {
 		}
 	}
 
-	function handleClick() {
-		addOffre();
+	async function handleClick() {
+		await addOffre();
 		console.log(formData);
 		onConfirm();
 	}
@@ -82,10 +101,11 @@ export function NouvelleOffre({ onClose, onConfirm }) {
 							}}
 						>
 							<option value=''>Sélectionnez un métier</option>
-							<option value='Développeur'>Développeur</option>
-							<option value='Serveur'>Serveur</option>
-							<option value='Designer'>Designer</option>
-							<option value='Autre'>Autre</option>
+							{metiers.map((item, index) => (
+								<option key={item.id} value={item._id}>
+									{item.nom}
+								</option>
+							))}
 						</select>
 					</div>
 					{selected === "Autre" && (
