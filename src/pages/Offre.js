@@ -15,7 +15,18 @@ export function Offre() {
 			console.log(response);
 
 			if (response.request.status === 200) {
-				setOffres(response.data);
+				const data = response.data;
+				const indexToMove = data.findIndex((item) => item._id === selectedId);
+
+				if (indexToMove !== -1) {
+					const updatedOffres = [
+						data[indexToMove],
+						...data.slice(0, indexToMove),
+						...data.slice(indexToMove + 1),
+					];
+					setOffres(updatedOffres);
+					setSelectedOffer(0);
+				}
 			}
 		} catch (e) {
 			console.log(e);
