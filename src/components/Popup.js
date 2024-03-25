@@ -10,10 +10,8 @@ export function Popup({ Titre, Texte, onConfirm, onDismiss }) {
 			setLoading(true);
 
 			await onConfirm();
-			setTimeout(() => {
-				setLoading(false);
-				onDismiss();
-			}, 1000);
+			setLoading(false);
+			onDismiss();
 		} catch (error) {
 			console.error("Confirmation error:", error);
 			setLoading(false);

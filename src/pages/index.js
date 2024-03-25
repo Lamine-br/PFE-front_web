@@ -16,3 +16,4 @@ export * from "./Gestionnaire/StatistiquesGestionnaire";
 export * from "./Agence/HomeAgence";
 export * from "./Agence/FichiersAgence";
 export * from "./Agence/FichierAgence";
+export * from "./Gestionnaire/MetiersGestionnaire";
