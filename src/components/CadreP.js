@@ -6,17 +6,17 @@ import { ButtonRond } from "./ButtonRond";
 import { FaTimes } from "react-icons/fa";
 import google from "../assets/google.png";
 
-export function CadreP({ className, onClick }) {
-	let Offre = {
-		employeur: "KPMG",
-		"Date de publication": "12 Décembre, 20:20",
-		titre: "Jardinier",
-		Localisation: "Alger",
-		Salaire: "10$/heure",
-		Duree: "2 semaines",
-		Description:
-			"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
-	};
+export function CadreP({ Offre, className, onClick, onDelete }) {
+	// let Offre = {
+	// 	employeur: "KPMG",
+	// 	"Date de publication": "12 Décembre, 20:20",
+	// 	titre: "Jardinier",
+	// 	Localisation: "Alger",
+	// 	Salaire: "10$/heure",
+	// 	Duree: "2 semaines",
+	// 	Description:
+	// 		"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
+	// };
 
 	return (
 		<div
@@ -33,24 +33,31 @@ export function CadreP({ className, onClick }) {
 					<div className='flex justify-between'>
 						<div>
 							<p className='text-bleuF font-bold'>{Offre.titre}</p>
-							<p className='text-bleuF'>{Offre["Date de publication"]}</p>
+							<p className='text-bleuF'>{Offre.date}</p>
 						</div>
 						<div>
-							<FaTimes className='cursor-pointer' color='#465475' />
+							<FaTimes
+								className='cursor-pointer'
+								color='#465475'
+								onClick={(e, index) => {
+									e.stopPropagation();
+									onDelete(index);
+								}}
+							/>
 						</div>
 					</div>
 					<div className='flex items-center justify-between mt-2 mr-6'>
 						<div className='flex items-center'>
 							<MdLocationOn color='#465475' />
-							<p className='text-bleuF'>{Offre.Localisation}</p>
+							<p className='text-bleuF'>Alger</p>
 						</div>
 						<div className='flex items-center'>
 							<FaDollarSign color='#465475' />
-							<p className='text-bleuF'>{Offre.Salaire}</p>
+							<p className='text-bleuF'>{Offre.remuneration}</p>
 						</div>
 						<div className='flex items-center'>
 							<TiTime size={20} color='#465475' />
-							<p className='text-bleuF ml-1'>{Offre.Duree}</p>
+							<p className='text-bleuF ml-1'>{Offre.debut}</p>
 						</div>
 					</div>
 				</div>

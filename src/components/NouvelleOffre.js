@@ -59,8 +59,8 @@ export function NouvelleOffre({ onClose, onConfirm }) {
 		}
 	}
 
-	async function handleClick() {
-		await addOffre();
+	function handleClick() {
+		addOffre();
 		console.log(formData);
 		onConfirm();
 	}
@@ -102,7 +102,7 @@ export function NouvelleOffre({ onClose, onConfirm }) {
 						>
 							<option value=''>Sélectionnez un métier</option>
 							{metiers.map((item, index) => (
-								<option key={item.id} value={item._id}>
+								<option key={item._id} value={item._id}>
 									{item.nom}
 								</option>
 							))}

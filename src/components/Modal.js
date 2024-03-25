@@ -1,25 +1,10 @@
 import { useState } from "react";
 // @mui
 import { alpha } from "@mui/material/styles";
-import {
-	Box,
-	Divider,
-	Typography,
-	Stack,
-	MenuItem,
-	Avatar,
-	IconButton,
-	Popover,
-} from "@mui/material";
+import { Stack, MenuItem, IconButton, Popover } from "@mui/material";
 
 import esi from "../assets/logo_esi.png";
 import { FaEllipsisV } from "react-icons/fa";
-// mocks_
-const account = {
-	displayName: "Brahami Lamine",
-	email: "jl_brahami@esi.dz",
-	photoURL: esi,
-};
 
 // ----------------------------------------------------------------------
 
@@ -44,7 +29,7 @@ export function Modal() {
 	};
 
 	const handleClose = (event) => {
-		event.stopPropagation(); // Arrête la propagation de l'événement
+		event.stopPropagation();
 		setOpen(null);
 	};
 

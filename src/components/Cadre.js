@@ -4,16 +4,19 @@ import { MdLocationOn } from "react-icons/md";
 import { TiTime } from "react-icons/ti";
 import { ButtonRond } from "./ButtonRond";
 import esi from "../assets/logo_esi.png";
+import { Modal } from "./Modal";
+import {
+	fDate,
+	fToNow,
+	getCurrentDateTime,
+	calculateDuration,
+} from "../util/formatTime";
 
 export function Cadre({ Offre }) {
 	const [showOptions, setShowOptions] = useState(false);
 
-	const toggleOptions = () => {
-		setShowOptions(!showOptions);
-	};
-
 	const redirect = () => {
-		window.location.href = "/offres/1";
+		window.location.href = "/offres/" + Offre._id;
 	};
 
 	return (
@@ -22,21 +25,10 @@ export function Cadre({ Offre }) {
 				<img className='rounded-full  w-12 h-12' src={esi}></img>
 				<div className='ml-4'>
 					<p className='text-bleuF font-bold'>{Offre.employeur.entreprise}</p>
-					<p className='text-bleuF'>{Offre.date}</p>
+					<p className='text-bleuF'>{fDate(Offre.date)}</p>
 				</div>
 				<div className='ml-auto my-auto'>
-					<div
-						className='flex items-center justify-center w-8 h-8 cursor-pointer transition duration-300 ease-in-out hover:shadow-sm rounded-full hover:bg-gray-200'
-						onClick={toggleOptions}
-					>
-						<FaEllipsisV className='' />
-					</div>
-					{showOptions && (
-						<div className='relative left-0 top-0 bg-white rounded shadow'>
-							<p className='cursor-pointer hover:text-blue-500'>Option 1</p>
-							<p className='cursor-pointer hover:text-blue-500'>Option 2</p>
-						</div>
-					)}
+					<Modal />
 				</div>
 			</div>
 			<div>
@@ -58,7 +50,9 @@ export function Cadre({ Offre }) {
 					</div>
 					<div className='flex items-center'>
 						<TiTime size={20} color='#465475' />
-						<p className='text-bleuF ml-1'>{Offre.debut}</p>
+						<p className='text-bleuF ml-1'>
+							{calculateDuration(Offre.debut, Offre.fin)}
+						</p>
 					</div>
 				</div>
 			</div>

@@ -50,7 +50,7 @@ export function MetierForm({ id, titre, onConfirm, onDismiss }) {
 	};
 
 	return (
-		<div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
+		<div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center'>
 			{!loading && (
 				<div className=' w-1/2 h-fit bg-white p-4 rounded-md space-y-8'>
 					<div className='space-y-2'>

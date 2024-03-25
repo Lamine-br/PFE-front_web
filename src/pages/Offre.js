@@ -1,12 +1,49 @@
 import React from "react";
 import { Header, CadreP, CadreG } from "../components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { axiosInstance } from "../util/axios";
 
 export function Offre() {
 	const [selectedOffer, setSelectedOffer] = useState(0);
+	const [offres, setOffres] = useState([]);
 
-	const handleOfferSelection = (index) => {
+	async function getOffres() {
+		try {
+			const response = await axiosInstance.get("/offres");
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+				setOffres(response.data);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getOffres();
+	}, []);
+
+	let { id } = useParams();
+	const [selectedId, setSelectedId] = useState(id);
+
+	const handleOfferSelection = (index, idOffre) => {
 		setSelectedOffer(index);
+		setSelectedId(idOffre);
+	};
+	const handleDeleteOffer = (e, index) => {
+		const updatedOffres = [...offres];
+		if (offres.length > 1) {
+			updatedOffres.splice(index, 1);
+		}
+		setOffres(updatedOffres);
+		if (index == updatedOffres.length) {
+			handleOfferSelection(index - 1, updatedOffres[index - 1]._id);
+		} else {
+			handleOfferSelection(index, updatedOffres[index]._id);
+		}
 	};
 
 	return (
@@ -59,54 +96,18 @@ export function Offre() {
 							</label>
 						</div>
 						<div className='border border-bleuF rounded-lg h-96 mt-2 mr-6 p-2 overflow-y-scroll scrollbar-track-transparent'>
-							<div className='mb-2'>
-								<CadreP
-									onClick={() => handleOfferSelection(0)}
-									className={`${
-										selectedOffer === 0 ? "border-2 border-bleuF" : ""
-									}`}
-								></CadreP>
-							</div>
-							<div className='mb-2'>
-								<CadreP
-									onClick={() => handleOfferSelection(1)}
-									className={`${
-										selectedOffer === 1 ? "border-2 border-bleuF" : ""
-									}`}
-								></CadreP>
-							</div>
-							<div className='mb-2'>
-								<CadreP
-									onClick={() => handleOfferSelection(2)}
-									className={`${
-										selectedOffer === 2 ? "border-2 border-bleuF" : ""
-									}`}
-								></CadreP>
-							</div>
-							<div className='mb-2'>
-								<CadreP
-									onClick={() => handleOfferSelection(3)}
-									className={`${
-										selectedOffer === 3 ? "border-2 border-bleuF" : ""
-									}`}
-								></CadreP>
-							</div>
-							<div className='mb-2'>
-								<CadreP
-									onClick={() => handleOfferSelection(4)}
-									className={`${
-										selectedOffer === 4 ? "border-2 border-bleuF" : ""
-									}`}
-								></CadreP>
-							</div>
-							<div className='mb-2'>
-								<CadreP
-									onClick={() => handleOfferSelection(5)}
-									className={`${
-										selectedOffer === 5 ? "border-2 border-bleuF" : ""
-									}`}
-								></CadreP>
-							</div>
+							{offres.map((item, index) => (
+								<div className='mb-2'>
+									<CadreP
+										onClick={() => handleOfferSelection(index, item._id)}
+										onDelete={(e) => handleDeleteOffer(e, index)}
+										className={`${
+											selectedOffer === index ? "border-2 border-bleuF" : ""
+										}`}
+										Offre={offres[index]}
+									></CadreP>
+								</div>
+							))}
 						</div>
 
 						<style jsx>{`
@@ -127,7 +128,7 @@ export function Offre() {
 					</div>
 
 					<div className='w-3/5 flex justify-center items-center'>
-						<CadreG></CadreG>
+						<CadreG id={selectedId}></CadreG>
 					</div>
 				</div>
 			</div>
