@@ -10,86 +10,89 @@ export function TableauMetiers({ data, vide, onModify, onDelete }) {
 	const [showForm, setShowForm] = useState(false);
 
 	return (
-		<div className='w-full mt-6 space-y-1'>
-			{data.length === 0 ? (
-				<>
-					<div
-						className={`grid grid-cols-5 text-center bg-bleuF items-center p-2 rounded-lg`}
-					>
-						<p className='text-violet text-sm font-bold'>Nom</p>
-						<p className='text-violet text-sm font-bold'>Description</p>
-						<p className='text-violet text-sm font-bold'>Secteur</p>
-						<p className='text-violet text-sm font-bold'>Nombre d'offres</p>
-						<p className='text-violet text-sm font-bold'>Actions</p>
-					</div>
-					<p className='text-bleuF text-lg font-bold'>
-						{vide ? "Aucun métier" : ""}
-					</p>
-				</>
-			) : (
-				<>
-					<div
-						className={`grid grid-cols-5 text-center bg-bleuF items-center p-2 rounded-lg`}
-					>
-						<p className='text-violet text-sm font-bold text-left'>Nom</p>
-						<p className='text-violet text-sm font-bold text-left'>
-							Description
+		<div>
+			<div className='w-full mt-6 space-y-1'>
+				{data.length === 0 ? (
+					<>
+						<div
+							className={`grid grid-cols-5 text-center bg-bleuF items-center p-2 rounded-lg`}
+						>
+							<p className='text-violet text-sm font-bold text-left'>Nom</p>
+							<p className='text-violet text-sm font-bold text-left'>
+								Description
+							</p>
+							<p className='text-violet text-sm font-bold'>Secteur</p>
+							<p className='text-violet text-sm font-bold'>Nombre d'offres</p>
+							<p className='text-violet text-sm font-bold'>Actions</p>
+						</div>
+						<p className='text-bleuF text-lg font-bold'>
+							{vide ? "Aucun métier" : ""}
 						</p>
-						<p className='text-violet text-sm font-bold'>Secteur</p>
-						<p className='text-violet text-sm font-bold'>Nombre d'offres</p>
-						<p className='text-violet text-sm font-bold'>Actions</p>
-					</div>
-					<div className='w-full space-y-1'>
-						{data.map((item, itemIndex) => (
-							<div
-								key={itemIndex}
-								className={`grid grid-cols-5 text-center justify-center bg-violet items-center p-2 rounded-lg cursor-pointer`}
-							>
-								<p className='text-bleuF text-sm font-semibold text-left'>
-									{item.nom}
-								</p>
-								<p className='text-bleuF text-sm font-semibold text-left'>
-									{item.description}
-								</p>
-								<p className='text-bleuF text-sm font-semibold'>
-									{item.secteur}
-								</p>
-								<p className='text-bleuF text-sm font-semibold'>
-									{item.offres.length}
-								</p>
+					</>
+				) : (
+					<>
+						<div
+							className={`grid grid-cols-5 text-center bg-bleuF items-center p-2 rounded-lg`}
+						>
+							<p className='text-violet text-sm font-bold text-left'>Nom</p>
+							<p className='text-violet text-sm font-bold text-left'>
+								Description
+							</p>
+							<p className='text-violet text-sm font-bold'>Secteur</p>
+							<p className='text-violet text-sm font-bold'>Nombre d'offres</p>
+							<p className='text-violet text-sm font-bold'>Actions</p>
+						</div>
+						<div className='w-full space-y-1'>
+							{data.map((item, itemIndex) => (
+								<div
+									key={itemIndex}
+									className={`grid grid-cols-5 text-center justify-center bg-violet items-center p-2 rounded-lg cursor-pointer`}
+								>
+									<p className='text-bleuF text-sm font-semibold text-left'>
+										{item.nom}
+									</p>
+									<p className='text-bleuF text-sm font-semibold text-left'>
+										{item.description}
+									</p>
+									<p className='text-bleuF text-sm font-semibold'>
+										{item.secteur}
+									</p>
+									<p className='text-bleuF text-sm font-semibold'>
+										{item.offres.length}
+									</p>
 
-								<div className='flex justify-center items-center space-x-4'>
-									<>
-										<FaPen
-											size={12}
-											color={"#465475"}
-											className='cursor-pointer'
-											onClick={(e) => {
-												setSelectedId(item._id);
-												console.log(item._id);
-												e.stopPropagation();
-												setShowForm(true);
-											}}
-										/>
-										<FaTrash
-											size={14}
-											color={"#FF584D"}
-											className='cursor-pointer'
-											onClick={(e) => {
-												setSelectedId(item._id);
-												console.log(item._id);
-												e.stopPropagation();
-												setShowDeleteConfirmation(true);
-											}}
-										/>
-									</>
+									<div className='flex justify-center items-center space-x-4'>
+										<>
+											<FaPen
+												size={12}
+												color={"#465475"}
+												className='cursor-pointer'
+												onClick={(e) => {
+													setSelectedId(item._id);
+													console.log(item._id);
+													e.stopPropagation();
+													setShowForm(true);
+												}}
+											/>
+											<FaTrash
+												size={14}
+												color={"#FF584D"}
+												className='cursor-pointer'
+												onClick={(e) => {
+													setSelectedId(item._id);
+													console.log(item._id);
+													e.stopPropagation();
+													setShowDeleteConfirmation(true);
+												}}
+											/>
+										</>
+									</div>
 								</div>
-							</div>
-						))}
-					</div>
-				</>
-			)}
-
+							))}
+						</div>
+					</>
+				)}
+			</div>
 			{showForm && (
 				<MetierForm
 					id={selectedId}
@@ -100,7 +103,6 @@ export function TableauMetiers({ data, vide, onModify, onDelete }) {
 					onDismiss={() => setShowForm(false)}
 				/>
 			)}
-
 			{showDeleteConfirmation && (
 				<Popup
 					Titre={"Confirmation"}
