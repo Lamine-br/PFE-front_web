@@ -71,6 +71,13 @@ export function OffresEmployeur() {
 		setShowNouvelleOffre(false);
 	};
 
+	const handleUpdateOffre = async () => {
+		setLoading(true);
+		await getOffres();
+		setLoading(false);
+		setShowModifyOffre(false);
+	};
+
 	const handleModifyOffre = async (id) => {
 		setShowModifyOffre(true);
 		setIdOffre(id);
@@ -124,7 +131,11 @@ export function OffresEmployeur() {
 			)}
 
 			{showModifyOffre && (
-				<ModifierOffre id={idOffre} onClose={() => setShowModifyOffre(false)} />
+				<ModifierOffre
+					id={idOffre}
+					onClose={() => setShowModifyOffre(false)}
+					onConfirm={handleUpdateOffre}
+				/>
 			)}
 
 			{loading && <Spinner />}

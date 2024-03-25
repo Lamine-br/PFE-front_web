@@ -8,7 +8,7 @@ export function HeaderEmployeur({}) {
 	return (
 		<div className='py-4 bg-bleuF'>
 			<div className='flex mx-10 items-center justify-between'>
-				<h1 className='text-2xl font-bold text-violet'>Intérim</h1>
+				<h1 className='text-2xl font-bold text-violet'>Intérim - Employeur</h1>
 				<nav>
 					<ul className='flex space-x-6 items-center'>
 						<li className='cursor-pointer relative'>

@@ -19,7 +19,7 @@ export function Popup({ Titre, Texte, onConfirm, onDismiss }) {
 	};
 
 	return (
-		<div className='fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center justify-center'>
+		<div className='fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center z-50 justify-center'>
 			{!loading && (
 				<div className=' w-1/4 h-fit bg-white p-4 rounded-md space-y-8'>
 					<div className='space-y-2'>

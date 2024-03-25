@@ -5,15 +5,41 @@ import { axiosInstance } from "../util/axios";
 
 export function ModifierOffre({ id, onClose, onConfirm }) {
 	const [selected, setSelected] = useState("");
+	const [metiers, setMetiers] = useState([]);
 
-	const [formData, setFormData] = useState({});
+	const [formData, setFormData] = useState({
+		titre: "",
+		metier: {
+			_id: "",
+			nom: "",
+		},
+		debut: "",
+		fin: "",
+		remuneration: "",
+		description: "",
+	});
 
-	function handleInputChange(event, field) {
+	function handleInputChange(event, field, subfield) {
 		const value = event.target.value;
 		setFormData((prevFormData) => ({
 			...prevFormData,
-			[field]: value,
+			[field]: subfield ? { ...prevFormData[field], [subfield]: value } : value,
 		}));
+		console.log(formData);
+	}
+
+	async function getMetiers() {
+		try {
+			const response = await axiosInstance.get("/metiers");
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+				setMetiers(response.data);
+			}
+		} catch (e) {
+			console.log(e);
+		}
 	}
 
 	async function getOffre(id) {
@@ -49,11 +75,13 @@ export function ModifierOffre({ id, onClose, onConfirm }) {
 
 	useEffect(() => {
 		getOffre(id);
+		getMetiers();
 		console.log(formData);
-	}, [id]);
+	}, []);
 
-	function handleClick() {
-		updateOffre(id);
+	async function handleClick() {
+		await updateOffre(id);
+		onConfirm();
 	}
 
 	return (
@@ -93,13 +121,14 @@ export function ModifierOffre({ id, onClose, onConfirm }) {
 								handleInputChange(e, "metier");
 								setSelected(e.target.value);
 							}}
-							value={formData.metier || ""}
+							value={formData.metier._id}
 						>
 							<option value=''>Sélectionnez un métier</option>
-							<option value='Développeur'>Développeur</option>
-							<option value='Serveur'>Serveur</option>
-							<option value='Designer'>Designer</option>
-							<option value='Autre'>Autre</option>
+							{metiers.map((item, index) => (
+								<option key={item.id} value={item._id}>
+									{item.nom}
+								</option>
+							))}
 						</select>
 					</div>
 					{selected === "Autre" && (
@@ -165,7 +194,7 @@ export function ModifierOffre({ id, onClose, onConfirm }) {
 						<ButtonRond
 							couleur={"rouge"}
 							couleurTexte={"violet"}
-							contenu={"Ajouter"}
+							contenu={"Modifier"}
 							width={"fit"}
 							height={"fit"}
 							onClick={handleClick}
