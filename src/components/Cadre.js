@@ -21,8 +21,8 @@ export function Cadre({ Offre }) {
 			<div className='flex px-4 py-2'>
 				<img className='rounded-full  w-12 h-12' src={esi}></img>
 				<div className='ml-4'>
-					<p className='text-bleuF font-bold'>{Offre.employeur}</p>
-					<p className='text-bleuF'>{Offre["Date de publication"]}</p>
+					<p className='text-bleuF font-bold'>{Offre.employeur.entreprise}</p>
+					<p className='text-bleuF'>{Offre.date}</p>
 				</div>
 				<div className='ml-auto my-auto'>
 					<div
@@ -50,21 +50,21 @@ export function Cadre({ Offre }) {
 				<div className='flex items-center justify-between'>
 					<div className='flex items-center'>
 						<MdLocationOn color='#465475' />
-						<p className='text-bleuF'>{Offre.Localisation}</p>
+						<p className='text-bleuF'>Alger</p>
 					</div>
 					<div className='flex items-center'>
 						<FaDollarSign color='#465475' />
-						<p className='text-bleuF'>{Offre.Salaire}</p>
+						<p className='text-bleuF'>{Offre.remuneration}</p>
 					</div>
 					<div className='flex items-center'>
 						<TiTime size={20} color='#465475' />
-						<p className='text-bleuF ml-1'>{Offre.Duree}</p>
+						<p className='text-bleuF ml-1'>{Offre.debut}</p>
 					</div>
 				</div>
 			</div>
 			<div>
 				<p className='mx-4 my-4 text-sm text-bleuF max-h-20 overflow-hidden truncate'>
-					{Offre.Description}{" "}
+					{Offre.description}{" "}
 				</p>
 			</div>
 			<div className='flex justify-end m-4'>

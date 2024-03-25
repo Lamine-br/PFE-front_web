@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
 	Header,
 	WelcomeDiv,
@@ -8,6 +8,7 @@ import {
 	BarreRecherche,
 	Spinner,
 } from "../components";
+import { axiosInstance } from "../util/axios";
 
 export function Home() {
 	let data = [
@@ -32,6 +33,27 @@ export function Home() {
 				"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
 		},
 	];
+
+	async function getOffres() {
+		try {
+			setShowLoading(true);
+			const response = await axiosInstance.get("/offres");
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+				setOffres(response.data);
+				setShowLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setShowLoading(false);
+		}
+	}
+
+	useEffect(() => {
+		getOffres();
+	}, []);
 
 	const [offres, setOffres] = useState(data);
 
