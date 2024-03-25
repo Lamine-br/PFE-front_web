@@ -5,8 +5,6 @@ import {
 	WelcomeDiv,
 	BarreEmployeurs,
 	Cadres,
-	Connexion,
-	Inscription,
 	BarreRecherche,
 	Spinner,
 } from "../components";
@@ -62,9 +60,6 @@ export function Home() {
 		];
 	};
 
-	const [connexionVisible, setConnexionVisible] = useState(false);
-	const [inscriptionVisible, setInscriptionVisible] = useState(false);
-
 	const [searchOn, setSearchOn] = useState(false);
 	const [showLoading, setShowLoading] = useState(false);
 
@@ -90,25 +85,9 @@ export function Home() {
 		}, 1000);
 	};
 
-	const handleConnexionToggle = () => {
-		setConnexionVisible(!connexionVisible);
-	};
-
-	const handleInscriptionToggle = () => {
-		setInscriptionVisible(!inscriptionVisible);
-	};
-
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
-			<div
-				className={`fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40 ${
-					connexionVisible || inscriptionVisible ? "block" : "hidden"
-				}`}
-			/>
-			<Header
-				onConnexionToggle={handleConnexionToggle}
-				onInscriptionToggle={handleInscriptionToggle}
-			/>
+			<Header />
 			<BarreRecherche
 				onSuggestionClick={handleSearch}
 				onAdvancedSearchClick={handleAdvancedSearch}
@@ -124,9 +103,6 @@ export function Home() {
 
 			{searchOn && <Cadres search={search} data={offres}></Cadres>}
 			{showLoading && <Spinner />}
-
-			{connexionVisible && <Connexion onClose={handleConnexionToggle} />}
-			{inscriptionVisible && <Inscription onClose={handleInscriptionToggle} />}
 		</div>
 	);
 }
