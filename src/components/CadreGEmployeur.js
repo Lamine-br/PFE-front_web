@@ -2,6 +2,7 @@ import React from "react";
 import { FaEllipsisV } from "react-icons/fa";
 import { ButtonRond } from "./ButtonRond";
 import esi from "../assets/logo_esi.png";
+import { fDate } from "../util/formatTime";
 
 export function CadreGEmployeur({ Offre }) {
 	return (
@@ -10,9 +11,11 @@ export function CadreGEmployeur({ Offre }) {
 				<div>
 					<p className='text-bleuF font-bold text-xl'>{Offre.titre}</p>
 					<div className='flex'>
-						<p className='text-bleuF'>{Offre.date}</p>
+						<p className='text-bleuF'>{fDate(Offre.date)}</p>
 						<p className='text-bleuF ml-4'>Alger</p>
-						<p className='text-bleuF ml-4'>Plus de 200 condidats</p>
+						<p className='text-bleuF ml-4'>
+							{Offre.candidatures ? Offre.candidatures.length : ""} candidats
+						</p>
 					</div>
 				</div>
 				<div className='ml-auto my-auto'>

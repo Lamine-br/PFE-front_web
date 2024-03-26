@@ -14,6 +14,10 @@ export function Header() {
 	const handleInscriptionToggle = () => {
 		setInscriptionVisible(!inscriptionVisible);
 	};
+
+	const redirect = () => {
+		window.location.href = "/";
+	};
 	return (
 		<div className='py-4'>
 			<div
@@ -22,7 +26,12 @@ export function Header() {
 				}`}
 			/>
 			<div className='flex mx-20 justify-between'>
-				<h1 className='text-2xl font-bold text-bleuF mt-2'>Intérim</h1>
+				<h1
+					className='text-2xl font-bold text-bleuF mt-2 cursor-pointer'
+					onClick={redirect}
+				>
+					Intérim
+				</h1>
 				<nav className='mt-2'>
 					<ul className='flex space-x-4'>
 						<li className='mt-2'>

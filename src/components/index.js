@@ -51,3 +51,4 @@ export * from "./TableauInscriptions";
 export * from "./MessageTab";
 export * from "./TableauMetiers";
 export * from "./MetierForm";
+export * from "./TableauCandidatures";

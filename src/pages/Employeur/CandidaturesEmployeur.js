@@ -1,73 +1,108 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	HeaderEmployeur,
 	NavBarEmployeur,
 	ButtonCarre,
-	Tableau,
+	TableauCandidatures,
 	NouvelleEtiquette,
 } from "../../components";
 import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
+import { axiosInstance } from "../../util/axios";
 
 export function CandidaturesEmployeur() {
-	let data = [
-		{
-			Id: "1",
-			Candidat: "Brahami Lamine",
-			"Titre de l'offre": "Jardinier",
-			Statut: "En attente",
-			"Date d'envoi": "13 Février 2024",
-		},
-		{
-			Id: "2",
-			Candidat: "Brahami Lamine",
-			"Titre de l'offre": "Jardinier",
-			Statut: "En attente",
-			"Date d'envoi": "13 Février 2024",
-		},
-		{
-			Id: "3",
-			Candidat: "Brahami Lamine",
-			"Titre de l'offre": "Jardinier",
-			Statut: "Refusée",
-			"Date d'envoi": "13 Février 2024",
-		},
-		{
-			Id: "4",
-			Candidat: "Brahami Lamine",
-			"Titre de l'offre": "Jardinier",
-			Statut: "Acceptée",
-			"Date d'envoi": "13 Février 2024",
-		},
-		{
-			Id: "5",
-			Candidat: "Brahami Lamine",
-			"Titre de l'offre": "Jardinier",
-			Statut: "En attente",
-			"Date d'envoi": "13 Février 2024",
-		},
-		{
-			Id: "6",
-			Candidat: "Brahami Lamine",
-			"Titre de l'offre": "Jardinier",
-			Statut: "Refusée",
-			"Date d'envoi": "13 Février 2024",
-		},
-		{
-			Id: "7",
-			Candidat: "Brahami Lamine",
-			"Titre de l'offre": "Jardinier",
-			Statut: "Acceptée",
-			"Date d'envoi": "13 Février 2024",
-		},
-		{
-			Id: "8",
-			Candidat: "Brahami Lamine",
-			"Titre de l'offre": "Jardinier",
-			Statut: "En attente",
-			"Date d'envoi": "13 Février 2024",
-		},
-	];
+	let [data, setData] = useState([]);
+	let [loading, setLoading] = useState(false);
+	let [vide, setVide] = useState(false);
+	let [idOffre, setIdOffre] = useState(null);
+	// let data = [
+	// 	{
+	// 		Id: "1",
+	// 		Candidat: "Brahami Lamine",
+	// 		"Titre de l'offre": "Jardinier",
+	// 		Statut: "En attente",
+	// 		"Date d'envoi": "13 Février 2024",
+	// 	},
+	// 	{
+	// 		Id: "2",
+	// 		Candidat: "Brahami Lamine",
+	// 		"Titre de l'offre": "Jardinier",
+	// 		Statut: "En attente",
+	// 		"Date d'envoi": "13 Février 2024",
+	// 	},
+	// 	{
+	// 		Id: "3",
+	// 		Candidat: "Brahami Lamine",
+	// 		"Titre de l'offre": "Jardinier",
+	// 		Statut: "Refusée",
+	// 		"Date d'envoi": "13 Février 2024",
+	// 	},
+	// 	{
+	// 		Id: "4",
+	// 		Candidat: "Brahami Lamine",
+	// 		"Titre de l'offre": "Jardinier",
+	// 		Statut: "Acceptée",
+	// 		"Date d'envoi": "13 Février 2024",
+	// 	},
+	// 	{
+	// 		Id: "5",
+	// 		Candidat: "Brahami Lamine",
+	// 		"Titre de l'offre": "Jardinier",
+	// 		Statut: "En attente",
+	// 		"Date d'envoi": "13 Février 2024",
+	// 	},
+	// 	{
+	// 		Id: "6",
+	// 		Candidat: "Brahami Lamine",
+	// 		"Titre de l'offre": "Jardinier",
+	// 		Statut: "Refusée",
+	// 		"Date d'envoi": "13 Février 2024",
+	// 	},
+	// 	{
+	// 		Id: "7",
+	// 		Candidat: "Brahami Lamine",
+	// 		"Titre de l'offre": "Jardinier",
+	// 		Statut: "Acceptée",
+	// 		"Date d'envoi": "13 Février 2024",
+	// 	},
+	// 	{
+	// 		Id: "8",
+	// 		Candidat: "Brahami Lamine",
+	// 		"Titre de l'offre": "Jardinier",
+	// 		Statut: "En attente",
+	// 		"Date d'envoi": "13 Février 2024",
+	// 	},
+	// ];
+
+	async function getCandidatures() {
+		try {
+			setLoading(true);
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/employeur/candidatures", {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+				setData(response.data);
+				if (response.data.length === 0) {
+					setVide(true);
+				}
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+			setVide(true);
+		}
+	}
+
+	useEffect(() => {
+		getCandidatures();
+	}, []);
 
 	const [selectedValue, setSelectedValue] = useState("");
 
@@ -132,11 +167,10 @@ export function CandidaturesEmployeur() {
 					</div>
 				</div>
 				<div>
-					<Tableau
+					<TableauCandidatures
 						data={data}
-						type={"candidatures"}
 						onRowClick={handleClick}
-					></Tableau>
+					></TableauCandidatures>
 				</div>
 			</div>
 
