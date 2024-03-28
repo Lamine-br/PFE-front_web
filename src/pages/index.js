@@ -17,3 +17,7 @@ export * from "./Agence/HomeAgence";
 export * from "./Agence/FichiersAgence";
 export * from "./Agence/FichierAgence";
 export * from "./Gestionnaire/MetiersGestionnaire";
+export * from "./Chercheur/HomeChercheur";
+export * from "./Chercheur/AgendaChercheur";
+export * from "./Chercheur/CandidaturesChercheur";
+export * from "./Chercheur/CandidatureChercheur";

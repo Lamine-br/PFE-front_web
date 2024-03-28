@@ -2,22 +2,17 @@ import React, { useState, useRef } from "react";
 import { ButtonCarre } from "./ButtonCarre";
 import { Spinner } from "./Spinner";
 
-export function MessageTab({ onConfirm, onDismiss }) {
+export function MotivationForm({ data, onConfirm, onDismiss }) {
+	const [motivation, setMotivation] = useState(data);
 	const [loading, setLoading] = useState(false);
-	const titreRef = useRef("");
-	const contenuRef = useRef("");
 
 	const handleConfirm = async () => {
-		const titre = titreRef.current.value;
-		const contenu = contenuRef.current.value;
 		try {
 			setLoading(true);
 
-			await onConfirm(titre, contenu);
-			setTimeout(() => {
-				setLoading(false);
-				onDismiss();
-			}, 1000);
+			await onConfirm(motivation);
+			setLoading(false);
+			onDismiss();
 		} catch (error) {
 			console.error("Confirmation error:", error);
 			setLoading(false);
@@ -25,27 +20,18 @@ export function MessageTab({ onConfirm, onDismiss }) {
 	};
 
 	return (
-		<div className='fixed z-50 top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
+		<div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
 			{!loading && (
 				<div className=' w-1/2 h-fit bg-white p-4 rounded-md space-y-8'>
 					<div className='space-y-2'>
-						<p className='text-lg font-bold text-bleuF text-center'>
-							Contacter l'employeur
-						</p>
+						<p className='text-lg font-bold text-bleuF'>Motivation</p>
+
 						<div>
-							<p className='text-base text-bleuF font-semibold'>Titre</p>
 							<textarea
 								className='w-full bg-violet border text-bleuF border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-								rows='1'
-								ref={titreRef}
-							></textarea>
-						</div>
-						<div>
-							<p className='text-base text-bleuF font-semibold'>Contenu</p>
-							<textarea
-								className='w-full bg-violet border text-bleuF border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-								rows='3'
-								ref={contenuRef}
+								rows='4'
+								value={motivation}
+								onChange={(e) => setMotivation(e.target.value)}
 							></textarea>
 						</div>
 					</div>
@@ -61,7 +47,7 @@ export function MessageTab({ onConfirm, onDismiss }) {
 						<ButtonCarre
 							couleur={"rouge"}
 							couleurTexte={"violet"}
-							contenu={"Envoyer"}
+							contenu={"Modifier"}
 							width={"fit text-xs"}
 							height={"fit"}
 							onclick={handleConfirm}

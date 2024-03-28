@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import {
-	HeaderEmployeur,
-	NavBarEmployeur,
+	HeaderChercheur,
+	NavBarChercheur,
 	ButtonCarre,
-	TableauCandidaturesEmployeur,
+	TableauCandidaturesChercheur,
 	NouvelleEtiquette,
-	Spinner,
 } from "../../components";
 import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
 import { axiosInstance } from "../../util/axios";
 
-export function CandidaturesEmployeur() {
+export function CandidaturesChercheur() {
 	let [data, setData] = useState([]);
 	let [loading, setLoading] = useState(false);
 	let [vide, setVide] = useState(false);
@@ -78,12 +77,7 @@ export function CandidaturesEmployeur() {
 	async function getCandidatures() {
 		try {
 			setLoading(true);
-			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.get("/employeur/candidatures", {
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-				},
-			});
+			const response = await axiosInstance.get("/chercheur/candidatures");
 
 			console.log(response);
 
@@ -98,6 +92,41 @@ export function CandidaturesEmployeur() {
 			console.log(e);
 			setLoading(false);
 			setVide(true);
+		}
+	}
+
+	async function deleteCandidature(id) {
+		try {
+			setLoading(true);
+			const response = await axiosInstance.delete(
+				"/chercheur/candidatures/" + id
+			);
+
+			if (response.request.status === 200) {
+				setLoading(false);
+				getCandidatures();
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
+	async function contact(id, titre, contenu) {
+		try {
+			const response = await axiosInstance.post(
+				`/chercheur/candidatures/${id}/contact`,
+				{
+					titre,
+					contenu,
+				}
+			);
+
+			if (response.request.status === 201) {
+				console.log(response.data);
+			}
+		} catch (e) {
+			console.log(e);
 		}
 	}
 
@@ -118,15 +147,15 @@ export function CandidaturesEmployeur() {
 	};
 
 	const handleClick = (id) => {
-		window.location.href = `/employeur/candidatures/${id}`;
+		window.location.href = `/chercheur/candidatures/${id}`;
 	};
 
 	const [showNouvelleEtiquette, setShowNouvelleEtiquette] = useState(false);
 
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
-			<HeaderEmployeur></HeaderEmployeur>
-			<NavBarEmployeur selected={1}></NavBarEmployeur>
+			<HeaderChercheur></HeaderChercheur>
+			<NavBarChercheur selected={0}></NavBarChercheur>
 			<div className='m-6 bg-white rounded-lg p-4'>
 				<div className='flex justify-between'>
 					<p className='text-xl font-bold text-bleuF'>Candidatures</p>
@@ -168,19 +197,18 @@ export function CandidaturesEmployeur() {
 					</div>
 				</div>
 				<div>
-					<TableauCandidaturesEmployeur
+					<TableauCandidaturesChercheur
 						data={data}
 						onRowClick={handleClick}
-						vide={vide}
-					></TableauCandidaturesEmployeur>
+						onDelete={deleteCandidature}
+						onContact={contact}
+					></TableauCandidaturesChercheur>
 				</div>
 			</div>
 
 			{showNouvelleEtiquette && (
 				<NouvelleEtiquette onClose={() => setShowNouvelleEtiquette(false)} />
 			)}
-
-			{loading && <Spinner />}
 		</div>
 	);
 }

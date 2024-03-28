@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { FaTimes, FaCheck, FaEnvelope } from "react-icons/fa";
+import { FaTimes, FaCheck, FaEnvelope, FaTrash } from "react-icons/fa";
 import { Popup } from "./Popup";
 import { MessageTab } from "./MessageTab";
 
-export function TableauCandidatures({ data, onRowClick, vide }) {
-	const [selectedId, setSelectedId] = useState(null);
+export function TableauCandidaturesChercheur({
+	data,
+	onRowClick,
+	onDelete,
+	onContact,
+	vide,
+}) {
+	const [selectedCandidature, setSelectedCandidature] = useState(null);
 
+	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 	const [showAcceptConfirmation, setShowAcceptConfirmation] = useState(false);
 	const [showRefuseConfirmation, setShowRefuseConfirmation] = useState(false);
 	const [showMessageTab, setShowMessageTab] = useState(false);
@@ -18,9 +25,11 @@ export function TableauCandidatures({ data, onRowClick, vide }) {
 						<div
 							className={`grid grid-cols-4 text-center bg-bleuF items-center p-2 rounded-lg`}
 						>
-							<p className='text-violet text-sm font-bold'>Candidat</p>
-							<p className='text-violet text-sm font-bold'>Titre de l'offre</p>
-							<p className='text-violet text-sm font-bold'>Date</p>
+							<p className='text-violet text-sm font-bold'>Offre</p>
+							<p className='text-violet text-sm font-bold'>Date d'envoi</p>
+							<p className='text-violet text-sm font-bold'>
+								Date de traitement
+							</p>
 
 							<p className='text-violet text-sm font-bold'>Actions</p>
 						</div>
@@ -33,13 +42,15 @@ export function TableauCandidatures({ data, onRowClick, vide }) {
 						<div
 							className={`grid grid-cols-4 text-center bg-bleuF items-center p-2 rounded-lg`}
 						>
-							<p className='text-violet text-sm font-bold'>Candidat</p>
-							<p className='text-violet text-sm font-bold'>Titre de l'offre</p>
-							<p className='text-violet text-sm font-bold'>Date</p>
+							<p className='text-violet text-sm font-bold'>Offre</p>
+							<p className='text-violet text-sm font-bold'>Date d'envoi</p>
+							<p className='text-violet text-sm font-bold'>
+								Date de traitement
+							</p>
 
 							<p className='text-violet text-sm font-bold'>Actions</p>
 						</div>
-						<div className='w-full space-y-1'>
+						<div className='w-full space-y-1 '>
 							{data.map((item, itemIndex) => (
 								<div
 									key={itemIndex}
@@ -47,13 +58,13 @@ export function TableauCandidatures({ data, onRowClick, vide }) {
 									onClick={() => onRowClick(item._id)}
 								>
 									<p className='text-bleuF text-sm font-semibold'>
-										{item.chercheur.nom} {item.chercheur.prenom}
-									</p>
-									<p className='text-bleuF text-sm font-semibold'>
 										{item.offre.titre}
 									</p>
 									<p className='text-bleuF text-sm font-semibold'>
-										{item.date}
+										{item.createdAt.split("T")[0]}
+									</p>
+									<p className='text-bleuF text-sm font-semibold'>
+										{item.date_traitement || "-"}
 									</p>
 
 									<div className='flex justify-center items-center space-x-4'>
@@ -63,34 +74,43 @@ export function TableauCandidatures({ data, onRowClick, vide }) {
 												color={"#465475"}
 												className='cursor-pointer'
 												onClick={(e) => {
-													setSelectedId(item._id);
-													console.log(item._id);
+													setSelectedCandidature(item._id);
 													e.stopPropagation();
 													setShowMessageTab(true);
 												}}
 											/>
-											<FaCheck
-												size={12}
-												color={"#30CA3F"}
-												className='cursor-pointer'
-												onClick={(e) => {
-													setSelectedId(item._id);
-													console.log(item._id);
-													e.stopPropagation();
-													setShowAcceptConfirmation(true);
-												}}
-											/>
-											<FaTimes
-												size={14}
-												color={"#FF584D"}
-												className='cursor-pointer'
-												onClick={(e) => {
-													setSelectedId(item._id);
-													console.log(item._id);
-													e.stopPropagation();
-													setShowRefuseConfirmation(true);
-												}}
-											/>
+											{item.status === "En attente" ? (
+												<FaTrash
+													size={14}
+													color={"#FF584D"}
+													className='cursor-pointer'
+													onClick={(e) => {
+														setSelectedCandidature(item._id);
+														console.log(item._id);
+														e.stopPropagation();
+														setShowDeleteConfirmation(true);
+													}}
+												/>
+											) : (
+												""
+											)}
+											{item.status === "Accepté" ? (
+												<>
+													<FaTrash
+														size={14}
+														color={"#FF584D"}
+														className='cursor-pointer'
+														onClick={(e) => {
+															setSelectedCandidature(item._id);
+															console.log(item._id);
+															e.stopPropagation();
+															setShowDeleteConfirmation(true);
+														}}
+													/>
+												</>
+											) : (
+												""
+											)}
 										</>
 									</div>
 								</div>
@@ -101,7 +121,9 @@ export function TableauCandidatures({ data, onRowClick, vide }) {
 			</div>
 			{showMessageTab && (
 				<MessageTab
-					onConfirm={() => {}}
+					onConfirm={(titre, contenu) =>
+						onContact(selectedCandidature, titre, contenu)
+					}
 					onDismiss={() => setShowMessageTab(false)}
 				/>
 			)}
@@ -121,6 +143,14 @@ export function TableauCandidatures({ data, onRowClick, vide }) {
 					Texte={"Êtes-vous sûr de vouloir d'accepter cette candidature ?"}
 					onConfirm={() => {}}
 					onDismiss={() => setShowAcceptConfirmation(false)}
+				/>
+			)}
+			{showDeleteConfirmation && (
+				<Popup
+					Titre={"Confirmation"}
+					Texte={"Êtes-vous sûr de vouloir supprimer cette candidature ?"}
+					onConfirm={() => onDelete(selectedCandidature)}
+					onDismiss={() => setShowDeleteConfirmation(false)}
 				/>
 			)}
 		</div>

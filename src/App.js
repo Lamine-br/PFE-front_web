@@ -19,6 +19,10 @@ import {
 	FichiersAgence,
 	FichierAgence,
 	MetiersGestionnaires,
+	HomeChercheur,
+	AgendaChercheur,
+	CandidaturesChercheur,
+	CandidatureChercheur,
 } from "./pages";
 
 function App() {
@@ -68,6 +72,16 @@ function App() {
 				<Route path='/agence' element={<HomeAgence />} />
 				<Route path='/agence/fichiers' element={<FichiersAgence />} />
 				<Route path='/agence/fichiers/:id' element={<FichierAgence />} />
+				<Route path='/chercheur' element={<HomeChercheur />} />
+				<Route
+					path='/chercheur/candidatures'
+					element={<CandidaturesChercheur />}
+				/>
+				<Route
+					path='/chercheur/candidatures/:id'
+					element={<CandidatureChercheur />}
+				/>
+				<Route path='/chercheur/agenda' element={<AgendaChercheur />} />
 			</Routes>
 		</BrowserRouter>
 	);
