@@ -31,9 +31,7 @@ export function CandidatureC({ candidature, onDelete, onContact, onUpdate }) {
 					</p>
 					<div className='flex'>
 						<p className='text-bleuF'>
-							{candidature.chercheur
-								? candidature.chercheur.createdAt.split("T")[0]
-								: ""}
+							{candidature.createdAt ? candidature.createdAt.split("T")[0] : ""}
 						</p>
 						<p className='text-bleuF ml-4'>Alger</p>
 					</div>
