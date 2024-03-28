@@ -65,6 +65,25 @@ export function CandidatureEmployeur() {
 		}
 	}
 
+	async function contact(id, titre, contenu) {
+		try {
+			const response = await axiosInstance.post(
+				`/employeur/candidatures/${id}/contact`,
+				{
+					titre,
+					contenu,
+				}
+			);
+
+			if (response.request.status === 201) {
+				console.log(response.data);
+				getReponses();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	useEffect(() => {
 		getDetails();
 		console.log(data);
@@ -76,7 +95,18 @@ export function CandidatureEmployeur() {
 			case "chercheur":
 				return "violet";
 			case "employeur":
-				return "[#007bff]";
+				return "bleu";
+			default:
+				return "";
+		}
+	};
+
+	const position = (emetteur) => {
+		switch (emetteur) {
+			case "chercheur":
+				return "justify-start";
+			case "employeur":
+				return "justify-end";
 			default:
 				return "";
 		}
@@ -93,25 +123,27 @@ export function CandidatureEmployeur() {
 					</p>
 				</div>
 				<div className='mt-4'>
-					<Candidature candidature={data}></Candidature>
+					<Candidature candidature={data} onContact={contact}></Candidature>
 				</div>
 				<div className='space-y-2 mt-2'>
 					<p className='text-bleuF font-bold text-xl'>Conversation</p>
 					{reponses.map((item, index) => (
-						<div
-							key={index}
-							className={`flex flex-col space-y-1 border border-bleuF rounded-lg p-2 bg-${couleur(
-								item.type_emetteur
-							)}`}
-						>
-							<div className='flex justify-between'>
-								<p className='text-bleuF font-semibold'>{item.titre}</p>
-								<p className='text-bleuF'>
-									{item.createdAt.split("T")[0]} |{" "}
-									{item.createdAt.split("T")[1].split(".")[0]}
-								</p>
+						<div className={`flex ${position(item.type_emetteur)}`}>
+							<div
+								key={index}
+								className={`flex flex-col w-1/2 space-y-1 border border-bleuF rounded-lg p-2 bg-${couleur(
+									item.type_emetteur
+								)}`}
+							>
+								<div className='flex justify-between'>
+									<p className='text-bleuF font-semibold'>{item.titre}</p>
+									<p className='text-bleuF'>
+										{item.createdAt.split("T")[0]} |{" "}
+										{item.createdAt.split("T")[1].split(".")[0]}
+									</p>
+								</div>
+								<p className='text-sm text-bleuF'>{item.contenu}</p>
 							</div>
-							<p className='text-sm text-bleuF'>{item.contenu}</p>
 						</div>
 					))}
 				</div>

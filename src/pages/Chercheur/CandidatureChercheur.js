@@ -122,6 +122,17 @@ export function CandidatureChercheur() {
 		}
 	};
 
+	const position = (emetteur) => {
+		switch (emetteur) {
+			case "chercheur":
+				return "justify-end";
+			case "employeur":
+				return "justify-start";
+			default:
+				return "";
+		}
+	};
+
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderChercheur></HeaderChercheur>
@@ -144,20 +155,22 @@ export function CandidatureChercheur() {
 				<div className='space-y-2 mt-2'>
 					<p className='text-bleuF font-bold text-xl'>Conversation</p>
 					{reponses.map((item, index) => (
-						<div
-							key={index}
-							className={`flex flex-col space-y-1 border border-bleuF rounded-lg p-2 bg-${couleur(
-								item.type_emetteur
-							)}`}
-						>
-							<div className='flex justify-between'>
-								<p className='text-bleuF font-semibold'>{item.titre}</p>
-								<p className='text-bleuF'>
-									{item.createdAt.split("T")[0]} |{" "}
-									{item.createdAt.split("T")[1].split(".")[0]}
-								</p>
+						<div className={`flex ${position(item.type_emetteur)}`}>
+							<div
+								key={index}
+								className={`flex flex-col w-1/2 space-y-1 border border-bleuF rounded-lg p-2 bg-${couleur(
+									item.type_emetteur
+								)}`}
+							>
+								<div className='flex justify-between'>
+									<p className='text-bleuF font-semibold'>{item.titre}</p>
+									<p className='text-bleuF'>
+										{item.createdAt.split("T")[0]} |{" "}
+										{item.createdAt.split("T")[1].split(".")[0]}
+									</p>
+								</div>
+								<p className='text-sm text-bleuF'>{item.contenu}</p>
 							</div>
-							<p className='text-sm text-bleuF'>{item.contenu}</p>
 						</div>
 					))}
 				</div>

@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaEllipsisV, FaDollarSign } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { TiTime } from "react-icons/ti";
 import { ButtonRond } from "./ButtonRond";
 import cv from "../assets/cv.png";
+import { MessageTab } from "./MessageTab";
 
-export function Candidature({ candidature }) {
+export function Candidature({ candidature, onContact }) {
 	// let Candidature = {
 	// 	Id: "1",
 	// 	Candidat: "Brahami Lamine",
@@ -13,6 +14,7 @@ export function Candidature({ candidature }) {
 	// 	Statut: "En attente",
 	// 	"Date d'envoi": "13 Février 2024",
 	// };
+	const [showMessageTab, setShowMessageTab] = useState(false);
 
 	return (
 		<div className='w-full bg-violet rounded-lg px-10 py-4'>
@@ -38,6 +40,7 @@ export function Candidature({ candidature }) {
 						contenu={"Répondre"}
 						width={"fit border border-bleuF"}
 						height={"h-8"}
+						onClick={() => setShowMessageTab(true)}
 					></ButtonRond>
 					<div>
 						<FaEllipsisV />
@@ -111,6 +114,14 @@ export function Candidature({ candidature }) {
 					/>
 				</div>
 			) : null}
+			{showMessageTab && (
+				<MessageTab
+					onConfirm={(titre, contenu) =>
+						onContact(candidature._id, titre, contenu)
+					}
+					onDismiss={() => setShowMessageTab(false)}
+				/>
+			)}
 		</div>
 	);
 }
