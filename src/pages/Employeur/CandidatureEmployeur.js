@@ -71,6 +71,17 @@ export function CandidatureEmployeur() {
 		getReponses();
 	}, []);
 
+	const couleur = (emetteur) => {
+		switch (emetteur) {
+			case "chercheur":
+				return "violet";
+			case "employeur":
+				return "[#007bff]";
+			default:
+				return "";
+		}
+	};
+
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderEmployeur></HeaderEmployeur>
@@ -87,7 +98,12 @@ export function CandidatureEmployeur() {
 				<div className='space-y-2 mt-2'>
 					<p className='text-bleuF font-bold text-xl'>Conversation</p>
 					{reponses.map((item, index) => (
-						<div className='flex flex-col space-y-1 border border-bleuF rounded-lg p-2'>
+						<div
+							key={index}
+							className={`flex flex-col space-y-1 border border-bleuF rounded-lg p-2 bg-${couleur(
+								item.type_emetteur
+							)}`}
+						>
 							<div className='flex justify-between'>
 								<p className='text-bleuF font-semibold'>{item.titre}</p>
 								<p className='text-bleuF'>
