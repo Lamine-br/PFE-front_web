@@ -21,3 +21,5 @@ export * from "./Chercheur/HomeChercheur";
 export * from "./Chercheur/AgendaChercheur";
 export * from "./Chercheur/CandidaturesChercheur";
 export * from "./Chercheur/CandidatureChercheur";
+export * from "./Chercheur/EmploisChercheur";
+export * from "./Chercheur/EmploiChercheur";

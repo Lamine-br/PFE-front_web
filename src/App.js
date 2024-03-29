@@ -23,6 +23,8 @@ import {
 	AgendaChercheur,
 	CandidaturesChercheur,
 	CandidatureChercheur,
+	EmploisChercheur,
+	EmploiChercheur,
 } from "./pages";
 
 function App() {
@@ -81,6 +83,8 @@ function App() {
 					path='/chercheur/candidatures/:id'
 					element={<CandidatureChercheur />}
 				/>
+				<Route path='/chercheur/emplois' element={<EmploisChercheur />} />
+				<Route path='/chercheur/emplois/:id' element={<EmploiChercheur />} />
 				<Route path='/chercheur/agenda' element={<AgendaChercheur />} />
 			</Routes>
 		</BrowserRouter>

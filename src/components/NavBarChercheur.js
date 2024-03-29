@@ -21,6 +21,13 @@ export function NavBarChercheur({ selected }) {
 								selectedItem === 1 ? "bg-bleuF text-violet" : "text-bleuF"
 							}`}
 						>
+							<NavLink to={"/chercheur/emplois"}>Emplois</NavLink>
+						</li>
+						<li
+							className={`px-2 py-1 cursor-pointer text-base font-bold ${
+								selectedItem === 2 ? "bg-bleuF text-violet" : "text-bleuF"
+							}`}
+						>
 							<NavLink to={"/chercheur/agenda"}>Agenda</NavLink>
 						</li>
 					</ul>
