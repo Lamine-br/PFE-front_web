@@ -75,7 +75,7 @@ export function CandidaturesEmployeur() {
 	// 	},
 	// ];
 
-	async function getCandidatures() {
+	async function getCandidatures(type) {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
@@ -88,9 +88,42 @@ export function CandidaturesEmployeur() {
 			console.log(response);
 
 			if (response.request.status === 200) {
-				setData(response.data);
 				if (response.data.length === 0) {
 					setVide(true);
+				} else {
+					if (!type) {
+						setData(response.data);
+					} else {
+						switch (type) {
+							case "Refusées":
+								const refusedData = response.data.filter(
+									(item) => item.status === "Refusé"
+								);
+								setData(refusedData);
+								break;
+							case "Validées":
+								const validatedData = response.data.filter(
+									(item) => item.status === "Validé"
+								);
+								setData(validatedData);
+								break;
+							case "En attente":
+								const dataEnAttente = response.data.filter(
+									(item) => item.status === "En attente"
+								);
+								setData(dataEnAttente);
+								break;
+							case "Toutes":
+								setData(response.data);
+								break;
+							default:
+								const defaultData = response.data.filter(
+									(item) => item.valide === "En attente"
+								);
+								setData(defaultData);
+								break;
+						}
+					}
 				}
 				setLoading(false);
 			}
@@ -109,6 +142,7 @@ export function CandidaturesEmployeur() {
 
 	const handleChange = (event) => {
 		setSelectedValue(event.target.value);
+		getCandidatures(event.target.value);
 	};
 
 	const [searchTerm, setSearchTerm] = useState("");
@@ -153,8 +187,10 @@ export function CandidaturesEmployeur() {
 								<MenuItem value='' disabled>
 									Sélectionner
 								</MenuItem>
-								<MenuItem value={"option1"}>Toutes</MenuItem>
-								<MenuItem value={"option2"}>Refusée</MenuItem>
+								<MenuItem value={"Toutes"}>Toutes</MenuItem>
+								<MenuItem value={"En attente"}>En attente</MenuItem>
+								<MenuItem value={"Validées"}>Validées</MenuItem>
+								<MenuItem value={"Refusées"}>Refusées</MenuItem>
 							</Select>
 						</FormControl>
 						<ButtonCarre

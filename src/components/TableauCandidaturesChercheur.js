@@ -20,11 +20,11 @@ export function TableauCandidaturesChercheur({
 }) {
 	const [selectedCandidature, setSelectedCandidature] = useState(null);
 
-	
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 	const [showAcceptConfirmation, setShowAcceptConfirmation] = useState(false);
 	const [showRefuseConfirmation, setShowRefuseConfirmation] = useState(false);
 	const [showMessageTab, setShowMessageTab] = useState(false);
+	const [showAddToAgenda, setShowAddToAgenda] = useState(false);
 
 	return (
 		<div>
@@ -146,7 +146,7 @@ export function TableauCandidaturesChercheur({
 															setSelectedCandidature(item._id);
 															console.log(item._id);
 															e.stopPropagation();
-															setShowAcceptConfirmation(true);
+															setShowAddToAgenda(true);
 														}}
 													/>
 												</>
@@ -197,6 +197,16 @@ export function TableauCandidaturesChercheur({
 					Texte={"Êtes-vous sûr de vouloir supprimer cette candidature ?"}
 					onConfirm={() => onDelete(selectedCandidature)}
 					onDismiss={() => setShowDeleteConfirmation(false)}
+				/>
+			)}
+			{showAddToAgenda && (
+				<Popup
+					Titre={"Confirmation"}
+					Texte={
+						"Êtes-vous sûr de vouloir ajouter cet emploi à votre agenda (A implémenter) ?"
+					}
+					onConfirm={() => {}}
+					onDismiss={() => setShowAddToAgenda(false)}
 				/>
 			)}
 		</div>
