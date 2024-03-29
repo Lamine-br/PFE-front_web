@@ -58,3 +58,4 @@ export * from "./NavBarChercheur";
 export * from "./CandidatureC";
 export * from "./MotivationForm";
 export * from "./CommentaireForm";
+export * from "./Agenda";
