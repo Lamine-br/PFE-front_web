@@ -5,8 +5,9 @@ import { TiTime } from "react-icons/ti";
 import { ButtonRond } from "./ButtonRond";
 import cv from "../assets/cv.png";
 import { MessageTab } from "./MessageTab";
+import { Popup } from "./Popup";
 
-export function Candidature({ candidature, onContact }) {
+export function Candidature({ candidature, onContact, onAccept, onRefuse }) {
 	// let Candidature = {
 	// 	Id: "1",
 	// 	Candidat: "Brahami Lamine",
@@ -15,6 +16,8 @@ export function Candidature({ candidature, onContact }) {
 	// 	"Date d'envoi": "13 Février 2024",
 	// };
 	const [showMessageTab, setShowMessageTab] = useState(false);
+	const [showAcceptConfirmation, setShowAcceptConfirmation] = useState(false);
+	const [showRefuseConfirmation, setShowRefuseConfirmation] = useState(false);
 
 	return (
 		<div className='w-full bg-violet rounded-lg px-10 py-4'>
@@ -102,7 +105,7 @@ export function Candidature({ candidature, onContact }) {
 						contenu={"Refuser"}
 						width={"fit"}
 						height={"fit"}
-						onClick={() => {}}
+						onClick={() => setShowRefuseConfirmation(true)}
 					/>
 					<ButtonRond
 						couleur={"vertF"}
@@ -110,7 +113,7 @@ export function Candidature({ candidature, onContact }) {
 						contenu={"Accepter"}
 						width={"fit"}
 						height={"fit"}
-						onClick={() => {}}
+						onClick={() => setShowAcceptConfirmation(true)}
 					/>
 				</div>
 			) : null}
@@ -120,6 +123,23 @@ export function Candidature({ candidature, onContact }) {
 						onContact(candidature._id, titre, contenu)
 					}
 					onDismiss={() => setShowMessageTab(false)}
+				/>
+			)}
+			{showRefuseConfirmation && (
+				<Popup
+					Titre={"Confirmation"}
+					Texte={"Êtes-vous sûr de vouloir refuser cette candidature ?"}
+					onConfirm={() => onRefuse(candidature._id)}
+					onDismiss={() => setShowRefuseConfirmation(false)}
+				/>
+			)}
+
+			{showAcceptConfirmation && (
+				<Popup
+					Titre={"Confirmation"}
+					Texte={"Êtes-vous sûr de vouloir d'accepter cette candidature ?"}
+					onConfirm={() => onAccept(candidature._id)}
+					onDismiss={() => setShowAcceptConfirmation(false)}
 				/>
 			)}
 		</div>

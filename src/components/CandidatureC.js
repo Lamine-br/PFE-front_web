@@ -8,7 +8,14 @@ import { MessageTab } from "./MessageTab";
 import { MotivationForm } from "./MotivationForm";
 import { CommentaireForm } from "./CommentaireForm";
 
-export function CandidatureC({ candidature, onDelete, onContact, onUpdate }) {
+export function CandidatureC({
+	candidature,
+	onDelete,
+	onContact,
+	onUpdate,
+	onAccept,
+	onRefuse,
+}) {
 	// let Candidature = {
 	// 	Id: "1",
 	// 	Candidat: "Brahami Lamine",
@@ -20,6 +27,8 @@ export function CandidatureC({ candidature, onDelete, onContact, onUpdate }) {
 	const [showMessageTab, setShowMessageTab] = useState(false);
 	const [showMotivationForm, setShowMotivationForm] = useState(false);
 	const [showCommentaireForm, setShowCommentaireForm] = useState(false);
+	const [showAcceptConfirmation, setShowAcceptConfirmation] = useState(false);
+	const [showRefuseConfirmation, setShowRefuseConfirmation] = useState(false);
 
 	return (
 		<div className='w-full bg-violet rounded-lg px-10 py-4'>
@@ -85,12 +94,16 @@ export function CandidatureC({ candidature, onDelete, onContact, onUpdate }) {
 					<div>
 						<div className='flex items-center space-x-2'>
 							<p className='text-bleuF font-bold'>Motivation</p>
-							<FiEdit
-								size={10}
-								color={"#FF584D"}
-								className='cursor-pointer'
-								onClick={() => setShowMotivationForm(true)}
-							/>
+							{candidature.status === "En attente" ? (
+								<FiEdit
+									size={10}
+									color={"#FF584D"}
+									className='cursor-pointer'
+									onClick={() => setShowMotivationForm(true)}
+								/>
+							) : (
+								""
+							)}
 						</div>
 
 						<p className='text-sm text-bleuF'>
@@ -100,12 +113,16 @@ export function CandidatureC({ candidature, onDelete, onContact, onUpdate }) {
 					<div>
 						<div className='flex items-center space-x-2'>
 							<p className='text-bleuF font-bold'>Commentaires</p>
-							<FiEdit
-								size={10}
-								color={"#FF584D"}
-								className='cursor-pointer'
-								onClick={() => setShowCommentaireForm(true)}
-							/>
+							{candidature.status === "En attente" ? (
+								<FiEdit
+									size={10}
+									color={"#FF584D"}
+									className='cursor-pointer'
+									onClick={() => setShowCommentaireForm(true)}
+								/>
+							) : (
+								""
+							)}
 						</div>
 						<p className='text-sm text-bleuF'>
 							{candidature.dossier ? candidature.dossier.commentaire : ""}
@@ -130,7 +147,7 @@ export function CandidatureC({ candidature, onDelete, onContact, onUpdate }) {
 			) : (
 				""
 			)}
-			{candidature.status === "Accepté" ? (
+			{candidature.status === "Validé" ? (
 				<div className='flex justify-end m-4 space-x-2'>
 					<ButtonRond
 						couleur={"rouge"}
@@ -138,7 +155,7 @@ export function CandidatureC({ candidature, onDelete, onContact, onUpdate }) {
 						contenu={"Refuser"}
 						width={"fit"}
 						height={"fit"}
-						onClick={() => {}}
+						onClick={() => setShowRefuseConfirmation(true)}
 					/>
 					<ButtonRond
 						couleur={"vertF"}
@@ -146,7 +163,7 @@ export function CandidatureC({ candidature, onDelete, onContact, onUpdate }) {
 						contenu={"Accepter"}
 						width={"fit"}
 						height={"fit"}
-						onClick={() => {}}
+						onClick={() => setShowRefuseConfirmation(true)}
 					/>
 				</div>
 			) : (
@@ -184,6 +201,27 @@ export function CandidatureC({ candidature, onDelete, onContact, onUpdate }) {
 						onUpdate(candidature._id, "", "", commentaire)
 					}
 					onDismiss={() => setShowCommentaireForm(false)}
+				/>
+			)}
+			{showRefuseConfirmation && (
+				<Popup
+					Titre={"Confirmation"}
+					Texte={"Êtes-vous sûr de vouloir refuser cette candidature ?"}
+					onConfirm={() => {
+						onRefuse(candidature._id);
+					}}
+					onDismiss={() => setShowRefuseConfirmation(false)}
+				/>
+			)}
+
+			{showAcceptConfirmation && (
+				<Popup
+					Titre={"Confirmation"}
+					Texte={"Êtes-vous sûr de vouloir d'accepter cette candidature ?"}
+					onConfirm={() => {
+						onAccept(candidature._id);
+					}}
+					onDismiss={() => setShowAcceptConfirmation(false)}
 				/>
 			)}
 		</div>

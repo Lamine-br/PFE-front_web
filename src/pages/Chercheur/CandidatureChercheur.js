@@ -105,6 +105,38 @@ export function CandidatureChercheur() {
 		}
 	}
 
+	async function validate(id) {
+		try {
+			const response = await axiosInstance.post(
+				`/chercheur/candidatures/validate`,
+				{ id }
+			);
+
+			if (response.request.status === 201) {
+				console.log(response.data);
+				getDetails();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async function refuse(id) {
+		try {
+			const response = await axiosInstance.post(
+				`/chercheur/candidatures/refuse`,
+				{ id }
+			);
+
+			if (response.request.status === 201) {
+				console.log(response.data);
+				getDetails();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	useEffect(() => {
 		getDetails();
 		console.log(data);
@@ -150,6 +182,8 @@ export function CandidatureChercheur() {
 						onDelete={deleteCandidature}
 						onContact={contact}
 						onUpdate={updateCandidature}
+						onAccept={validate}
+						onRefuse={refuse}
 					/>
 				</div>
 				<div className='space-y-2 mt-2'>

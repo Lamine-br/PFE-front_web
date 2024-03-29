@@ -84,6 +84,50 @@ export function CandidatureEmployeur() {
 		}
 	}
 
+	async function validate(id) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				`/employeur/candidatures/validate`,
+				{ id },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (response.request.status === 201) {
+				console.log(response.data);
+				getDetails();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async function refuse(id) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				`/employeur/candidatures/refuse`,
+				{ id },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (response.request.status === 201) {
+				console.log(response.data);
+				getDetails();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	useEffect(() => {
 		getDetails();
 		console.log(data);
@@ -123,7 +167,12 @@ export function CandidatureEmployeur() {
 					</p>
 				</div>
 				<div className='mt-4'>
-					<Candidature candidature={data} onContact={contact}></Candidature>
+					<Candidature
+						candidature={data}
+						onContact={contact}
+						onAccept={validate}
+						onRefuse={refuse}
+					></Candidature>
 				</div>
 				<div className='space-y-2 mt-2'>
 					<p className='text-bleuF font-bold text-xl'>Conversation</p>

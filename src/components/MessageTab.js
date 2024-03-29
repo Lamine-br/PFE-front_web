@@ -30,7 +30,7 @@ export function MessageTab({ onConfirm, onDismiss }) {
 				<div className=' w-1/2 h-fit bg-white p-4 rounded-md space-y-8'>
 					<div className='space-y-2'>
 						<p className='text-lg font-bold text-bleuF text-center'>
-							Contacter l'employeur
+							Contacter
 						</p>
 						<div>
 							<p className='text-base text-bleuF font-semibold'>Titre</p>

@@ -16,11 +16,12 @@ export function TableauCandidaturesEmployeur({ data, onRowClick, vide }) {
 				{data.length === 0 ? (
 					<>
 						<div
-							className={`grid grid-cols-4 text-center bg-bleuF items-center p-2 rounded-lg`}
+							className={`grid grid-cols-5 text-center bg-bleuF items-center p-2 rounded-lg`}
 						>
 							<p className='text-violet text-sm font-bold'>Candidat</p>
 							<p className='text-violet text-sm font-bold'>Titre de l'offre</p>
 							<p className='text-violet text-sm font-bold'>Date</p>
+							<p className='text-violet text-sm font-bold'>Statut</p>
 
 							<p className='text-violet text-sm font-bold'>Actions</p>
 						</div>
@@ -31,11 +32,12 @@ export function TableauCandidaturesEmployeur({ data, onRowClick, vide }) {
 				) : (
 					<>
 						<div
-							className={`grid grid-cols-4 text-center bg-bleuF items-center p-2 rounded-lg`}
+							className={`grid grid-cols-5 text-center bg-bleuF items-center p-2 rounded-lg`}
 						>
 							<p className='text-violet text-sm font-bold'>Candidat</p>
 							<p className='text-violet text-sm font-bold'>Titre de l'offre</p>
 							<p className='text-violet text-sm font-bold'>Date</p>
+							<p className='text-violet text-sm font-bold'>Statut</p>
 
 							<p className='text-violet text-sm font-bold'>Actions</p>
 						</div>
@@ -43,7 +45,7 @@ export function TableauCandidaturesEmployeur({ data, onRowClick, vide }) {
 							{data.map((item, itemIndex) => (
 								<div
 									key={itemIndex}
-									className={`grid grid-cols-4 text-center justify-center bg-violet items-center p-2 rounded-lg cursor-pointer`}
+									className={`grid grid-cols-5 text-center justify-center bg-violet items-center p-2 rounded-lg cursor-pointer`}
 									onClick={() => onRowClick(item._id)}
 								>
 									<p className='text-bleuF text-sm font-semibold'>
@@ -54,6 +56,9 @@ export function TableauCandidaturesEmployeur({ data, onRowClick, vide }) {
 									</p>
 									<p className='text-bleuF text-sm font-semibold'>
 										{item.createdAt.split("T")[0]}
+									</p>
+									<p className='text-bleuF text-sm font-semibold'>
+										{item.status}
 									</p>
 
 									<div className='flex justify-center items-center space-x-4'>
@@ -69,28 +74,34 @@ export function TableauCandidaturesEmployeur({ data, onRowClick, vide }) {
 													setShowMessageTab(true);
 												}}
 											/>
-											<FaCheck
-												size={12}
-												color={"#30CA3F"}
-												className='cursor-pointer'
-												onClick={(e) => {
-													setSelectedId(item._id);
-													console.log(item._id);
-													e.stopPropagation();
-													setShowAcceptConfirmation(true);
-												}}
-											/>
-											<FaTimes
-												size={14}
-												color={"#FF584D"}
-												className='cursor-pointer'
-												onClick={(e) => {
-													setSelectedId(item._id);
-													console.log(item._id);
-													e.stopPropagation();
-													setShowRefuseConfirmation(true);
-												}}
-											/>
+											{item.status === "En attente" ? (
+												<>
+													<FaCheck
+														size={12}
+														color={"#30CA3F"}
+														className='cursor-pointer'
+														onClick={(e) => {
+															setSelectedId(item._id);
+															console.log(item._id);
+															e.stopPropagation();
+															setShowAcceptConfirmation(true);
+														}}
+													/>
+													<FaTimes
+														size={14}
+														color={"#FF584D"}
+														className='cursor-pointer'
+														onClick={(e) => {
+															setSelectedId(item._id);
+															console.log(item._id);
+															e.stopPropagation();
+															setShowRefuseConfirmation(true);
+														}}
+													/>
+												</>
+											) : (
+												""
+											)}
 										</>
 									</div>
 								</div>

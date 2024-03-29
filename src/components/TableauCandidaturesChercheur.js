@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { FaTimes, FaCheck, FaEnvelope, FaTrash } from "react-icons/fa";
+import {
+	FaTimes,
+	FaCheck,
+	FaEnvelope,
+	FaTrash,
+	FaCalendarPlus,
+} from "react-icons/fa";
 import { Popup } from "./Popup";
 import { MessageTab } from "./MessageTab";
 
@@ -8,10 +14,13 @@ export function TableauCandidaturesChercheur({
 	onRowClick,
 	onDelete,
 	onContact,
+	onAccept,
+	onRefuse,
 	vide,
 }) {
 	const [selectedCandidature, setSelectedCandidature] = useState(null);
 
+	
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 	const [showAcceptConfirmation, setShowAcceptConfirmation] = useState(false);
 	const [showRefuseConfirmation, setShowRefuseConfirmation] = useState(false);
@@ -23,13 +32,14 @@ export function TableauCandidaturesChercheur({
 				{data.length === 0 ? (
 					<>
 						<div
-							className={`grid grid-cols-4 text-center bg-bleuF items-center p-2 rounded-lg`}
+							className={`grid grid-cols-5 text-center bg-bleuF items-center p-2 rounded-lg`}
 						>
 							<p className='text-violet text-sm font-bold'>Offre</p>
 							<p className='text-violet text-sm font-bold'>Date d'envoi</p>
 							<p className='text-violet text-sm font-bold'>
 								Date de traitement
 							</p>
+							<p className='text-violet text-sm font-bold'>Statut</p>
 
 							<p className='text-violet text-sm font-bold'>Actions</p>
 						</div>
@@ -40,13 +50,14 @@ export function TableauCandidaturesChercheur({
 				) : (
 					<>
 						<div
-							className={`grid grid-cols-4 text-center bg-bleuF items-center p-2 rounded-lg`}
+							className={`grid grid-cols-5 text-center bg-bleuF items-center p-2 rounded-lg`}
 						>
 							<p className='text-violet text-sm font-bold'>Offre</p>
 							<p className='text-violet text-sm font-bold'>Date d'envoi</p>
 							<p className='text-violet text-sm font-bold'>
 								Date de traitement
 							</p>
+							<p className='text-violet text-sm font-bold'>Statut</p>
 
 							<p className='text-violet text-sm font-bold'>Actions</p>
 						</div>
@@ -54,7 +65,7 @@ export function TableauCandidaturesChercheur({
 							{data.map((item, itemIndex) => (
 								<div
 									key={itemIndex}
-									className={`grid grid-cols-4 text-center justify-center bg-violet items-center p-2 rounded-lg cursor-pointer`}
+									className={`grid grid-cols-5 text-center justify-center bg-violet items-center p-2 rounded-lg cursor-pointer`}
 									onClick={() => onRowClick(item._id)}
 								>
 									<p className='text-bleuF text-sm font-semibold'>
@@ -65,6 +76,9 @@ export function TableauCandidaturesChercheur({
 									</p>
 									<p className='text-bleuF text-sm font-semibold'>
 										{item.date_traitement || "-"}
+									</p>
+									<p className='text-bleuF text-sm font-semibold'>
+										{item.status || "-"}
 									</p>
 
 									<div className='flex justify-center items-center space-x-4'>
@@ -94,9 +108,20 @@ export function TableauCandidaturesChercheur({
 											) : (
 												""
 											)}
-											{item.status === "Accepté" ? (
+											{item.status === "Validé" ? (
 												<>
-													<FaTrash
+													<FaCheck
+														size={12}
+														color={"#30CA3F"}
+														className='cursor-pointer'
+														onClick={(e) => {
+															setSelectedCandidature(item._id);
+															console.log(item._id);
+															e.stopPropagation();
+															setShowAcceptConfirmation(true);
+														}}
+													/>
+													<FaTimes
 														size={14}
 														color={"#FF584D"}
 														className='cursor-pointer'
@@ -104,7 +129,24 @@ export function TableauCandidaturesChercheur({
 															setSelectedCandidature(item._id);
 															console.log(item._id);
 															e.stopPropagation();
-															setShowDeleteConfirmation(true);
+															setShowRefuseConfirmation(true);
+														}}
+													/>
+												</>
+											) : (
+												""
+											)}
+											{item.status === "Validé Validé" ? (
+												<>
+													<FaCalendarPlus
+														size={12}
+														color={"#30CA3F"}
+														className='cursor-pointer'
+														onClick={(e) => {
+															setSelectedCandidature(item._id);
+															console.log(item._id);
+															e.stopPropagation();
+															setShowAcceptConfirmation(true);
 														}}
 													/>
 												</>
@@ -132,7 +174,9 @@ export function TableauCandidaturesChercheur({
 				<Popup
 					Titre={"Confirmation"}
 					Texte={"Êtes-vous sûr de vouloir refuser cette candidature ?"}
-					onConfirm={() => {}}
+					onConfirm={() => {
+						onRefuse(selectedCandidature);
+					}}
 					onDismiss={() => setShowRefuseConfirmation(false)}
 				/>
 			)}
@@ -141,7 +185,9 @@ export function TableauCandidaturesChercheur({
 				<Popup
 					Titre={"Confirmation"}
 					Texte={"Êtes-vous sûr de vouloir d'accepter cette candidature ?"}
-					onConfirm={() => {}}
+					onConfirm={() => {
+						onAccept(selectedCandidature);
+					}}
 					onDismiss={() => setShowAcceptConfirmation(false)}
 				/>
 			)}
