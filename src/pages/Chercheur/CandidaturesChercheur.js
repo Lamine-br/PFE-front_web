@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
 	HeaderChercheur,
 	NavBarChercheur,
-	ButtonCarre,
 	TableauCandidaturesChercheur,
-	NouvelleEtiquette,
 	Spinner,
 } from "../../components";
 import { Button, FormControl, MenuItem, Select } from "@mui/material";
@@ -246,8 +244,6 @@ export function CandidaturesChercheur() {
 		window.location.href = `/chercheur/candidatures/${id}`;
 	};
 
-	const [showNouvelleEtiquette, setShowNouvelleEtiquette] = useState(false);
-
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderChercheur></HeaderChercheur>
@@ -284,14 +280,6 @@ export function CandidaturesChercheur() {
 								<MenuItem value={"Refusées"}>Refusées</MenuItem>
 							</Select>
 						</FormControl>
-						<ButtonCarre
-							couleur='bleuF'
-							couleurTexte={"violet"}
-							contenu={"Nouvelle étiquette"}
-							width={"fit text-sm"}
-							height={"fit"}
-							onclick={() => setShowNouvelleEtiquette(true)}
-						></ButtonCarre>
 					</div>
 				</div>
 				<div>
@@ -305,10 +293,6 @@ export function CandidaturesChercheur() {
 					></TableauCandidaturesChercheur>
 				</div>
 			</div>
-
-			{showNouvelleEtiquette && (
-				<NouvelleEtiquette onClose={() => setShowNouvelleEtiquette(false)} />
-			)}
 
 			{loading && <Spinner />}
 		</div>
