@@ -96,7 +96,6 @@ export function CandidatureChercheur() {
 					motivation,
 					commentaire,
 				},
-				{ id },
 				{
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
@@ -123,7 +122,6 @@ export function CandidatureChercheur() {
 					titre,
 					contenu,
 				},
-				{ id },
 				{
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
@@ -133,6 +131,7 @@ export function CandidatureChercheur() {
 
 			if (response.request.status === 201) {
 				console.log(response.data);
+				getReponses();
 			}
 		} catch (e) {
 			console.log(e);

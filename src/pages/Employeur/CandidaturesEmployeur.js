@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
 	HeaderEmployeur,
 	NavBarEmployeur,
-	ButtonCarre,
 	TableauCandidaturesEmployeur,
-	NouvelleEtiquette,
 	Spinner,
 } from "../../components";
 import { Button, FormControl, MenuItem, Select } from "@mui/material";
@@ -155,8 +153,6 @@ export function CandidaturesEmployeur() {
 		window.location.href = `/employeur/candidatures/${id}`;
 	};
 
-	const [showNouvelleEtiquette, setShowNouvelleEtiquette] = useState(false);
-
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderEmployeur></HeaderEmployeur>
@@ -193,14 +189,6 @@ export function CandidaturesEmployeur() {
 								<MenuItem value={"Refusées"}>Refusées</MenuItem>
 							</Select>
 						</FormControl>
-						<ButtonCarre
-							couleur='bleuF'
-							couleurTexte={"violet"}
-							contenu={"Nouvelle étiquette"}
-							width={"fit text-sm"}
-							height={"fit"}
-							onclick={() => setShowNouvelleEtiquette(true)}
-						></ButtonCarre>
 					</div>
 				</div>
 				<div>
@@ -211,10 +199,6 @@ export function CandidaturesEmployeur() {
 					></TableauCandidaturesEmployeur>
 				</div>
 			</div>
-
-			{showNouvelleEtiquette && (
-				<NouvelleEtiquette onClose={() => setShowNouvelleEtiquette(false)} />
-			)}
 
 			{loading && <Spinner />}
 		</div>

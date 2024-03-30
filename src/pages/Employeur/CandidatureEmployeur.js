@@ -52,8 +52,14 @@ export function CandidatureEmployeur() {
 
 	async function getReponses() {
 		try {
+			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.get(
-				`/chercheur/candidatures/${id}/reponses`
+				`/employeur/candidatures/${id}/reponses`,
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
 			);
 			console.log(response);
 
@@ -67,11 +73,17 @@ export function CandidatureEmployeur() {
 
 	async function contact(id, titre, contenu) {
 		try {
+			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
 				`/employeur/candidatures/${id}/contact`,
 				{
 					titre,
 					contenu,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
 				}
 			);
 
