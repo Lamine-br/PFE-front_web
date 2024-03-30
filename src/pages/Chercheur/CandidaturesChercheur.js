@@ -77,7 +77,12 @@ export function CandidaturesChercheur() {
 	async function getCandidatures(type) {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.get("/chercheur/candidatures");
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/chercheur/candidatures", {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
 
 			console.log(response);
 
@@ -131,8 +136,14 @@ export function CandidaturesChercheur() {
 	async function deleteCandidature(id) {
 		try {
 			setLoading(true);
+			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.delete(
-				"/chercheur/candidatures/" + id
+				"/chercheur/candidatures/" + id,
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
 			);
 
 			if (response.request.status === 200) {
@@ -147,11 +158,17 @@ export function CandidaturesChercheur() {
 
 	async function contact(id, titre, contenu) {
 		try {
+			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
 				`/chercheur/candidatures/${id}/contact`,
 				{
 					titre,
 					contenu,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
 				}
 			);
 
@@ -165,9 +182,15 @@ export function CandidaturesChercheur() {
 
 	async function validate(id) {
 		try {
+			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
 				`/chercheur/candidatures/validate`,
-				{ id }
+				{ id },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
 			);
 
 			if (response.request.status === 201) {
@@ -181,9 +204,15 @@ export function CandidaturesChercheur() {
 
 	async function refuse(id) {
 		try {
+			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
 				`/chercheur/candidatures/refuse`,
-				{ id }
+				{ id },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
 			);
 
 			if (response.request.status === 201) {

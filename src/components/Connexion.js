@@ -21,16 +21,19 @@ export function Connexion({ onClose }) {
 				email,
 				password,
 			});
-			const response = await axiosInstance.post("/auth/login/employeur", {
-				email,
-				password,
-			});
+			const response = await axiosInstance.post(
+				"/auth/login/" + selectedOption,
+				{
+					email,
+					password,
+				}
+			);
 
 			console.log(response);
 
 			if (response.request.status === 200) {
 				localStorage.setItem("accessToken", response.data.accessToken);
-				window.location.href = "/employeur";
+				window.location.href = "/" + selectedOption;
 			} else {
 				setErr(
 					"Une erreur s'est produite, vérifiez vos identifiants ou contactez l'admin."
@@ -48,23 +51,14 @@ export function Connexion({ onClose }) {
 		setSelectedOption(option);
 	};
 
-	const redirect = (role) => {
-		switch (role) {
-			case "Chercheur":
-				window.location.href = "/chercheur";
-				break;
-			case "Employeur":
-				window.location.href = "/employeur";
-				break;
-			case "Agence":
-				window.location.href = "/Agence";
-				break;
-			default:
-			// setError(true); A remplir pour afficher un  message d'erreur si l'utilisateur n'a pas choisi de rôle
+	const [show, setShow] = useState(false);
+
+	const handleClick = () => {
+		if (selectedOption) {
+			setShow(true);
+		} else {
 		}
 	};
-
-	const [show, setShow] = useState(false);
 
 	return (
 		<div className='fixed z-50 overlay flex flex-col justify-center items-center p-4 w-1/3 h-4/5 bg-bleuF left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg'>
@@ -91,8 +85,8 @@ export function Connexion({ onClose }) {
 								type='radio'
 								name='options'
 								className='h-4 w-4 text-blue-500 border-gray-300 focus:ring-blue-200'
-								checked={selectedOption === "Chercheur"}
-								onChange={() => handleOptionChange("Chercheur")}
+								checked={selectedOption === "chercheur"}
+								onChange={() => handleOptionChange("chercheur")}
 							/>
 							<span className='ml-2 text-bleuF font-bold text-sm'>
 								Chercheur d'emplois
@@ -104,8 +98,8 @@ export function Connexion({ onClose }) {
 								type='radio'
 								name='options'
 								className='h-4 w-4 text-blue-500 border-gray-300 focus:ring-blue-200'
-								checked={selectedOption === "Employeur"}
-								onChange={() => handleOptionChange("Employeur")}
+								checked={selectedOption === "employeur"}
+								onChange={() => handleOptionChange("employeur")}
 							/>
 							<span className='ml-2 text-bleuF font-bold text-sm'>
 								{" "}
@@ -118,8 +112,8 @@ export function Connexion({ onClose }) {
 								type='radio'
 								name='options'
 								className='h-4 w-4 text-blue-500 border-gray-300 focus:ring-blue-200'
-								checked={selectedOption === "Agence"}
-								onChange={() => handleOptionChange("Agence")}
+								checked={selectedOption === "agence"}
+								onChange={() => handleOptionChange("agence")}
 							/>
 							<span className='ml-2 text-bleuF font-bold text-sm'>
 								Agence d'intérim
@@ -132,7 +126,7 @@ export function Connexion({ onClose }) {
 						contenu={"Continuer"}
 						width={"w-full mt-2"}
 						height={"fit"}
-						onClick={() => setShow(true)}
+						onClick={handleClick}
 					></ButtonRond>
 				</div>
 			)}
