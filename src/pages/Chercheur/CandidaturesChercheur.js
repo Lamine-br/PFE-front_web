@@ -5,6 +5,7 @@ import {
 	ButtonCarre,
 	TableauCandidaturesChercheur,
 	NouvelleEtiquette,
+	Spinner,
 } from "../../components";
 import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
@@ -308,6 +309,8 @@ export function CandidaturesChercheur() {
 			{showNouvelleEtiquette && (
 				<NouvelleEtiquette onClose={() => setShowNouvelleEtiquette(false)} />
 			)}
+
+			{loading && <Spinner />}
 		</div>
 	);
 }
