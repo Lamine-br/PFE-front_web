@@ -25,6 +25,7 @@ import {
 	CandidatureChercheur,
 	EmploisChercheur,
 	EmploiChercheur,
+	ProfileChercheur,
 } from "./pages";
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
 				<Route path='/chercheur/emplois' element={<EmploisChercheur />} />
 				<Route path='/chercheur/emplois/:id' element={<EmploiChercheur />} />
 				<Route path='/chercheur/agenda' element={<AgendaChercheur />} />
+				<Route path='/chercheur/profile' element={<ProfileChercheur />} />
 			</Routes>
 		</BrowserRouter>
 	);

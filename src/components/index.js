@@ -61,3 +61,6 @@ export * from "./CommentaireForm";
 export * from "./Agenda";
 export * from "./TableauEmlpois";
 export * from "./CadreEmploi";
+export * from "./Profile";
+export * from "./OneForm";
+export * from "./PasswordForm";

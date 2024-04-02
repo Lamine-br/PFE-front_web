@@ -15,25 +15,29 @@ import {
 import esi from "../assets/logo_esi.png";
 import { BACKEND_URL } from "../util/constants";
 
-let account = JSON.parse(localStorage.getItem("user"));
-// ----------------------------------------------------------------------
-
-const MENU_OPTIONS = [
-	{
-		label: "Profile",
-		icon: "eva:person-fill",
-	},
-	{
-		label: "Paramètres",
-		icon: "eva:settings-2-fill",
-	},
-];
-
-console.log(BACKEND_URL + "/" + account.image.replace(/\\/g, "/"));
-
 // ----------------------------------------------------------------------
 
 export default function Compte() {
+	let account = JSON.parse(localStorage.getItem("user"));
+
+	const MENU_OPTIONS = [
+		{
+			label: "Accueil",
+			icon: "eva:person-fill",
+			url: "/" + account.type,
+		},
+		{
+			label: "Profile",
+			icon: "eva:person-fill",
+			url: "/" + account.type + "/profile",
+		},
+		{
+			label: "Paramètres",
+			icon: "eva:settings-2-fill",
+			url: "/" + account.type + "/paramètres",
+		},
+	];
+
 	const [open, setOpen] = useState(null);
 
 	const handleOpen = (event) => {
@@ -43,6 +47,10 @@ export default function Compte() {
 
 	const handleClose = () => {
 		setOpen(null);
+	};
+
+	const handleItemClick = (item) => {
+		window.location.href = item.url;
 	};
 
 	const deconnexion = () => {
@@ -106,7 +114,10 @@ export default function Compte() {
 
 				<Stack sx={{ p: 1 }}>
 					{MENU_OPTIONS.map((option) => (
-						<MenuItem key={option.label} onClick={handleClose}>
+						<MenuItem
+							key={option.label}
+							onClick={() => handleItemClick(option)}
+						>
 							{option.label}
 						</MenuItem>
 					))}
