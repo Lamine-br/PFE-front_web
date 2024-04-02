@@ -37,7 +37,7 @@ export function AbonnementsGestionnaire() {
 		}
 	}
 
-	async function addMetier(nom, duree, prix, avantages, conditions) {
+	async function addAbonnement(nom, duree, prix, avantages, conditions) {
 		try {
 			setLoading(true);
 			const response = await axiosInstance.post("/abonnements/add", {
@@ -58,7 +58,7 @@ export function AbonnementsGestionnaire() {
 		}
 	}
 
-	async function updateMetier(id, nom, duree, prix, avantages, conditions) {
+	async function updateAbonnement(id, nom, duree, prix, avantages, conditions) {
 		try {
 			setLoading(true);
 			const response = await axiosInstance.put("/abonnements/" + id, {
@@ -78,7 +78,7 @@ export function AbonnementsGestionnaire() {
 		}
 	}
 
-	async function deleteMetier(id) {
+	async function deleteAbonnement(id) {
 		try {
 			setLoading(true);
 			const response = await axiosInstance.delete("/abonnements/" + id);
@@ -93,12 +93,12 @@ export function AbonnementsGestionnaire() {
 	}
 
 	const handleModify = async (id, nom, duree, prix, avantages, conditions) => {
-		await updateMetier(id, nom, duree, prix, avantages, conditions);
+		await updateAbonnement(id, nom, duree, prix, avantages, conditions);
 		getAbonnements();
 	};
 
 	const handleDelete = async (id) => {
-		await deleteMetier(id);
+		await deleteAbonnement(id);
 		getAbonnements();
 	};
 
@@ -159,7 +159,7 @@ export function AbonnementsGestionnaire() {
 				<AbonnementForm
 					titre={"Ajouter un abonnement"}
 					onConfirm={(nom, duree, prix, avantages, conditions) => {
-						addMetier(nom, duree, prix, avantages, conditions);
+						addAbonnement(nom, duree, prix, avantages, conditions);
 					}}
 					onDismiss={() => setShowForm(false)}
 				/>
