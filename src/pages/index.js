@@ -25,3 +25,4 @@ export * from "./Chercheur/EmploisChercheur";
 export * from "./Chercheur/EmploiChercheur";
 export * from "./Chercheur/ProfileChercheur";
 export * from "./Employeur/ProfileEmployeur";
+export * from "./Gestionnaire/AbonnementsGestionnaire";

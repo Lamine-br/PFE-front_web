@@ -18,7 +18,7 @@ import {
 	HomeAgence,
 	FichiersAgence,
 	FichierAgence,
-	MetiersGestionnaires,
+	MetiersGestionnaire,
 	HomeChercheur,
 	AgendaChercheur,
 	CandidaturesChercheur,
@@ -27,6 +27,7 @@ import {
 	EmploiChercheur,
 	ProfileChercheur,
 	ProfileEmployeur,
+	AbonnementsGestionnaire,
 } from "./pages";
 
 function App() {
@@ -37,6 +38,8 @@ function App() {
 				<Route path='/register/employeur' element={<RegisterEmployeur />} />
 				<Route path='/register/chercheur' element={<RegisterChercheur />} />
 				<Route path='/offres/:id' element={<Offre />} />
+
+				{/*  Employeur */}
 				<Route path='/employeur' element={<HomeEmployeur />} />
 				<Route path='/employeur/offres' element={<OffresEmployeur />} />
 				<Route path='/employeur/offres/:id' element={<OffreEmployeur />} />
@@ -49,6 +52,8 @@ function App() {
 					element={<CandidatureEmployeur />}
 				/>
 				<Route path='/employeur/profile' element={<ProfileEmployeur />} />
+
+				{/*  Gestionnaire */}
 				<Route path='/gestionnaire' element={<HomeGestionnaire />} />
 				<Route
 					path='/gestionnaire/inscriptions'
@@ -70,13 +75,18 @@ function App() {
 					path='/gestionnaire/statistiques'
 					element={<StatistiquesGestionnaire />}
 				/>
+				<Route path='/gestionnaire/metiers' element={<MetiersGestionnaire />} />
 				<Route
-					path='/gestionnaire/metiers'
-					element={<MetiersGestionnaires />}
+					path='/gestionnaire/abonnements'
+					element={<AbonnementsGestionnaire />}
 				/>
+
+				{/*  Agence */}
 				<Route path='/agence' element={<HomeAgence />} />
 				<Route path='/agence/fichiers' element={<FichiersAgence />} />
 				<Route path='/agence/fichiers/:id' element={<FichierAgence />} />
+
+				{/*  Chercheur */}
 				<Route path='/chercheur' element={<HomeChercheur />} />
 				<Route
 					path='/chercheur/candidatures'

@@ -65,3 +65,5 @@ export * from "./ProfileC";
 export * from "./OneForm";
 export * from "./PasswordForm";
 export * from "./ProfileE";
+export * from "./TableauAbonnements";
+export * from "./AbonnementForm";

@@ -37,6 +37,13 @@ export function NavBarGestionnaire({ selected }) {
 						>
 							<NavLink to={"/gestionnaire/metiers"}>Métiers</NavLink>
 						</li>
+						<li
+							className={`px-2 py-1 cursor-pointer text-base font-bold ${
+								selectedItem === 4 ? "bg-bleuF text-violet" : "text-bleuF"
+							}`}
+						>
+							<NavLink to={"/gestionnaire/abonnements"}>Abonnements</NavLink>
+						</li>
 					</ul>
 				</nav>
 			</div>

@@ -2,24 +2,24 @@ import React, { useState, useEffect } from "react";
 import {
 	HeaderGestionnaire,
 	NavBarGestionnaire,
-	TableauMetiers,
+	TableauAbonnements,
 	ButtonCarre,
-	MetierForm,
+	AbonnementForm,
 	Spinner,
 } from "../../components";
 import { FaSearch } from "react-icons/fa";
 import { axiosInstance } from "../../util/axios";
 
-export function MetiersGestionnaire() {
+export function AbonnementsGestionnaire() {
 	let [data, setData] = useState([]);
 	let [loading, setLoading] = useState(false);
 	let [vide, setVide] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 
-	async function getMetiers() {
+	async function getAbonnements() {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.get("/metiers");
+			const response = await axiosInstance.get("/abonnements");
 
 			console.log(response);
 
@@ -37,18 +37,20 @@ export function MetiersGestionnaire() {
 		}
 	}
 
-	async function addMetier(nom, secteur, description) {
+	async function addMetier(nom, duree, prix, avantages, conditions) {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.post("/metiers/add", {
+			const response = await axiosInstance.post("/abonnements/add", {
 				nom,
-				secteur,
-				description,
+				duree,
+				prix,
+				avantages,
+				conditions,
 			});
 
 			if (response.request.status === 201) {
 				setLoading(false);
-				getMetiers();
+				getAbonnements();
 			}
 		} catch (e) {
 			console.log(e);
@@ -56,13 +58,15 @@ export function MetiersGestionnaire() {
 		}
 	}
 
-	async function updateMetier(id, nom, secteur, description) {
+	async function updateMetier(id, nom, duree, prix, avantages, conditions) {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.put("/metiers/" + id, {
+			const response = await axiosInstance.put("/abonnements/" + id, {
 				nom,
-				secteur,
-				description,
+				duree,
+				prix,
+				avantages,
+				conditions,
 			});
 
 			if (response.request.status === 200) {
@@ -77,7 +81,7 @@ export function MetiersGestionnaire() {
 	async function deleteMetier(id) {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.delete("/metiers/" + id);
+			const response = await axiosInstance.delete("/abonnements/" + id);
 
 			if (response.request.status === 200) {
 				setLoading(false);
@@ -88,18 +92,18 @@ export function MetiersGestionnaire() {
 		}
 	}
 
-	const handleModify = async (id, nom, secteur, description) => {
-		await updateMetier(id, nom, secteur, description);
-		getMetiers();
+	const handleModify = async (id, nom, duree, prix, avantages, conditions) => {
+		await updateMetier(id, nom, duree, prix, avantages, conditions);
+		getAbonnements();
 	};
 
 	const handleDelete = async (id) => {
 		await deleteMetier(id);
-		getMetiers();
+		getAbonnements();
 	};
 
 	useEffect(() => {
-		getMetiers();
+		getAbonnements();
 	}, []);
 
 	const [searchTerm, setSearchTerm] = useState("");
@@ -111,10 +115,10 @@ export function MetiersGestionnaire() {
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderGestionnaire></HeaderGestionnaire>
-			<NavBarGestionnaire selected={3}></NavBarGestionnaire>
+			<NavBarGestionnaire selected={4}></NavBarGestionnaire>
 			<div className='m-6 bg-white rounded-lg p-4'>
 				<div className='flex justify-between'>
-					<p className='text-xl font-bold text-bleuF'>Métiers</p>
+					<p className='text-xl font-bold text-bleuF'>Abonnements</p>
 					<div className='flex space-x-4'>
 						<div className='relative'>
 							<input
@@ -132,7 +136,7 @@ export function MetiersGestionnaire() {
 						<ButtonCarre
 							couleur='rouge'
 							couleurTexte={"violet"}
-							contenu={"Nouveau métier"}
+							contenu={"Nouvel abonnement"}
 							width={"fit text-sm"}
 							height={"fit"}
 							onclick={() => {
@@ -142,20 +146,20 @@ export function MetiersGestionnaire() {
 					</div>
 				</div>
 				<div>
-					<TableauMetiers
+					<TableauAbonnements
 						data={data}
 						vide={vide}
 						onModify={handleModify}
 						onDelete={handleDelete}
-					></TableauMetiers>
+					></TableauAbonnements>
 				</div>
 			</div>
 
 			{showForm && (
-				<MetierForm
-					titre={"Ajouter un métier"}
-					onConfirm={(nom, secteur, description) => {
-						addMetier(nom, secteur, description);
+				<AbonnementForm
+					titre={"Ajouter un abonnement"}
+					onConfirm={(nom, duree, prix, avantages, conditions) => {
+						addMetier(nom, duree, prix, avantages, conditions);
 					}}
 					onDismiss={() => setShowForm(false)}
 				/>
