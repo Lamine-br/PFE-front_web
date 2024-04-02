@@ -13,13 +13,8 @@ import {
 } from "@mui/material";
 
 import esi from "../assets/logo_esi.png";
-// mocks_
-const account = {
-	displayName: "Brahami Lamine",
-	email: "jl_brahami@esi.dz",
-	photoURL: esi,
-};
 
+let account = JSON.parse(localStorage.getItem("user"));
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -40,6 +35,7 @@ export default function Compte() {
 
 	const handleOpen = (event) => {
 		setOpen(event.currentTarget);
+		console.log(account);
 	};
 
 	const handleClose = () => {
@@ -69,7 +65,7 @@ export default function Compte() {
 					}),
 				}}
 			>
-				<Avatar src={account.photoURL} alt='photoURL' />
+				<Avatar src={account.image} alt='photoURL' />
 			</IconButton>
 
 			<Popover
@@ -93,7 +89,7 @@ export default function Compte() {
 			>
 				<Box sx={{ my: 1.5, px: 2.5 }}>
 					<Typography variant='subtitle2' noWrap>
-						{account.displayName}
+						{account.username}
 					</Typography>
 					<Typography variant='body2' sx={{ color: "text.secondary" }} noWrap>
 						{account.email}

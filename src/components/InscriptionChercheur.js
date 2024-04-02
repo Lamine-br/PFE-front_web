@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { ButtonRond } from "./ButtonRond";
 import { FaFileUpload } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
+import { Spinner } from "./Spinner";
 
 export function InscriptionChercheur() {
+	const [loading, setLoading] = useState(false);
+	const [uploaded, setUploaded] = useState(false);
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
@@ -33,6 +36,7 @@ export function InscriptionChercheur() {
 		setSelectedFile(file);
 		console.log(file);
 		if (file) {
+			setUploaded(false);
 			const reader = new FileReader();
 			reader.onloadend = () => {
 				setPreviewUrl(reader.result);
@@ -45,20 +49,27 @@ export function InscriptionChercheur() {
 
 	const handleUpload = async () => {
 		if (selectedFile) {
-			const formData = new FormData();
-			formData.append("image", selectedFile);
+			setLoading(true);
+			const data = new FormData();
+			data.append("image", selectedFile);
 
 			try {
-				const response = await axiosInstance.post("/auth/upload", formData, {
+				const response = await axiosInstance.post("/auth/upload", data, {
 					headers: {
 						"Content-Type": "multipart/form-data",
 					},
 				});
-				if (response.request.status === 200) {
+				console.log(response);
+				if (response.status === 200) {
+					console.log("done");
 					setFormData((prevFormData) => ({
 						...prevFormData,
 						["image"]: response.data,
 					}));
+					console.log(formData);
+					setUploaded(true);
+
+					setLoading(false);
 				}
 			} catch (error) {
 				console.error("Error uploading file:", error);
@@ -70,6 +81,7 @@ export function InscriptionChercheur() {
 
 	async function submitData() {
 		try {
+			console.log(formData);
 			const response = await axiosInstance.post(
 				`/auth/register/chercheur`,
 				formData
@@ -84,9 +96,7 @@ export function InscriptionChercheur() {
 	}
 
 	const handleSubmit = async () => {
-		await handleUpload();
-		console.log(formData);
-		submitData();
+		await submitData();
 	};
 
 	return (
@@ -119,6 +129,7 @@ export function InscriptionChercheur() {
 					</div>
 					<div>
 						<input type='file' onChange={handleFileChange} />
+
 						{previewUrl && (
 							<img
 								src={previewUrl}
@@ -126,6 +137,7 @@ export function InscriptionChercheur() {
 								className='w-20 h-20 rounded-full'
 							/>
 						)}
+						{!uploaded && <button onClick={handleUpload}>Upload</button>}
 					</div>
 				</div>
 
@@ -231,6 +243,8 @@ export function InscriptionChercheur() {
 					></ButtonRond>
 				</div>
 			</div>
+
+			{loading && <Spinner />}
 		</div>
 	);
 }

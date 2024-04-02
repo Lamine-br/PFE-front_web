@@ -33,6 +33,7 @@ export function Connexion({ onClose }) {
 
 			if (response.request.status === 200) {
 				localStorage.setItem("accessToken", response.data.accessToken);
+				localStorage.setItem("user", JSON.stringify(response.data.user));
 				window.location.href = "/" + selectedOption;
 			} else {
 				setErr(
