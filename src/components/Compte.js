@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import esi from "../assets/logo_esi.png";
+import { BACKEND_URL } from "../util/constants";
 
 let account = JSON.parse(localStorage.getItem("user"));
 // ----------------------------------------------------------------------
@@ -27,6 +28,8 @@ const MENU_OPTIONS = [
 		icon: "eva:settings-2-fill",
 	},
 ];
+
+console.log(BACKEND_URL + "/" + account.image.replace(/\\/g, "/"));
 
 // ----------------------------------------------------------------------
 
@@ -65,7 +68,10 @@ export default function Compte() {
 					}),
 				}}
 			>
-				<Avatar src={account.image} alt='photoURL' />
+				<Avatar
+					src={BACKEND_URL + account.image.replace(/\\/g, "/")}
+					alt='photoURL'
+				/>
 			</IconButton>
 
 			<Popover
