@@ -26,6 +26,7 @@ import {
 	EmploisChercheur,
 	EmploiChercheur,
 	ProfileChercheur,
+	ProfileEmployeur,
 } from "./pages";
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
 					path='/employeur/candidatures/:id'
 					element={<CandidatureEmployeur />}
 				/>
+				<Route path='/employeur/profile' element={<ProfileEmployeur />} />
 				<Route path='/gestionnaire' element={<HomeGestionnaire />} />
 				<Route
 					path='/gestionnaire/inscriptions'

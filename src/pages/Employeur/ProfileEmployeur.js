@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { HeaderChercheur, Spinner, ProfileC } from "../../components";
+import { HeaderEmployeur, Spinner, ProfileE } from "../../components";
 import { axiosInstance } from "../../util/axios";
 
-export function ProfileChercheur() {
+export function ProfileEmployeur() {
 	const [loading, setLoading] = useState(false);
 	const [showError, setShowError] = useState(false);
 	const [showUpdate, setShowUpdate] = useState(false);
@@ -64,8 +64,8 @@ export function ProfileChercheur() {
 
 	return (
 		<div className='min-h-screen pb-10'>
-			<HeaderChercheur></HeaderChercheur>
-			<ProfileC data={data} onUpdate={updateProfile} />
+			<HeaderEmployeur></HeaderEmployeur>
+			<ProfileE data={data} onUpdate={(data) => updateProfile(data)} />
 			{showError && (
 				<div className='absolute left-1/2 top-1/2 transform -translate-x-1/2'>
 					<p className='bg-rouge p-2 rounded-lg border border-rouge text-white'>

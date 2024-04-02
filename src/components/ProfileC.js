@@ -5,7 +5,7 @@ import { FiEdit } from "react-icons/fi";
 import { OneForm } from "./OneForm";
 import { PasswordForm } from "./PasswordForm";
 
-export function Profile({ data, onUpdate }) {
+export function ProfileC({ data, onUpdate }) {
 	const [loading, setLoading] = useState(false);
 	const [formData, setFormData] = useState({ email: "" });
 	const [showForm, setShowForm] = useState(false);
@@ -13,7 +13,7 @@ export function Profile({ data, onUpdate }) {
 
 	return (
 		<div className=''>
-			<div className='m-6 bg-white rounded-lg p-4'>
+			<div className='m-6 bg-white rounded-lg p-4 border border-bleuF shadow-md'>
 				<div className='col-span-3 space-y-6'>
 					<p className='text-rouge font-bold text-lg'>Compte</p>
 					<div className='grid grid-cols-4'>
@@ -54,7 +54,7 @@ export function Profile({ data, onUpdate }) {
 					</div>
 				</div>
 			</div>
-			<div className='m-6 bg-white rounded-lg p-4'>
+			<div className='m-6 bg-white rounded-lg p-4 border border-bleuF shadow-md'>
 				<div className='col-span-3 space-y-6'>
 					<p className='text-rouge font-bold text-lg'>
 						Informations personnelles

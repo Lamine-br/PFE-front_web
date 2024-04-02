@@ -10,7 +10,13 @@ export function OneForm({ data, onConfirm, onDismiss }) {
 		try {
 			setLoading(true);
 
-			await onConfirm({ [data.key]: contenu });
+			console.log(data);
+			console.log({ contact: { [data.key]: contenu, id: data.contact } });
+			if (data.contact) {
+				await onConfirm({ contact: { [data.key]: contenu, id: data.contact } });
+			} else {
+				await onConfirm({ [data.key]: contenu });
+			}
 			setLoading(false);
 			onDismiss();
 		} catch (error) {

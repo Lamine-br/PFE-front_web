@@ -24,3 +24,4 @@ export * from "./Chercheur/CandidatureChercheur";
 export * from "./Chercheur/EmploisChercheur";
 export * from "./Chercheur/EmploiChercheur";
 export * from "./Chercheur/ProfileChercheur";
+export * from "./Employeur/ProfileEmployeur";
