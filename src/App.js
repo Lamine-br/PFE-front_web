@@ -28,6 +28,7 @@ import {
 	ProfileChercheur,
 	ProfileEmployeur,
 	AbonnementsGestionnaire,
+	AbonnementsEmployeur,
 } from "./pages";
 
 function App() {
@@ -50,6 +51,10 @@ function App() {
 				<Route
 					path='/employeur/candidatures/:id'
 					element={<CandidatureEmployeur />}
+				/>
+				<Route
+					path='register/employeur/abonnements/'
+					element={<AbonnementsEmployeur />}
 				/>
 				<Route path='/employeur/profile' element={<ProfileEmployeur />} />
 

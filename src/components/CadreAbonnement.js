@@ -6,25 +6,23 @@ export function CadreAbonnement({ abonnement, className, onClick }) {
 			className={`w-full bg-violet rounded-lg flex flex-col p-4 cursor-pointer ${className}`}
 			onClick={onClick}
 		>
-			<div className='bg-bleu w-full h-10 rounded'></div>
-			<div className='w-full h-1/4 my-2'>
-				<p className='text-bleu text-xs font-bold'>
-					Abonnement {abonnement.type}
+			<div className='bg-bleu w-full h-10 rounded mb-2'></div>
+			<div className='flex justify-between gap-4 w-full h-1/4'>
+				<p className='text-rouge text-xs font-bold'>
+					Abonnement {abonnement.nom}
 				</p>
-				<p className='text-bleuF text-sm font-bold'>{abonnement.prix}</p>
+				<p className='text-bleuF text-xs font-bold'>{abonnement.prix}</p>
 			</div>
-			<div className='flex-grow border-t border-bleu w-1/8'></div>
+			<div className='flex-grow border-t border-bleuF w-1/8'></div>
 
-			<div className='flex items-center justify-between'>
-				<div className='w-full'>
-					<p className='text-bleu text-xs font-bold'>Nombre d’offres</p>
-					<p className='text-bleuF text-sm font-bold'>{abonnement.offres}</p>
-				</div>
-
-				<div>
-					<p className='text-bleu text-xs font-bold'>Partage</p>
-					<p className='text-bleuF text-sm font-bold'>{abonnement.partage}</p>
-				</div>
+			<div className='flex justify-between gap-4 w-full py-1'>
+				<p className='text-rouge text-xs font-bold'>Avantages</p>
+				<p className='text-bleuF text-xs '>{abonnement.avantages}</p>
+			</div>
+			<div className='flex-grow border-t border-bleuF w-1/8'></div>
+			<div className='flex justify-between gap-4 py-1'>
+				<p className='text-rouge text-xs font-bold'>Conditions</p>
+				<p className='text-bleuF text-xs '>{abonnement.conditions}</p>
 			</div>
 		</div>
 	);
