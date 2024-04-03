@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { set, sub } from "date-fns";
 import { noCase } from "change-case";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaBell, FaCheck, FaClock, FaTag, FaUser } from "react-icons/fa";
 import { fToNow } from "../util/formatTime";
 import {
@@ -20,31 +20,55 @@ import {
 	ListItemButton,
 	ListItemText,
 } from "@mui/material";
+import { axiosInstance } from "../util/axios";
 
-const NOTIFICATIONS = [
-	{
-		id: "1",
-		title: "Nouvelle offre disponible.",
-		description: "KPMG vient de partager une nouvelle offre.",
-		avatar: null,
-		createdAt: set(new Date(), { hours: 10, minutes: 30 }),
-		isUnRead: true,
-	},
-	{
-		id: "2",
-		title: "Candidature refusée.",
-		description: "KPMG vient de partager une nouvelle offre.",
-		avatar: null,
-		createdAt: sub(new Date(), { hours: 3, minutes: 30 }),
-		isUnRead: true,
-	},
-];
+// const NOTIFICATIONS = [
+// 	{
+// 		id: "1",
+// 		title: "Nouvelle offre disponible.",
+// 		description: "KPMG vient de partager une nouvelle offre.",
+// 		avatar: null,
+// 		createdAt: set(new Date(), { hours: 10, minutes: 30 }),
+// 		isUnRead: true,
+// 	},
+// 	{
+// 		id: "2",
+// 		title: "Candidature refusée.",
+// 		description: "KPMG vient de partager une nouvelle offre.",
+// 		avatar: null,
+// 		createdAt: sub(new Date(), { hours: 3, minutes: 30 }),
+// 		isUnRead: true,
+// 	},
+// ];
 
 export default function Notifications() {
-	const [notifications, setNotifications] = useState(NOTIFICATIONS);
+	const [notifications, setNotifications] = useState([]);
+
+	async function getNotifications() {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/notifications", {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+				setNotifications(response.data);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getNotifications();
+	}, []);
 
 	const totalUnRead = notifications.filter(
-		(item) => item.isUnRead === true
+		(item) => item.statut === "non lu"
 	).length;
 
 	const [open, setOpen] = useState(null);
@@ -61,7 +85,7 @@ export default function Notifications() {
 		setNotifications(
 			notifications.map((notification) => ({
 				...notification,
-				isUnRead: false,
+				statut: "lu",
 			}))
 		);
 	};
@@ -124,7 +148,7 @@ export default function Notifications() {
 				>
 					{notifications.slice(0, 2).map((notification) => (
 						<NotificationItem
-							key={notification.id}
+							key={notification._id}
 							notification={notification}
 						/>
 					))}
@@ -144,21 +168,24 @@ export default function Notifications() {
 
 NotificationItem.propTypes = {
 	notification: PropTypes.shape({
-		createdAt: PropTypes.instanceOf(Date),
-		id: PropTypes.string,
-		isUnRead: PropTypes.bool,
-		title: PropTypes.string,
-		description: PropTypes.string,
+		_id: PropTypes.string,
 		type: PropTypes.string,
-		avatar: PropTypes.any,
+		contenu: PropTypes.string,
+		date_creation: PropTypes.string,
+		statut: PropTypes.string,
 	}),
 };
 
 function NotificationItem({ notification }) {
 	const { avatar, title } = renderContent(notification);
 
+	const handleNotificationClick = (url) => {
+		window.location.href = url;
+	};
+
 	return (
 		<ListItemButton
+			onClick={() => handleNotificationClick(notification.lien)}
 			sx={{
 				py: 1.5,
 				px: 2.5,
@@ -183,8 +210,8 @@ function NotificationItem({ notification }) {
 							color: "text.disabled",
 						}}
 					>
-						{/* <FaClock className='mr-1' /> */}
-						{/* {fToNow(notification.createdAt)} */}
+						<FaClock className='mr-1' />
+						{fToNow(notification.createdAt)}
 					</Typography>
 				}
 			/>
@@ -193,69 +220,8 @@ function NotificationItem({ notification }) {
 }
 
 function renderContent(notification) {
-	const title = (
-		<Typography variant='subtitle2'>
-			{notification.title}
-			<Typography
-				component='span'
-				variant='body2'
-				sx={{ color: "text.secondary" }}
-			>
-				&nbsp; {noCase(notification.description)}
-			</Typography>
-		</Typography>
-	);
+	let avatar = notification.type;
+	let title = notification.contenu;
 
-	if (notification.type === "order_placed") {
-		return {
-			avatar: (
-				<img
-					alt={notification.title}
-					src='/assets/icons/ic_notification_package.svg'
-				/>
-			),
-			title,
-		};
-	}
-	if (notification.type === "order_shipped") {
-		return {
-			avatar: (
-				<img
-					alt={notification.title}
-					src='/assets/icons/ic_notification_shipping.svg'
-				/>
-			),
-			title,
-		};
-	}
-	if (notification.type === "mail") {
-		return {
-			avatar: (
-				<img
-					alt={notification.title}
-					src='/assets/icons/ic_notification_mail.svg'
-				/>
-			),
-			title,
-		};
-	}
-	if (notification.type === "chat_message") {
-		return {
-			avatar: (
-				<img
-					alt={notification.title}
-					src='/assets/icons/ic_notification_chat.svg'
-				/>
-			),
-			title,
-		};
-	}
-	return {
-		avatar: notification.avatar ? (
-			<img alt={notification.title} src={notification.avatar} />
-		) : (
-			<FaUser />
-		),
-		title,
-	};
+	return { avatar, title };
 }

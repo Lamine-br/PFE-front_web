@@ -68,6 +68,7 @@ export function AbonnementForm({ id, titre, onConfirm, onDismiss }) {
 							<textarea
 								className='w-full bg-violet border text-bleuF border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 								rows='1'
+								typeof='number'
 								onChange={(e) => handleInputChange(e, "duree")}
 								value={formData.duree || ""}
 							></textarea>

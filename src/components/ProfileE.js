@@ -4,6 +4,7 @@ import { Spinner } from "./Spinner";
 import { FiEdit } from "react-icons/fi";
 import { OneForm } from "./OneForm";
 import { PasswordForm } from "./PasswordForm";
+import { Abonnements } from "./Abonnements";
 
 export function ProfileE({ data, onUpdate }) {
 	const [loading, setLoading] = useState(false);
@@ -11,45 +12,94 @@ export function ProfileE({ data, onUpdate }) {
 	const [showForm, setShowForm] = useState(false);
 	const [showPasswordForm, setShowPasswordForm] = useState(false);
 
+	const [showAbonnements, setShowAbonnements] = useState(true);
+
 	return (
 		<div className=''>
-			<div className='m-6 bg-white rounded-lg p-4 border border-bleuF shadow-md'>
-				<div className='col-span-3 space-y-6'>
-					<p className='text-rouge font-bold text-lg'>Compte</p>
-					<div className='grid grid-cols-4'>
-						<div className='flex flex-col space-y-1'>
-							<div className='flex items-center space-x-2'>
-								<p className='text-bleuF font-bold'>Email</p>
-								<FiEdit
-									size={10}
-									color={"#FF584D"}
-									className='cursor-pointer'
-									onClick={() => {
-										setFormData({
-											label: "Email",
-											key: "email",
-											value: data.email,
-										});
-										setShowForm(true);
-									}}
-								/>
+			<div className='grid grid-cols-2 m-6 gap-4'>
+				<div className=' bg-white rounded-lg p-4 border border-bleuF shadow-md'>
+					<div className='col-span-3 space-y-6'>
+						<p className='text-rouge font-bold text-lg'>Compte</p>
+						<div className='grid grid-cols-2'>
+							<div className='flex flex-col space-y-1'>
+								<div className='flex items-center space-x-2'>
+									<p className='text-bleuF font-bold'>Email</p>
+									<FiEdit
+										size={10}
+										color={"#FF584D"}
+										className='cursor-pointer'
+										onClick={() => {
+											setFormData({
+												label: "Email",
+												key: "email",
+												value: data.email,
+											});
+											setShowForm(true);
+										}}
+									/>
+								</div>
+								<p className='text-sm text-bleuF pb-2'>{data.email}</p>
 							</div>
-							<p className='text-sm text-bleuF pb-2'>{data.email}</p>
-						</div>
 
-						<div className='flex flex-col space-y-1'>
-							<div className='flex items-center space-x-2'>
-								<p className='text-bleuF font-bold'>Mot de passe</p>
-								<FiEdit
-									size={10}
-									color={"#FF584D"}
-									className='cursor-pointer'
-									onClick={() => {
-										setShowPasswordForm(true);
-									}}
-								/>
+							<div className='flex flex-col space-y-1'>
+								<div className='flex items-center space-x-2'>
+									<p className='text-bleuF font-bold'>Mot de passe</p>
+									<FiEdit
+										size={10}
+										color={"#FF584D"}
+										className='cursor-pointer'
+										onClick={() => {
+											setShowPasswordForm(true);
+										}}
+									/>
+								</div>
+								<p className='text-sm text-bleuF'>*********</p>
 							</div>
-							<p className='text-sm text-bleuF'>*********</p>
+						</div>
+					</div>
+				</div>
+				<div className=' bg-white rounded-lg p-4 border border-bleuF shadow-md'>
+					<div className='col-span-3 space-y-6'>
+						<div className='flex justify-between'>
+							<p className='text-rouge font-bold text-lg'>
+								Abonnement{" "}
+								{data.abonnement ? (
+									data.abonnement.debut ? (
+										<p className='text-vertF inline'>(Actif)</p>
+									) : (
+										""
+									)
+								) : (
+									""
+								)}
+							</p>
+							<ButtonCarre
+								couleur={"rouge"}
+								couleurTexte={"violet"}
+								contenu={"Détails"}
+								width={"w-full text-xs"}
+								height={"fit"}
+								onclick={() => setShowAbonnements(true)}
+							></ButtonCarre>
+						</div>
+						<div className='grid grid-cols-2'>
+							<div className='flex flex-col space-y-1'>
+								<div className='flex items-center space-x-2'>
+									<p className='text-bleuF font-bold'> Date début</p>
+								</div>
+								<p className='text-sm text-bleuF'>
+									{data.abonnement ? data.abonnement.debut : ""}
+								</p>
+							</div>
+
+							<div className='flex flex-col space-y-1'>
+								<div className='flex items-center space-x-2'>
+									<p className='text-bleuF font-bold'> Date fin</p>
+								</div>
+								<p className='text-sm text-bleuF'>
+									{data.abonnement ? data.abonnement.fin : ""}
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -353,6 +403,15 @@ export function ProfileE({ data, onUpdate }) {
 					onConfirm={(data) => onUpdate(data)}
 					onDismiss={() => setShowPasswordForm(false)}
 				/>
+			)}
+
+			{showAbonnements && (
+				<div className='fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center z-50 justify-center'>
+					<Abonnements
+						selected={data.abonnement ? data.abonnement.abonnement : null}
+						onClose={() => setShowAbonnements(false)}
+					/>
+				</div>
 			)}
 
 			{loading && <Spinner />}

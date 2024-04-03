@@ -1,11 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { ButtonRond } from "./ButtonRond";
+import { ButtonCarre } from "./ButtonCarre";
 import { CadreAbonnement } from "./CadreAbonnement";
 import { Spinner } from "./Spinner";
 import { axiosInstance } from "../util/axios";
 
-export function Abonnements({ onPass }) {
+export function Abonnements({ selected, onPass, onClose }) {
 	const [abonnements, setAbonnements] = useState([]);
 	const [loading, setLoading] = useState(false);
 
@@ -78,7 +78,7 @@ export function Abonnements({ onPass }) {
 		<div className='overlay flex items-center justify-center w-full'>
 			<div className='z-50 justify-center items-center p-4 w-3/4 h-4/5 bg-white rounded-lg border border-bleuF'>
 				<h1 className='text-xl text-bleuF font-bold mb-6 ml-4'>
-					Sélectionnez l'offre qui vous correspond
+					Les abonnements disponibles
 				</h1>
 
 				<div className='grid grid-cols-3 gap-x-8 gap-y-4 mx-4 mb-6'>
@@ -87,22 +87,27 @@ export function Abonnements({ onPass }) {
 							key={index}
 							abonnement={item}
 							className={`${
-								cadreSelectionne === index ? "border-2 border-red-500" : ""
+								!selected
+									? cadreSelectionne === index
+										? "border-2 border-red-500"
+										: ""
+									: selected === item._id
+									? "border-2 border-vertF"
+									: ""
 							}`}
 							onClick={() => handleSelectionCadre(index)}
 						></CadreAbonnement>
 					))}
 				</div>
-
 				<div className='flex justify-end mr-4'>
-					<ButtonRond
-						couleur={"rouge"}
+					<ButtonCarre
+						couleur={"bleuF"}
 						couleurTexte={"violet"}
-						contenu={"Continuer"}
-						width={"w-1/4"}
+						contenu={"Fermer"}
+						width={"fit text-xs"}
 						height={"fit"}
-						onClick={onPass}
-					></ButtonRond>
+						onclick={onClose}
+					></ButtonCarre>
 				</div>
 			</div>
 
