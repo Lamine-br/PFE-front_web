@@ -31,6 +31,13 @@ export default function Compte() {
 			icon: "eva:person-fill",
 			url: "/" + account.type + "/profile",
 		},
+		account.type === "chercheur"
+			? {
+					label: "Enregistrements",
+					icon: "eva:settings-2-fill",
+					url: "/chercheur/enregistrements",
+			  }
+			: null,
 		{
 			label: "Paramètres",
 			icon: "eva:settings-2-fill",

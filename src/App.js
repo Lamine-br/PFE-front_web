@@ -29,6 +29,7 @@ import {
 	ProfileEmployeur,
 	AbonnementsGestionnaire,
 	AbonnementsEmployeur,
+	EnregistrementsChercheur,
 } from "./pages";
 
 function App() {
@@ -105,6 +106,10 @@ function App() {
 				<Route path='/chercheur/emplois/:id' element={<EmploiChercheur />} />
 				<Route path='/chercheur/agenda' element={<AgendaChercheur />} />
 				<Route path='/chercheur/profile' element={<ProfileChercheur />} />
+				<Route
+					path='/chercheur/enregistrements'
+					element={<EnregistrementsChercheur />}
+				/>
 			</Routes>
 		</BrowserRouter>
 	);
