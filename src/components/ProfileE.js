@@ -12,7 +12,7 @@ export function ProfileE({ data, onUpdate }) {
 	const [showForm, setShowForm] = useState(false);
 	const [showPasswordForm, setShowPasswordForm] = useState(false);
 
-	const [showAbonnements, setShowAbonnements] = useState(true);
+	const [showAbonnements, setShowAbonnements] = useState(false);
 
 	return (
 		<div className=''>

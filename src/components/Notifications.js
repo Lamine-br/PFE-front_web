@@ -82,12 +82,33 @@ export default function Notifications() {
 	};
 
 	const handleMarkAllAsRead = () => {
-		setNotifications(
-			notifications.map((notification) => ({
-				...notification,
-				statut: "lu",
-			}))
+		notifications.map(
+			async (notification) => await handleMarkAsRead(notification._id)
 		);
+	};
+
+	const handleMarkAsRead = async (id) => {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			console.log(accessToken);
+			const response = await axiosInstance.put(
+				"/notifications/" + id,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+				getNotifications();
+			}
+		} catch (e) {
+			console.log(e);
+		}
 	};
 
 	return (
@@ -179,13 +200,37 @@ NotificationItem.propTypes = {
 function NotificationItem({ notification }) {
 	const { avatar, title } = renderContent(notification);
 
-	const handleNotificationClick = (url) => {
-		window.location.href = url;
+	const handleMarkAsRead = async (id) => {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			console.log(accessToken);
+			const response = await axiosInstance.put(
+				"/notifications/" + id,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
+	const handleNotificationClick = async (notification) => {
+		await handleMarkAsRead(notification._id);
+		window.location.href = notification.lien;
 	};
 
 	return (
 		<ListItemButton
-			onClick={() => handleNotificationClick(notification.lien)}
+			onClick={() => handleNotificationClick(notification)}
 			sx={{
 				py: 1.5,
 				px: 2.5,
