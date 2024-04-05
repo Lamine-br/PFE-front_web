@@ -3,7 +3,14 @@ import { FaTimes, FaCheck, FaEnvelope } from "react-icons/fa";
 import { Popup } from "./Popup";
 import { MessageTab } from "./MessageTab";
 
-export function TableauCandidaturesEmployeur({ data, onRowClick, vide }) {
+export function TableauCandidaturesEmployeur({
+	data,
+	onRowClick,
+	onAccept,
+	onRefuse,
+	onContact,
+	vide,
+}) {
 	const [selectedId, setSelectedId] = useState(null);
 
 	const [showAcceptConfirmation, setShowAcceptConfirmation] = useState(false);
@@ -49,7 +56,8 @@ export function TableauCandidaturesEmployeur({ data, onRowClick, vide }) {
 									onClick={() => onRowClick(item._id)}
 								>
 									<p className='text-bleuF text-sm font-semibold'>
-										{item.chercheur.nom} {item.chercheur.prenom}
+										{item.chercheur ? item.chercheur.nom : ""}{" "}
+										{item.chercheur ? item.chercheur.prenom : ""}
 									</p>
 									<p className='text-bleuF text-sm font-semibold'>
 										{item.offre.titre}
@@ -112,7 +120,7 @@ export function TableauCandidaturesEmployeur({ data, onRowClick, vide }) {
 			</div>
 			{showMessageTab && (
 				<MessageTab
-					onConfirm={() => {}}
+					onConfirm={(titre, contenu) => onContact(selectedId, titre, contenu)}
 					onDismiss={() => setShowMessageTab(false)}
 				/>
 			)}
@@ -121,7 +129,7 @@ export function TableauCandidaturesEmployeur({ data, onRowClick, vide }) {
 				<Popup
 					Titre={"Confirmation"}
 					Texte={"Êtes-vous sûr de vouloir refuser cette candidature ?"}
-					onConfirm={() => {}}
+					onConfirm={() => onRefuse(selectedId)}
 					onDismiss={() => setShowRefuseConfirmation(false)}
 				/>
 			)}
@@ -130,7 +138,7 @@ export function TableauCandidaturesEmployeur({ data, onRowClick, vide }) {
 				<Popup
 					Titre={"Confirmation"}
 					Texte={"Êtes-vous sûr de vouloir d'accepter cette candidature ?"}
-					onConfirm={() => {}}
+					onConfirm={() => onAccept(selectedId)}
 					onDismiss={() => setShowAcceptConfirmation(false)}
 				/>
 			)}

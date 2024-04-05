@@ -136,6 +136,74 @@ export function CandidaturesEmployeur() {
 		getCandidatures();
 	}, []);
 
+	async function validate(id) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				`/employeur/candidatures/validate`,
+				{ id },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (response.request.status === 201) {
+				console.log(response.data);
+				getCandidatures();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async function refuse(id) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				`/employeur/candidatures/refuse`,
+				{ id },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (response.request.status === 201) {
+				console.log(response.data);
+				getCandidatures();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async function contact(id, titre, contenu) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				`/employeur/candidatures/${id}/contact`,
+				{
+					titre,
+					contenu,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (response.request.status === 201) {
+				console.log(response.data);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	const [selectedValue, setSelectedValue] = useState("");
 
 	const handleChange = (event) => {
@@ -195,6 +263,9 @@ export function CandidaturesEmployeur() {
 					<TableauCandidaturesEmployeur
 						data={data}
 						onRowClick={handleClick}
+						onAccept={validate}
+						onRefuse={refuse}
+						onContact={contact}
 						vide={vide}
 					></TableauCandidaturesEmployeur>
 				</div>
