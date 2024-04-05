@@ -85,7 +85,7 @@ export function CandidaturesEmployeur() {
 
 			console.log(response);
 
-			if (response.request.status === 200) {
+			if (response.status === 200) {
 				if (response.data.length === 0) {
 					setVide(true);
 				} else {
@@ -110,6 +110,12 @@ export function CandidaturesEmployeur() {
 									(item) => item.status === "En attente"
 								);
 								setData(dataEnAttente);
+								break;
+							case "Supprimées":
+								const dataSupp = response.data.filter(
+									(item) => item.status === "Supprimé"
+								);
+								setData(dataSupp);
 								break;
 							case "Toutes":
 								setData(response.data);
@@ -149,7 +155,7 @@ export function CandidaturesEmployeur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getCandidatures();
 			}
@@ -171,7 +177,7 @@ export function CandidaturesEmployeur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getCandidatures();
 			}
@@ -196,7 +202,7 @@ export function CandidaturesEmployeur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 			}
 		} catch (e) {
@@ -255,6 +261,7 @@ export function CandidaturesEmployeur() {
 								<MenuItem value={"En attente"}>En attente</MenuItem>
 								<MenuItem value={"Validées"}>Validées</MenuItem>
 								<MenuItem value={"Refusées"}>Refusées</MenuItem>
+								<MenuItem value={"Supprimées"}>Supprimées</MenuItem>
 							</Select>
 						</FormControl>
 					</div>

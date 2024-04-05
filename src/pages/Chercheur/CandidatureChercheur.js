@@ -66,8 +66,9 @@ export function CandidatureChercheur() {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.delete(
-				"/chercheur/candidatures/" + id,
+			const response = await axiosInstance.post(
+				"/chercheur/candidatures/delete",
+				{ id },
 				{
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
@@ -103,7 +104,7 @@ export function CandidatureChercheur() {
 				}
 			);
 
-			if (response.request.status === 200) {
+			if (response.status === 200) {
 				setLoading(false);
 				getDetails();
 			}
@@ -129,7 +130,7 @@ export function CandidatureChercheur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getReponses();
 			}
@@ -151,7 +152,7 @@ export function CandidatureChercheur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getDetails();
 			}
@@ -173,7 +174,7 @@ export function CandidatureChercheur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getDetails();
 			}

@@ -89,38 +89,37 @@ export function CandidaturesChercheur() {
 				if (response.data.length === 0) {
 					setVide(true);
 				} else {
-					if (!type) {
-						setData(response.data);
-					} else {
-						switch (type) {
-							case "Refusées":
-								const refusedData = response.data.filter(
-									(item) => item.status === "Refusé"
-								);
-								setData(refusedData);
-								break;
-							case "Validées":
-								const validatedData = response.data.filter(
-									(item) => item.status === "Validé"
-								);
-								setData(validatedData);
-								break;
-							case "En attente":
-								const dataEnAttente = response.data.filter(
-									(item) => item.status === "En attente"
-								);
-								setData(dataEnAttente);
-								break;
-							case "Toutes":
-								setData(response.data);
-								break;
-							default:
-								const defaultData = response.data.filter(
-									(item) => item.valide === "En attente"
-								);
-								setData(defaultData);
-								break;
-						}
+					switch (type) {
+						case "Refusées":
+							const refusedData = response.data.filter(
+								(item) => item.status === "Refusé"
+							);
+							setData(refusedData);
+							break;
+						case "Validées":
+							const validatedData = response.data.filter(
+								(item) => item.status === "Validé"
+							);
+							setData(validatedData);
+							break;
+						case "En attente":
+							const dataEnAttente = response.data.filter(
+								(item) => item.status === "En attente"
+							);
+							setData(dataEnAttente);
+							break;
+						case "Toutes":
+							const data = response.data.filter(
+								(item) => item.status !== "Supprimé"
+							);
+							setData(data);
+							break;
+						default:
+							const defaultData = response.data.filter(
+								(item) => item.status === "En attente"
+							);
+							setData(defaultData);
+							break;
 					}
 				}
 				setLoading(false);
@@ -136,8 +135,9 @@ export function CandidaturesChercheur() {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.delete(
-				"/chercheur/candidatures/" + id,
+			const response = await axiosInstance.post(
+				"/chercheur/candidatures/delete",
+				{ id },
 				{
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
@@ -171,7 +171,7 @@ export function CandidaturesChercheur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 			}
 		} catch (e) {
@@ -192,7 +192,7 @@ export function CandidaturesChercheur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getCandidatures();
 			}
@@ -214,7 +214,7 @@ export function CandidaturesChercheur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getCandidatures();
 			}
