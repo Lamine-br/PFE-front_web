@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { ButtonCarre } from "./ButtonCarre";
 import { Spinner } from "./Spinner";
 
-export function MessageTab({ onConfirm, onDismiss }) {
+export function MessageTab({ titre, onConfirm, onDismiss }) {
 	const [loading, setLoading] = useState(false);
 	const titreRef = useRef("");
 	const contenuRef = useRef("");
@@ -29,11 +29,9 @@ export function MessageTab({ onConfirm, onDismiss }) {
 			{!loading && (
 				<div className=' w-1/2 h-fit bg-white p-4 rounded-md space-y-8'>
 					<div className='space-y-2'>
-						<p className='text-lg font-bold text-bleuF text-center'>
-							Contacter
-						</p>
+						<p className='text-lg font-bold text-bleuF text-center'>{titre}</p>
 						<div>
-							<p className='text-base text-bleuF font-semibold'>Titre</p>
+							<p className='text-sm text-bleuF font-semibold'>Titre</p>
 							<textarea
 								className='w-full bg-violet border text-bleuF border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 								rows='1'
@@ -41,7 +39,7 @@ export function MessageTab({ onConfirm, onDismiss }) {
 							></textarea>
 						</div>
 						<div>
-							<p className='text-base text-bleuF font-semibold'>Contenu</p>
+							<p className='text-sm text-bleuF font-semibold'>Contenu</p>
 							<textarea
 								className='w-full bg-violet border text-bleuF border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 								rows='3'

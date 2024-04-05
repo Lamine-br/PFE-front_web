@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEllipsisV } from "react-icons/fa";
+import { FaEllipsisV, FaFlag } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { ButtonRond } from "./ButtonRond";
 import cv from "../assets/cv.png";
@@ -15,6 +15,7 @@ export function CandidatureC({
 	onUpdate,
 	onAccept,
 	onRefuse,
+	onDeclareProblem,
 }) {
 	// let Candidature = {
 	// 	Id: "1",
@@ -29,6 +30,7 @@ export function CandidatureC({
 	const [showCommentaireForm, setShowCommentaireForm] = useState(false);
 	const [showAcceptConfirmation, setShowAcceptConfirmation] = useState(false);
 	const [showRefuseConfirmation, setShowRefuseConfirmation] = useState(false);
+	const [showDeclareProblem, setShowDeclareProblem] = useState(false);
 
 	return (
 		<div className='w-full bg-violet rounded-lg px-10 py-4'>
@@ -53,6 +55,14 @@ export function CandidatureC({
 						width={"fit border border-bleuF"}
 						height={"h-8"}
 						onClick={() => setShowMessageTab(true)}
+					></ButtonRond>
+					<ButtonRond
+						couleur={"bleuF"}
+						couleurTexte={"violet"}
+						contenu={<FaFlag />}
+						width={"fit border border-bleuF"}
+						height={"h-8"}
+						onClick={() => setShowDeclareProblem(true)}
 					></ButtonRond>
 					<div>
 						<FaEllipsisV />
@@ -179,6 +189,7 @@ export function CandidatureC({
 			)}
 			{showMessageTab && (
 				<MessageTab
+					titre={"Contacter"}
 					onConfirm={(titre, contenu) =>
 						onContact(candidature._id, titre, contenu)
 					}
@@ -213,7 +224,6 @@ export function CandidatureC({
 					onDismiss={() => setShowRefuseConfirmation(false)}
 				/>
 			)}
-
 			{showAcceptConfirmation && (
 				<Popup
 					Titre={"Confirmation"}
@@ -222,6 +232,15 @@ export function CandidatureC({
 						onAccept(candidature._id);
 					}}
 					onDismiss={() => setShowAcceptConfirmation(false)}
+				/>
+			)}
+			{showDeclareProblem && (
+				<MessageTab
+					titre={"Déclarer un problème"}
+					onConfirm={(titre, contenu) =>
+						onDeclareProblem(candidature._id, titre, contenu)
+					}
+					onDismiss={() => setShowDeclareProblem(false)}
 				/>
 			)}
 		</div>

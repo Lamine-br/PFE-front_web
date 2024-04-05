@@ -183,6 +183,32 @@ export function CandidatureChercheur() {
 		}
 	}
 
+	async function declareProblem(candidature, titre, contenu) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				`/chercheur/candidatures/declareProblem`,
+				{
+					candidature,
+					titre,
+					contenu,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (response.status === 200) {
+				console.log(response.data);
+				getReponses();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	useEffect(() => {
 		getDetails();
 		console.log(data);
@@ -230,6 +256,7 @@ export function CandidatureChercheur() {
 						onUpdate={updateCandidature}
 						onAccept={validate}
 						onRefuse={refuse}
+						onDeclareProblem={declareProblem}
 					/>
 				</div>
 				<div className='space-y-2 mt-2'>
