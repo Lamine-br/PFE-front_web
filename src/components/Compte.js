@@ -66,6 +66,8 @@ export default function Compte() {
 		window.location.href = "/";
 	};
 
+	console.log(BACKEND_URL + account.image);
+
 	return (
 		<>
 			<IconButton
@@ -85,10 +87,7 @@ export default function Compte() {
 					}),
 				}}
 			>
-				<Avatar
-					src={BACKEND_URL + account.image.replace(/\\/g, "/")}
-					alt='photoURL'
-				/>
+				<Avatar src={BACKEND_URL + account.image} alt='photoURL' />
 			</IconButton>
 
 			<Popover
