@@ -67,3 +67,4 @@ export * from "./PasswordForm";
 export * from "./ProfileE";
 export * from "./TableauAbonnements";
 export * from "./AbonnementForm";
+export * from "./TableauCategories";

@@ -31,19 +31,21 @@ export default function Compte() {
 			icon: "eva:person-fill",
 			url: "/" + account.type + "/profile",
 		},
-		account.type === "chercheur"
-			? {
-					label: "Enregistrements",
-					icon: "eva:settings-2-fill",
-					url: "/chercheur/enregistrements",
-			  }
-			: null,
-		{
-			label: "Paramètres",
-			icon: "eva:settings-2-fill",
-			url: "/" + account.type + "/paramètres",
-		},
 	];
+
+	if (account.type === "chercheur") {
+		MENU_OPTIONS.push({
+			label: "Enregistrements",
+			icon: "eva:settings-2-fill",
+			url: "/chercheur/enregistrements",
+		});
+	}
+
+	MENU_OPTIONS.push({
+		label: "Paramètres",
+		icon: "eva:settings-2-fill",
+		url: "/" + account.type + "/paramètres",
+	});
 
 	const [open, setOpen] = useState(null);
 

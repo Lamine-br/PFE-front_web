@@ -10,7 +10,7 @@ export function MetierForm({ id, titre, onConfirm, onDismiss }) {
 	const secteurRef = useRef("");
 	const descriptionRef = useRef("");
 
-	async function getOffre(id) {
+	async function getMetier(id) {
 		const response = await axiosInstance.get(`/metiers/${id}`);
 
 		if (response.request.status === 200) {
@@ -21,7 +21,7 @@ export function MetierForm({ id, titre, onConfirm, onDismiss }) {
 
 	useEffect(() => {
 		if (id) {
-			getOffre(id);
+			getMetier(id);
 		}
 	}, [id]);
 

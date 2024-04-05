@@ -25,7 +25,7 @@ export function Cadre({ Offre }) {
 	const [message, setMessage] = useState("");
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [isSaved, setIsSaved] = useState(
-		user.enregistrements.includes(Offre._id)
+		user.enregistrements ? user.enregistrements.includes(Offre._id) : false
 	);
 
 	useEffect(() => {
