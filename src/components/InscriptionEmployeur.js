@@ -313,7 +313,7 @@ export function InscriptionEmployeur({ onPass }) {
 							{index > 0 && (
 								<div className='flex items-center justify-center'>
 									<p
-										className='text-rouge cursor-pointer underline'
+										className='text-rouge cursor-pointer underline text-sm'
 										onClick={() => removeContact(index)}
 									>
 										Supprimer

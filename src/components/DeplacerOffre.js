@@ -48,6 +48,8 @@ export function DeplacerOffre({ id, offre, onDismiss, onConfirm }) {
 		getCategories();
 		if (id && id !== 0) {
 			getCategorie(id);
+		} else {
+			setCategorie("All");
 		}
 	}, []);
 

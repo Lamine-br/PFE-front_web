@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ButtonRond } from "./ButtonRond";
-import { FaFileUpload } from "react-icons/fa";
+import { FaFileUpload, FaCheck } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
 import { Spinner } from "./Spinner";
 import { InscriptionConfirmation } from "./InscriptionConfirmation";
@@ -219,17 +219,36 @@ export function InscriptionChercheur() {
 							></input>
 							<p className='text-rouge text-xs'>{passwordError}</p>
 						</div>
-						<div>
-							<input type='file' onChange={handleFileChange} />
+						<div className='flex items-center space-x-4 justify-center'>
+							<label
+								htmlFor='fileInput'
+								className='rounded bg-violet text-bleuF text-sm h-fit font-bold px-2 py-1 cursor-pointer'
+							>
+								Importer
+							</label>
 
-							{previewUrl && (
+							<input
+								id='fileInput'
+								className='hidden'
+								type='file'
+								onChange={handleFileChange}
+							/>
+
+							<div>
 								<img
 									src={previewUrl}
-									alt='Preview'
-									className='w-20 h-20 rounded-full'
+									className={`w-16 h-16 rounded-full bg-black`}
 								/>
+							</div>
+							{!uploaded && previewUrl && (
+								<button
+									className='rounded bg-violet text-bleuF text-sm font-bold px-2 py-2'
+									onClick={handleUpload}
+								>
+									<FaCheck color='465475' />
+								</button>
 							)}
-							{!uploaded && <button onClick={handleUpload}>Upload</button>}
+							{uploaded && <FaCheck color='30CA3F' />}
 						</div>
 					</div>
 

@@ -55,8 +55,11 @@ export default function Notifications() {
 
 			console.log(response);
 
-			if (response.request.status === 200) {
-				setNotifications(response.data);
+			if (response.status === 200) {
+				const dataNonLu = response.data.filter(
+					(item) => item.statut === "non lu"
+				);
+				setNotifications(dataNonLu);
 			}
 		} catch (e) {
 			console.log(e);

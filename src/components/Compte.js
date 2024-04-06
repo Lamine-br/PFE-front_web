@@ -27,7 +27,7 @@ export default function Compte() {
 			url: "/" + account.type,
 		},
 		{
-			label: "Profile",
+			label: "Profil",
 			icon: "eva:person-fill",
 			url: "/" + account.type + "/profile",
 		},

@@ -4,7 +4,7 @@ import {
 	NavBarChercheur,
 	Spinner,
 	Apply,
-	Popup,
+	Avertissement,
 } from "../../components";
 import { useParams } from "react-router-dom";
 import { axiosInstance } from "../../util/axios";
@@ -13,7 +13,7 @@ export function PostulerChercheur() {
 	const [data, setData] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [candidatures, setCandidatures] = useState([]);
-	const [showPopup, setShowPopup] = useState(false);
+	const [showAvertissement, setShowAvertissement] = useState(false);
 
 	let { id } = useParams();
 
@@ -51,7 +51,7 @@ export function PostulerChercheur() {
 	}, []);
 
 	useEffect(() => {
-		setShowPopup(candidatures.length > 0);
+		setShowAvertissement(candidatures.length > 0);
 	}, [candidatures]);
 
 	return (
@@ -62,13 +62,13 @@ export function PostulerChercheur() {
 				<Apply data={data} />
 			</div>
 			{loading && <Spinner />}
-			{showPopup && (
-				<Popup
+			{showAvertissement && (
+				<Avertissement
 					Titre={"Avertissement"}
 					Texte={`Vous postulez pour ${candidatures.length} offre${
 						candidatures.length > 1 ? "s" : ""
 					} d'emploi déja. Voulez vous continuer ?`}
-					onConfirm={() => setShowPopup(false)}
+					onConfirm={() => setShowAvertissement(false)}
 					onDismiss={() => redirect()}
 				/>
 			)}

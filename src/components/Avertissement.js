@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ButtonCarre } from "./ButtonCarre";
 import { Spinner } from "./Spinner";
 
-export function Popup({ Titre, Texte, onConfirm, onDismiss }) {
+export function Avertissement({ Titre, Texte, onConfirm, onDismiss }) {
 	const [loading, setLoading] = useState(false);
 
 	const handleConfirm = async () => {
@@ -11,7 +11,6 @@ export function Popup({ Titre, Texte, onConfirm, onDismiss }) {
 
 			await onConfirm();
 			setLoading(false);
-			onDismiss();
 		} catch (error) {
 			console.error("Confirmation error:", error);
 			setLoading(false);
