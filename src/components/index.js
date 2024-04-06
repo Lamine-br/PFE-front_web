@@ -68,3 +68,4 @@ export * from "./ProfileE";
 export * from "./TableauAbonnements";
 export * from "./AbonnementForm";
 export * from "./TableauCategories";
+export * from "./Map";

@@ -7,6 +7,7 @@ import { Popup } from "./Popup";
 import { MessageTab } from "./MessageTab";
 import { MotivationForm } from "./MotivationForm";
 import { CommentaireForm } from "./CommentaireForm";
+import { Map } from "./Map";
 
 export function CandidatureC({
 	candidature,
@@ -31,6 +32,7 @@ export function CandidatureC({
 	const [showAcceptConfirmation, setShowAcceptConfirmation] = useState(false);
 	const [showRefuseConfirmation, setShowRefuseConfirmation] = useState(false);
 	const [showDeclareProblem, setShowDeclareProblem] = useState(false);
+	const [showMap, setShowMap] = useState(false);
 
 	return (
 		<div className='w-full bg-violet rounded-lg px-10 py-4'>
@@ -59,8 +61,16 @@ export function CandidatureC({
 					<ButtonRond
 						couleur={"bleuF"}
 						couleurTexte={"violet"}
+						contenu={"Itinéraire"}
+						width={"fit"}
+						height={"h-8"}
+						onClick={() => setShowMap(true)}
+					></ButtonRond>
+					<ButtonRond
+						couleur={"bleuF"}
+						couleurTexte={"violet"}
 						contenu={<FaFlag />}
-						width={"fit border border-bleuF"}
+						width={"fit"}
 						height={"h-8"}
 						onClick={() => setShowDeclareProblem(true)}
 					></ButtonRond>
@@ -69,11 +79,11 @@ export function CandidatureC({
 					</div>
 				</div>
 			</div>
-			<div className='grid grid-cols-4 gap-x-4'>
+			<div className='grid grid-cols-4 gap-x-4 mt-6'>
 				<div className='mt-2'>
 					<img className='bg-white w-full h-96 rounded-lg' src={cv}></img>
 				</div>
-				<div className='px-10 col-span-3 space-y-6'>
+				<div className='px-10 col-span-3 space-y-6 '>
 					<p className='text-bleuF font-bold text-lg'>A propos du condidat</p>
 					<div className='grid grid-cols-4'>
 						<div className='flex flex-col space-y-1'>
@@ -243,6 +253,7 @@ export function CandidatureC({
 					onDismiss={() => setShowDeclareProblem(false)}
 				/>
 			)}
+			{showMap && <Map data={{}} onDismiss={() => setShowMap(false)} />}
 		</div>
 	);
 }
