@@ -1,10 +1,18 @@
 import React from "react";
-import { Header, CadreP, CadreG } from "../components";
+import {
+	Header,
+	HeaderChercheur,
+	NavBarChercheur,
+	CadreP,
+	CadreG,
+} from "../components";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { axiosInstance } from "../util/axios";
 
 export function Offre() {
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
 	const [selectedOffer, setSelectedOffer] = useState(0);
 	const [offres, setOffres] = useState([]);
 
@@ -14,7 +22,7 @@ export function Offre() {
 
 			console.log(response);
 
-			if (response.request.status === 200) {
+			if (response.status === 200) {
 				const data = response.data;
 				const indexToMove = data.findIndex((item) => item._id === selectedId);
 
@@ -27,6 +35,8 @@ export function Offre() {
 					setOffres(updatedOffres);
 					setSelectedOffer(0);
 				}
+			} else {
+				console.log(response);
 			}
 		} catch (e) {
 			console.log(e);
@@ -59,7 +69,15 @@ export function Offre() {
 
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
-			<Header></Header>
+			{user.type === "chercheur" ? (
+				<>
+					<HeaderChercheur />
+					<NavBarChercheur />
+				</>
+			) : (
+				<Header></Header>
+			)}
+
 			<div className='m-10 bg-white rounded-lg p-4'>
 				<div className='flex'>
 					<div className='w-2/5'>

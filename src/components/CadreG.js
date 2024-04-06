@@ -21,17 +21,26 @@ export function CadreG({ id }) {
 	const [offre, setOffre] = useState({});
 
 	async function getOffre() {
-		const response = await axiosInstance.get(`/offres/${id}`);
-
-		if (response.request.status === 200) {
-			setOffre(response.data);
-			console.log(offre);
+		try {
+			const response = await axiosInstance.get(`/offres/${id}`);
+			if (response.status === 200) {
+				setOffre(response.data);
+				console.log(offre);
+			} else {
+				console.log(response);
+			}
+		} catch (e) {
+			console.log(e);
 		}
 	}
 
 	useEffect(() => {
 		getOffre();
 	}, [id]);
+
+	const redirect = () => {
+		window.location.href = `/offres/${id}/postuler`;
+	};
 
 	return (
 		<div className='w-full bg-violet rounded-lg'>
@@ -105,6 +114,7 @@ export function CadreG({ id }) {
 					contenu={"Condidater"}
 					width={"fit"}
 					height={"fit"}
+					onClick={redirect}
 				></ButtonRond>
 			</div>
 		</div>

@@ -4,7 +4,6 @@ import {
 	NavBarChercheur,
 	CandidatureC,
 	Spinner,
-	Map,
 } from "../../components";
 import { useParams } from "react-router-dom";
 import { axiosInstance } from "../../util/axios";

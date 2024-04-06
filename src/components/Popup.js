@@ -11,7 +11,6 @@ export function Popup({ Titre, Texte, onConfirm, onDismiss }) {
 
 			await onConfirm();
 			setLoading(false);
-			onDismiss();
 		} catch (error) {
 			console.error("Confirmation error:", error);
 			setLoading(false);
@@ -38,7 +37,7 @@ export function Popup({ Titre, Texte, onConfirm, onDismiss }) {
 						<ButtonCarre
 							couleur={"rouge"}
 							couleurTexte={"violet"}
-							contenu={"Confirmer"}
+							contenu={"Continuer"}
 							width={"fit text-xs"}
 							height={"fit"}
 							onclick={handleConfirm}
