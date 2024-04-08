@@ -30,7 +30,7 @@ export function ModifierOffre({ id, onClose, onConfirm }) {
 
 	async function getMetiers() {
 		try {
-			const response = await axiosInstance.get("/metiers");
+			const response = await axiosInstance.get("/offres/metiers");
 
 			console.log(response);
 
@@ -44,7 +44,7 @@ export function ModifierOffre({ id, onClose, onConfirm }) {
 
 	async function getOffre(id) {
 		const accessToken = localStorage.getItem("accessToken");
-		const response = await axiosInstance.get(`/employeur/offres/${id}`, {
+		const response = await axiosInstance.get(`/offres/employeur/${id}`, {
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 			},
@@ -59,7 +59,7 @@ export function ModifierOffre({ id, onClose, onConfirm }) {
 	async function updateOffre(id) {
 		const accessToken = localStorage.getItem("accessToken");
 		const response = await axiosInstance.put(
-			`/employeur/offres/${id}`,
+			`/offres/employeur/${id}`,
 			formData,
 			{
 				headers: {

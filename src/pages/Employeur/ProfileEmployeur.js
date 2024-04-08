@@ -11,7 +11,7 @@ export function ProfileEmployeur() {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.get("/profile", {
+			const response = await axiosInstance.get("/users/profile", {
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
 				},
@@ -34,7 +34,7 @@ export function ProfileEmployeur() {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.put("/profile", data, {
+			const response = await axiosInstance.put("/users/profile", data, {
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
 				},

@@ -18,7 +18,7 @@ export function NouvelleOffre({ onClose, onConfirm }) {
 
 	async function getMetiers() {
 		try {
-			const response = await axiosInstance.get("/metiers");
+			const response = await axiosInstance.get("/offres/metiers");
 
 			console.log(response);
 
@@ -45,7 +45,7 @@ export function NouvelleOffre({ onClose, onConfirm }) {
 	async function addOffre() {
 		const accessToken = localStorage.getItem("accessToken");
 		const response = await axiosInstance.post(
-			`/employeur/offres/add`,
+			`/offres/employeur/add`,
 			formData,
 			{
 				headers: {

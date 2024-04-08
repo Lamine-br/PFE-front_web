@@ -22,7 +22,7 @@ export function Apply({ data }) {
 	async function getProfile() {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.get("/profile", {
+			const response = await axiosInstance.get("/users/profile", {
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
 				},

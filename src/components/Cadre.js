@@ -25,11 +25,18 @@ export function Cadre({ Offre }) {
 	const [message, setMessage] = useState("");
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [isSaved, setIsSaved] = useState(
-		user.enregistrements ? user.enregistrements.includes(Offre._id) : false
+		user
+			? user.enregistrements
+				? user.enregistrements.includes(Offre._id)
+				: false
+			: false
 	);
 
 	useEffect(() => {
-		const updatedUser = { ...user, enregistrements: user.enregistrements };
+		const updatedUser = {
+			...user,
+			enregistrements: user ? user.enregistrements : [],
+		};
 		localStorage.setItem("user", JSON.stringify(updatedUser));
 	}, [isSaved]);
 

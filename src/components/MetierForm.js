@@ -11,7 +11,7 @@ export function MetierForm({ id, titre, onConfirm, onDismiss }) {
 	const descriptionRef = useRef("");
 
 	async function getMetier(id) {
-		const response = await axiosInstance.get(`/metiers/${id}`);
+		const response = await axiosInstance.get(`/offres/metiers/${id}`);
 
 		if (response.request.status === 200) {
 			setFormData(response.data);

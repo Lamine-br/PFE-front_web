@@ -18,7 +18,7 @@ export function OffreEmployeur() {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.get("/employeur/offres/" + id, {
+			const response = await axiosInstance.get("/offres/employeur/" + id, {
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
 				},

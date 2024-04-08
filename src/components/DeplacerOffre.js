@@ -13,7 +13,7 @@ export function DeplacerOffre({ id, offre, onDismiss, onConfirm }) {
 
 	async function getCategorie(id) {
 		const accessToken = localStorage.getItem("accessToken");
-		const response = await axiosInstance.get(`/employeur/categories/${id}`, {
+		const response = await axiosInstance.get(`/offres/employeur/categories/${id}`, {
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 			},
@@ -28,7 +28,7 @@ export function DeplacerOffre({ id, offre, onDismiss, onConfirm }) {
 	async function getCategories() {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.get("/employeur/categories", {
+			const response = await axiosInstance.get("/offres/employeur/categories", {
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
 				},

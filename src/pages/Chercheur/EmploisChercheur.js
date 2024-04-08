@@ -16,7 +16,7 @@ export function EmploisChercheur() {
 	async function getEmplois() {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.get("/chercheur/emplois");
+			const response = await axiosInstance.get("/emplois/chercheur");
 
 			console.log(response);
 

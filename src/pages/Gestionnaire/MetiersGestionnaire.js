@@ -19,7 +19,7 @@ export function MetiersGestionnaire() {
 	async function getMetiers() {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.get("/metiers");
+			const response = await axiosInstance.get("/offres/metiers");
 
 			console.log(response);
 
@@ -40,7 +40,7 @@ export function MetiersGestionnaire() {
 	async function addMetier(nom, secteur, description) {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.post("/metiers/add", {
+			const response = await axiosInstance.post("/offres/metiers/add", {
 				nom,
 				secteur,
 				description,
@@ -59,7 +59,7 @@ export function MetiersGestionnaire() {
 	async function updateMetier(id, nom, secteur, description) {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.put("/metiers/" + id, {
+			const response = await axiosInstance.put("/offres/metiers/" + id, {
 				nom,
 				secteur,
 				description,
@@ -77,7 +77,7 @@ export function MetiersGestionnaire() {
 	async function deleteMetier(id) {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.delete("/metiers/" + id);
+			const response = await axiosInstance.delete("/offres/metiers/" + id);
 
 			if (response.request.status === 200) {
 				setLoading(false);

@@ -26,7 +26,7 @@ export function OffresEmployeur() {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.get("/employeur/offres", {
+			const response = await axiosInstance.get("/offres/employeur", {
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
 				},
@@ -52,7 +52,7 @@ export function OffresEmployeur() {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.get("/employeur/categories", {
+			const response = await axiosInstance.get("/offres/employeur/categories", {
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
 				},
@@ -76,7 +76,7 @@ export function OffresEmployeur() {
 
 	async function deleteOffre(id) {
 		const accessToken = localStorage.getItem("accessToken");
-		const response = await axiosInstance.delete(`/employeur/offres/${id}`, {
+		const response = await axiosInstance.delete(`/offres/employeur/${id}`, {
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 			},
@@ -89,11 +89,14 @@ export function OffresEmployeur() {
 
 	async function deleteCategorie(id) {
 		const accessToken = localStorage.getItem("accessToken");
-		const response = await axiosInstance.delete(`/employeur/categories/${id}`, {
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
-		});
+		const response = await axiosInstance.delete(
+			`/offres/employeur/categories/${id}`,
+			{
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			}
+		);
 
 		if (response.status === 200) {
 			console.log(response.data);
@@ -103,7 +106,7 @@ export function OffresEmployeur() {
 	async function deplacerOffre(idCategorie, idOffre) {
 		const accessToken = localStorage.getItem("accessToken");
 		const response = await axiosInstance.post(
-			`/employeur/categories/${idCategorie}`,
+			`/offres/employeur/categories/${idCategorie}`,
 			{ id: idOffre },
 			{
 				headers: {

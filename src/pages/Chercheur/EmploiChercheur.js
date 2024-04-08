@@ -20,7 +20,7 @@ export function EmploiChercheur() {
 	async function getEmploi() {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.get("/chercheur/emplois/" + id);
+			const response = await axiosInstance.get("/emplois/chercheur/" + id);
 
 			console.log(response);
 

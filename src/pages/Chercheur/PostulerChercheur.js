@@ -21,7 +21,7 @@ export function PostulerChercheur() {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.get("/chercheur/candidatures", {
+			const response = await axiosInstance.get("/candidatures/chercheur", {
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
 				},

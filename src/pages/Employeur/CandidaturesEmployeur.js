@@ -77,7 +77,7 @@ export function CandidaturesEmployeur() {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.get("/employeur/candidatures", {
+			const response = await axiosInstance.get("/candidatures/employeur", {
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
 				},
@@ -146,7 +146,7 @@ export function CandidaturesEmployeur() {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
-				`/employeur/candidatures/validate`,
+				`/candidatures/employeur/validate`,
 				{ id },
 				{
 					headers: {
@@ -168,7 +168,7 @@ export function CandidaturesEmployeur() {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
-				`/employeur/candidatures/refuse`,
+				`/candidatures/employeur/refuse`,
 				{ id },
 				{
 					headers: {
@@ -190,7 +190,7 @@ export function CandidaturesEmployeur() {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
-				`/employeur/candidatures/${id}/contact`,
+				`/candidatures/employeur/${id}/contact`,
 				{
 					titre,
 					contenu,

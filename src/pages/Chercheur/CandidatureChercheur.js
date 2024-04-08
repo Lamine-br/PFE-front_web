@@ -20,7 +20,7 @@ export function CandidatureChercheur() {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.get(
-				"/chercheur/candidatures/" + id,
+				"/candidatures/chercheur/" + id,
 				{
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
@@ -45,7 +45,7 @@ export function CandidatureChercheur() {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.get(
-				`/chercheur/candidatures/${id}/reponses`,
+				`/candidatures/chercheur/${id}/reponses`,
 				{
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
@@ -67,7 +67,7 @@ export function CandidatureChercheur() {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
-				"/chercheur/candidatures/delete",
+				"/candidatures/chercheur/delete",
 				{ id },
 				{
 					headers: {
@@ -91,7 +91,7 @@ export function CandidatureChercheur() {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.put(
-				"/chercheur/candidatures/" + id,
+				"/candidatures/chercheur/" + id,
 				{
 					cv,
 					motivation,
@@ -118,7 +118,7 @@ export function CandidatureChercheur() {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
-				`/chercheur/candidatures/${id}/contact`,
+				`/candidatures/chercheur/${id}/contact`,
 				{
 					titre,
 					contenu,
@@ -143,7 +143,7 @@ export function CandidatureChercheur() {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
-				`/chercheur/candidatures/validate`,
+				`/candidatures/chercheur/validate`,
 				{ id },
 				{
 					headers: {
@@ -165,7 +165,7 @@ export function CandidatureChercheur() {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
-				`/chercheur/candidatures/refuse`,
+				`/candidatures/chercheur/refuse`,
 				{ id },
 				{
 					headers: {
@@ -187,7 +187,7 @@ export function CandidatureChercheur() {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
-				`/chercheur/candidatures/declareProblem`,
+				`/candidatures/chercheur/declareProblem`,
 				{
 					candidature,
 					titre,

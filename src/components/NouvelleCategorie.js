@@ -11,7 +11,7 @@ export function NouvelleCategorie({ id, titre, onDismiss, onConfirm }) {
 
 	async function getCategorie(id) {
 		const accessToken = localStorage.getItem("accessToken");
-		const response = await axiosInstance.get(`/employeur/categories/${id}`, {
+		const response = await axiosInstance.get(`/offres/employeur/categories/${id}`, {
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 			},
@@ -32,7 +32,7 @@ export function NouvelleCategorie({ id, titre, onDismiss, onConfirm }) {
 	async function addCategorie() {
 		const accessToken = localStorage.getItem("accessToken");
 		const response = await axiosInstance.post(
-			`/employeur/categories/add`,
+			`/offres/employeur/categories/add`,
 			{ nom, description },
 			{
 				headers: {
