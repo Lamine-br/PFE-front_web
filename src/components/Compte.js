@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // @mui
 import { alpha } from "@mui/material/styles";
 import {
@@ -13,12 +13,12 @@ import {
 } from "@mui/material";
 
 import esi from "../assets/logo_esi.png";
-import { BACKEND_URL } from "../util/constants";
-
+import { axiosInstance } from "../util/axios";
 // ----------------------------------------------------------------------
 
 export default function Compte() {
 	let account = JSON.parse(localStorage.getItem("user"));
+	const [url, setUrl] = useState("");
 
 	const MENU_OPTIONS = [
 		{
@@ -66,7 +66,25 @@ export default function Compte() {
 		window.location.href = "/";
 	};
 
-	console.log(BACKEND_URL + account.image);
+	async function getUrl() {
+		try {
+			const response = await axiosInstance.get("/services/auth");
+			if (response.status === 200) {
+				console.log(response.data);
+				setUrl(response.data);
+			} else {
+				setUrl("/");
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getUrl();
+	}, []);
+
+	console.log(url + account.image);
 
 	return (
 		<>
@@ -87,7 +105,7 @@ export default function Compte() {
 					}),
 				}}
 			>
-				<Avatar src={BACKEND_URL + account.image} alt='photoURL' />
+				<Avatar src={url + account.image} alt='photoURL' />
 			</IconButton>
 
 			<Popover

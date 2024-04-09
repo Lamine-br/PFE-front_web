@@ -3,6 +3,7 @@ import {
 	HeaderChercheur,
 	NavBarChercheur,
 	TableauEmplois,
+	Spinner,
 } from "../../components";
 import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
@@ -95,6 +96,8 @@ export function EmploisChercheur() {
 					<TableauEmplois data={data} onRowClick={handleClick}></TableauEmplois>
 				</div>
 			</div>
+
+			{loading && <Spinner />}
 		</div>
 	);
 }

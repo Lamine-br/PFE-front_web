@@ -1,15 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ButtonCarre } from "./ButtonCarre";
 import { Spinner } from "./Spinner";
 import { FiEdit } from "react-icons/fi";
 import { OneForm } from "./OneForm";
 import { PasswordForm } from "./PasswordForm";
+import { axiosInstance } from "../util/axios";
 
 export function ProfileC({ data, onUpdate }) {
 	const [loading, setLoading] = useState(false);
 	const [formData, setFormData] = useState({ email: "" });
 	const [showForm, setShowForm] = useState(false);
 	const [showPasswordForm, setShowPasswordForm] = useState(false);
+
+	const [url, setUrl] = useState("");
+
+	async function getUrl() {
+		try {
+			const response = await axiosInstance.get("/services/auth");
+			if (response.status === 200) {
+				console.log(response.data);
+				setUrl(response.data);
+			} else {
+				setUrl("/");
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getUrl();
+	}, []);
 
 	return (
 		<div className=''>
@@ -156,6 +177,17 @@ export function ProfileC({ data, onUpdate }) {
 						</div>
 						<p className='text-sm text-bleuF pb-2'>{data.numero}</p>
 					</div>
+				</div>
+			</div>
+			<div className='m-6 bg-white rounded-lg p-4 border border-bleuF shadow-md'>
+				<div className='space-y-6'>
+					<p className='text-rouge font-bold text-lg'>Cv</p>
+					<object
+						data={url + data.cv}
+						type='application/pdf'
+						width='100%'
+						height='500px'
+					/>
 				</div>
 			</div>
 

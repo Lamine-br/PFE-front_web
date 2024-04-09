@@ -10,11 +10,14 @@ export function EnregistrementsChercheur() {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.get("/chercheur/enregistrements", {
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-				},
-			});
+			const response = await axiosInstance.get(
+				"/offres/chercheur/enregistrements",
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
 
 			console.log(response);
 

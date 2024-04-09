@@ -44,7 +44,7 @@ export function Cadre({ Offre }) {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
-				"/chercheur/offres/save",
+				"/offres/chercheur/save",
 				{ id: Offre._id },
 				{
 					headers: {
