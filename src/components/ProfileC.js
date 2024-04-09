@@ -4,6 +4,7 @@ import { Spinner } from "./Spinner";
 import { FiEdit } from "react-icons/fi";
 import { OneForm } from "./OneForm";
 import { PasswordForm } from "./PasswordForm";
+import { CvForm } from "./CvForm";
 import { axiosInstance } from "../util/axios";
 
 export function ProfileC({ data, onUpdate }) {
@@ -11,6 +12,7 @@ export function ProfileC({ data, onUpdate }) {
 	const [formData, setFormData] = useState({ email: "" });
 	const [showForm, setShowForm] = useState(false);
 	const [showPasswordForm, setShowPasswordForm] = useState(false);
+	const [showCvForm, setShowCvForm] = useState(false);
 
 	const [url, setUrl] = useState("");
 
@@ -166,11 +168,7 @@ export function ProfileC({ data, onUpdate }) {
 								color={"#FF584D"}
 								className='cursor-pointer'
 								onClick={() => {
-									setFormData({
-										label: "Téléphone",
-										key: "numero",
-										value: data.numero,
-									});
+									setFormData(data.cv);
 									setShowForm(true);
 								}}
 							/>
@@ -181,7 +179,18 @@ export function ProfileC({ data, onUpdate }) {
 			</div>
 			<div className='m-6 bg-white rounded-lg p-4 border border-bleuF shadow-md'>
 				<div className='space-y-6'>
-					<p className='text-rouge font-bold text-lg'>Cv</p>
+					<div className='flex items-center space-x-2'>
+						<p className='text-bleuF font-bold'>Cv</p>
+						<FiEdit
+							size={10}
+							color={"#FF584D"}
+							className='cursor-pointer'
+							onClick={() => {
+								setFormData(data.cv);
+								setShowCvForm(true);
+							}}
+						/>
+					</div>
 					<object
 						data={url + data.cv}
 						type='application/pdf'
@@ -203,6 +212,14 @@ export function ProfileC({ data, onUpdate }) {
 				<PasswordForm
 					onConfirm={(data) => onUpdate(data)}
 					onDismiss={() => setShowPasswordForm(false)}
+				/>
+			)}
+
+			{showCvForm && (
+				<CvForm
+					data={formData}
+					onConfirm={(data) => onUpdate(data)}
+					onDismiss={() => setShowCvForm(false)}
 				/>
 			)}
 

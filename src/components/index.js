@@ -71,3 +71,4 @@ export * from "./TableauCategories";
 export * from "./Map";
 export * from "./Apply";
 export * from "./Avertissement";
+export * from "./CvForm";

@@ -42,6 +42,31 @@ export function PostulerChercheur() {
 		}
 	}
 
+	async function addCandidature(data) {
+		try {
+			setLoading(true);
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				"/candidatures/chercheur/add",
+				data,
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			console.log(response);
+
+			if (response.status === 201) {
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
 	const redirect = () => {
 		window.location.href = "/offres/" + id;
 	};
@@ -59,7 +84,7 @@ export function PostulerChercheur() {
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur></NavBarChercheur>
 			<div className='m-6 bg-white rounded-lg p-4'>
-				<Apply data={data} />
+				<Apply data={candidatures} onConfirm={addCandidature} />
 			</div>
 			{loading && <Spinner />}
 			{showAvertissement && (
