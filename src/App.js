@@ -33,6 +33,7 @@ import {
 	PostulerChercheur,
 	CandidaturesSpontanees,
 	CandidatureSpontaneeChercheur,
+	FavorisChercheur,
 } from "./pages";
 
 function App() {
@@ -122,6 +123,7 @@ function App() {
 					path='/chercheur/enregistrements'
 					element={<EnregistrementsChercheur />}
 				/>
+				<Route path='/chercheur/favoris' element={<FavorisChercheur />} />
 			</Routes>
 		</BrowserRouter>
 	);

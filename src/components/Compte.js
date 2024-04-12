@@ -41,6 +41,14 @@ export default function Compte() {
 		});
 	}
 
+	if (account.type === "chercheur") {
+		MENU_OPTIONS.push({
+			label: "Favoris",
+			icon: "eva:settings-2-fill",
+			url: "/chercheur/favoris",
+		});
+	}
+
 	MENU_OPTIONS.push({
 		label: "Paramètres",
 		icon: "eva:settings-2-fill",

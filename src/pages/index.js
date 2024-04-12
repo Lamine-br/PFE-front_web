@@ -31,3 +31,4 @@ export * from "./Chercheur/EnregistrementsChercheur";
 export * from "./Chercheur/PostulerChercheur";
 export * from "./Chercheur/CandidaturesSpontanees";
 export * from "./Chercheur/CandidatureSpontaneeChercheur";
+export * from "./Chercheur/FavorisChercheur";

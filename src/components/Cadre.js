@@ -23,7 +23,9 @@ export function Cadre({ Offre }) {
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 	const [showMessage, setShowMessage] = useState(false);
 	const [message, setMessage] = useState("");
-	const [isFavorite, setIsFavorite] = useState(false);
+	const [isFavorite, setIsFavorite] = useState(
+		user ? (user.favoris ? user.favoris.includes(Offre._id) : false) : false
+	);
 	const [isSaved, setIsSaved] = useState(
 		user
 			? user.enregistrements
@@ -68,8 +70,36 @@ export function Cadre({ Offre }) {
 		}
 	}
 
+	async function likeOffre() {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				"/offres/chercheur/like",
+				{ id: Offre._id },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+			console.log(response);
+
+			if (response.status === 200) {
+				setMessage(response.data.message);
+				setUser({ ...user, favoris: response.data.favoris });
+				setIsFavorite(!isFavorite);
+				setShowMessage(true);
+				setTimeout(() => {
+					setShowMessage(false);
+				}, 1000);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	const toggleFavorite = () => {
-		setIsFavorite(!isFavorite);
+		likeOffre();
 	};
 
 	const toggleSaved = () => {
