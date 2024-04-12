@@ -31,6 +31,7 @@ import {
 	AbonnementsEmployeur,
 	EnregistrementsChercheur,
 	PostulerChercheur,
+	CandidatureSpontanee,
 } from "./pages";
 
 function App() {
@@ -107,6 +108,10 @@ function App() {
 				<Route path='/chercheur/emplois' element={<EmploisChercheur />} />
 				<Route path='/chercheur/emplois/:id' element={<EmploiChercheur />} />
 				<Route path='/chercheur/agenda' element={<AgendaChercheur />} />
+				<Route
+					path='/chercheur/candidatureSpontanee'
+					element={<CandidatureSpontanee />}
+				/>
 				<Route path='/chercheur/profile' element={<ProfileChercheur />} />
 				<Route
 					path='/chercheur/enregistrements'

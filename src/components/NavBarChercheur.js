@@ -30,6 +30,15 @@ export function NavBarChercheur({ selected }) {
 						>
 							<NavLink to={"/chercheur/agenda"}>Agenda</NavLink>
 						</li>
+						<li
+							className={`px-2 py-1 cursor-pointer text-base font-bold ${
+								selectedItem === 3 ? "bg-bleuF text-violet" : "text-bleuF"
+							}`}
+						>
+							<NavLink to={"/chercheur/candidatureSpontanee"}>
+								Candidature Spontanée
+							</NavLink>
+						</li>
 					</ul>
 				</nav>
 			</div>

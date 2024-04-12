@@ -70,7 +70,6 @@ export default function Compte() {
 		try {
 			const response = await axiosInstance.get("/services/auth");
 			if (response.status === 200) {
-				console.log(response.data);
 				setUrl(response.data);
 			} else {
 				setUrl("/");
@@ -83,8 +82,6 @@ export default function Compte() {
 	useEffect(() => {
 		getUrl();
 	}, []);
-
-	console.log(url + account.image);
 
 	return (
 		<>

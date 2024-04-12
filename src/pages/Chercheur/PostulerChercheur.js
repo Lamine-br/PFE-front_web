@@ -30,10 +30,7 @@ export function PostulerChercheur() {
 			console.log(response);
 
 			if (response.status === 200) {
-				const dataEnAttente = response.data.filter(
-					(item) => item.status === "En attente"
-				);
-				setCandidatures(dataEnAttente);
+				setCandidatures(response.data);
 				setLoading(false);
 			}
 		} catch (e) {
@@ -83,7 +80,7 @@ export function PostulerChercheur() {
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur></NavBarChercheur>
-			<div className='m-6 bg-white rounded-lg p-4'>
+			<div className='m-6 bg-white rounded-lg'>
 				<Apply data={candidatures} onConfirm={addCandidature} />
 			</div>
 			{loading && <Spinner />}

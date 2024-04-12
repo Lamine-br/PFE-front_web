@@ -72,3 +72,5 @@ export * from "./Map";
 export * from "./Apply";
 export * from "./Avertissement";
 export * from "./CvForm";
+export * from "./NouvelleCandidatureSpontanee";
+export * from "./TableauCandidaturesSpontanees";
