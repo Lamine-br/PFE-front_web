@@ -11,7 +11,7 @@ import { axiosInstance } from "../../util/axios";
 import { FaPlus } from "react-icons/fa";
 import { ButtonCarre } from "../../components";
 
-export function CandidatureSpontanee() {
+export function CandidaturesSpontanees() {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [showNouvelleCandidature, setShowNouvelleCandidature] = useState(false);
@@ -70,6 +70,10 @@ export function CandidatureSpontanee() {
 		getCandidaturesSpontanees();
 	}, []);
 
+	const handleClick = (id) => {
+		window.location.href = `/chercheur/candidaturesSpontanees/${id}`;
+	};
+
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderChercheur></HeaderChercheur>
@@ -93,6 +97,7 @@ export function CandidatureSpontanee() {
 				<div>
 					<TableauCandidaturesSpontanees
 						data={data}
+						onRowClick={handleClick}
 					></TableauCandidaturesSpontanees>
 				</div>
 			</div>

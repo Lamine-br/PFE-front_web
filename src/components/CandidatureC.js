@@ -103,23 +103,27 @@ export function CandidatureC({
 				</div>
 			</div>
 			<div className='grid grid-cols-4 gap-x-4 mt-6'>
-				{candidature.dossier.cv ? (
-					<div>
-						<FiExternalLink
-							size={10}
-							color={"#FF584D"}
-							className='cursor-pointer'
-							onClick={handleExternalLinkClick}
-						/>
-						<object
-							data={candidature.dossier ? url + candidature.dossier.cv : ""}
-							type='application/pdf'
-							width='100%'
-							height='400px'
-						/>
-					</div>
+				{candidature.dossier ? (
+					candidature.dossier.cv ? (
+						<div>
+							<FiExternalLink
+								size={10}
+								color={"#FF584D"}
+								className='cursor-pointer'
+								onClick={handleExternalLinkClick}
+							/>
+							<object
+								data={candidature.dossier ? url + candidature.dossier.cv : ""}
+								type='application/pdf'
+								width='100%'
+								height='400px'
+							/>
+						</div>
+					) : (
+						"Aucun CV"
+					)
 				) : (
-					"Aucun CV"
+					""
 				)}
 
 				<div className='px-10 col-span-3 space-y-6 '>

@@ -9,10 +9,9 @@ import {
 import { Popup } from "./Popup";
 import { MessageTab } from "./MessageTab";
 
-export function TableauEmplois({ data, onRowClick, onContact, vide }) {
-	const [selectedCandidature, setSelectedCandidature] = useState(null);
+export function TableauEmplois({ data, onRowClick, onAddToAgenda, vide }) {
+	const [selectedEmploi, setSelectedEmploi] = useState(null);
 
-	const [showMessageTab, setShowMessageTab] = useState(false);
 	const [showAddToAgenda, setShowAddToAgenda] = useState(false);
 
 	return (
@@ -60,21 +59,23 @@ export function TableauEmplois({ data, onRowClick, onContact, vide }) {
 									</p>
 
 									<div className='flex justify-center items-center space-x-4'>
-										<>
+										{item.agenda ? (
+											""
+										) : (
 											<>
 												<FaCalendarPlus
 													size={12}
 													color={"#30CA3F"}
 													className='cursor-pointer'
 													onClick={(e) => {
-														setSelectedCandidature(item._id);
+														setSelectedEmploi(item._id);
 														console.log(item._id);
 														e.stopPropagation();
 														setShowAddToAgenda(true);
 													}}
 												/>
 											</>
-										</>
+										)}
 									</div>
 								</div>
 							))}
@@ -86,10 +87,8 @@ export function TableauEmplois({ data, onRowClick, onContact, vide }) {
 			{showAddToAgenda && (
 				<Popup
 					Titre={"Confirmation"}
-					Texte={
-						"Êtes-vous sûr de vouloir ajouter cet emploi à votre agenda (A implémenter) ?"
-					}
-					onConfirm={() => {}}
+					Texte={"Êtes-vous sûr de vouloir ajouter cet emploi à votre agenda ?"}
+					onConfirm={() => onAddToAgenda(selectedEmploi)}
 					onDismiss={() => setShowAddToAgenda(false)}
 				/>
 			)}

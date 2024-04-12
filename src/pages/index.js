@@ -29,4 +29,5 @@ export * from "./Gestionnaire/AbonnementsGestionnaire";
 export * from "./Employeur/AbonnementsEmployeur";
 export * from "./Chercheur/EnregistrementsChercheur";
 export * from "./Chercheur/PostulerChercheur";
-export * from "./Chercheur/CandidatureSpontanee";
+export * from "./Chercheur/CandidaturesSpontanees";
+export * from "./Chercheur/CandidatureSpontaneeChercheur";

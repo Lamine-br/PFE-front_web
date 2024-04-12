@@ -35,7 +35,7 @@ export function NavBarChercheur({ selected }) {
 								selectedItem === 3 ? "bg-bleuF text-violet" : "text-bleuF"
 							}`}
 						>
-							<NavLink to={"/chercheur/candidatureSpontanee"}>
+							<NavLink to={"/chercheur/candidaturesSpontanees"}>
 								Candidature Spontanée
 							</NavLink>
 						</li>

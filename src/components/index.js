@@ -74,3 +74,4 @@ export * from "./Avertissement";
 export * from "./CvForm";
 export * from "./NouvelleCandidatureSpontanee";
 export * from "./TableauCandidaturesSpontanees";
+export * from "./CandidatureSpontanee";

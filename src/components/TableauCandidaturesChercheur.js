@@ -24,7 +24,6 @@ export function TableauCandidaturesChercheur({
 	const [showAcceptConfirmation, setShowAcceptConfirmation] = useState(false);
 	const [showRefuseConfirmation, setShowRefuseConfirmation] = useState(false);
 	const [showMessageTab, setShowMessageTab] = useState(false);
-	const [showAddToAgenda, setShowAddToAgenda] = useState(false);
 
 	return (
 		<div>
@@ -77,8 +76,24 @@ export function TableauCandidaturesChercheur({
 									<p className='text-bleuF text-sm font-semibold'>
 										{item.date_traitement || "-"}
 									</p>
-									<p className='text-bleuF text-sm font-semibold'>
-										{item.status || "-"}
+									<p
+										className={`${
+											item.status === "En attente" ? "text-bleuF" : ""
+										} ${
+											item.status === "Refusé" || item.status === "Supprimé"
+												? "text-rouge"
+												: ""
+										}${item.status === "Validé" ? "text-[#ffc107]" : ""} ${
+											item.status === "Validé Validé" ? "text-vertF" : ""
+										} text-sm font-semibold`}
+									>
+										{item.status === "En attente" ? "En attente" : ""}
+										{item.status === "Refusé" ? "Refusée" : ""}
+										{item.status === "Supprimé" ? "Supprimée" : ""}
+										{item.status === "Validé"
+											? "En attente de votre réponse"
+											: ""}
+										{item.status === "Validé Validé" ? "Validée" : ""}
 									</p>
 
 									<div className='flex justify-center items-center space-x-4'>
@@ -136,23 +151,6 @@ export function TableauCandidaturesChercheur({
 											) : (
 												""
 											)}
-											{item.status === "Validé Validé" ? (
-												<>
-													<FaCalendarPlus
-														size={12}
-														color={"#30CA3F"}
-														className='cursor-pointer'
-														onClick={(e) => {
-															setSelectedCandidature(item._id);
-															console.log(item._id);
-															e.stopPropagation();
-															setShowAddToAgenda(true);
-														}}
-													/>
-												</>
-											) : (
-												""
-											)}
 										</>
 									</div>
 								</div>
@@ -197,16 +195,6 @@ export function TableauCandidaturesChercheur({
 					Texte={"Êtes-vous sûr de vouloir supprimer cette candidature ?"}
 					onConfirm={() => onDelete(selectedCandidature)}
 					onDismiss={() => setShowDeleteConfirmation(false)}
-				/>
-			)}
-			{showAddToAgenda && (
-				<Popup
-					Titre={"Confirmation"}
-					Texte={
-						"Êtes-vous sûr de vouloir ajouter cet emploi à votre agenda (A implémenter) ?"
-					}
-					onConfirm={() => {}}
-					onDismiss={() => setShowAddToAgenda(false)}
 				/>
 			)}
 		</div>

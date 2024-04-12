@@ -1,16 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ButtonCarre } from "./ButtonCarre";
-import { Spinner } from "./Spinner";
 import { FaPlus } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
 import { BsInfoCircleFill } from "react-icons/bs";
 
 export function NouvelleCandidatureSpontanee({ onConfirm, onDismiss }) {
-	const [loading, setLoading] = useState(false);
-
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
-	const [user, setUser] = useState({});
 
 	const handleStartDateChange = (e) => {
 		const selectedDate = e.target.value;
@@ -54,18 +50,15 @@ export function NouvelleCandidatureSpontanee({ onConfirm, onDismiss }) {
 
 	async function getEmployeurs() {
 		try {
-			setLoading(true);
 			const response = await axiosInstance.get("/users/employeurs");
 
 			console.log(response);
 
 			if (response.status === 200) {
 				setEmployeurs(response.data);
-				setLoading(false);
 			}
 		} catch (e) {
 			console.log(e);
-			setLoading(false);
 		}
 	}
 
@@ -96,18 +89,15 @@ export function NouvelleCandidatureSpontanee({ onConfirm, onDismiss }) {
 
 	async function getMetiers() {
 		try {
-			setLoading(true);
 			const response = await axiosInstance.get("/offres/metiers");
 
 			console.log(response);
 
 			if (response.status === 200) {
 				setMetiers(response.data);
-				setLoading(false);
 			}
 		} catch (e) {
 			console.log(e);
-			setLoading(false);
 		}
 	}
 
@@ -133,174 +123,171 @@ export function NouvelleCandidatureSpontanee({ onConfirm, onDismiss }) {
 	};
 	return (
 		<div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
-			{!loading && (
-				<div className='w-3/4 h-fit bg-white p-4 rounded-md space-y-4'>
-					<h1 className='text-xl text-bleuF font-bold mb-10'>
-						Nouvelle Candidature Spontanée
-					</h1>
-					<div className='grid grid-cols-3 gap-10 mt-8'>
-						<div className='flex flex-col'>
-							<div className='flex w-full justify-between space-x-2'>
-								<div className='flex flex-col flex-grow'>
-									<select
-										className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-										onChange={(e) => setSelectedMetier(e.target.value)}
-									>
-										<option value=''>Sélectionnez un métier</option>
-										{metiers.map((item, index) => (
-											<option key={item._id} value={index}>
-												{item.nom}
-											</option>
-										))}
-									</select>
-								</div>
-								<ButtonCarre
-									couleur='bleuF'
-									couleurTexte={"violet"}
-									contenu={<FaPlus />}
-									width={"fit text-sm"}
-									height={"fit"}
-									onclick={() => {
-										addMetier(selectedMetier);
-										console.log(selectedMetiers);
-									}}
-								></ButtonCarre>
-							</div>
-							<div>
-								<table>
-									<thead>
-										<tr>
-											<th>Liste des métiers</th>
-										</tr>
-									</thead>
-									<tbody>
-										{selectedMetiers.map((item, index) => (
-											<tr key={index} className='justify-between'>
-												<td>{item.nom}</td>
-												<td>
-													<p
-														className='hover:underline text-rouge text-xs cursor-pointer'
-														onClick={() => deleteMetier(index)}
-													>
-														Supp
-													</p>
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<div className='flex flex-col'>
-							<div className='flex w-full justify-between space-x-2'>
-								<div className='flex flex-col flex-grow'>
-									<select
-										className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-										onChange={(e) => setSelectedEmployeur(e.target.value)}
-									>
-										<option value=''>Sélectionnez un employeur</option>
-										{employeurs.map((item, index) => (
-											<option key={item._id} value={index}>
-												{item.entreprise}
-											</option>
-										))}
-									</select>
-								</div>
-								<ButtonCarre
-									couleur='bleuF'
-									couleurTexte={"violet"}
-									contenu={<FaPlus />}
-									width={"fit text-sm"}
-									height={"fit"}
-									onclick={() => {
-										addEmployeur(selectedEmployeur);
-										console.log(selectedEmployeurs);
-									}}
-								></ButtonCarre>
-							</div>
-							<div>
-								<table>
-									<thead>
-										<tr>
-											<th>Liste des employeurs</th>
-										</tr>
-									</thead>
-									<tbody>
-										{selectedEmployeurs.map((item, index) => (
-											<tr key={index}>
-												<td>{item.entreprise}</td>
-												<td>
-													<p
-														className='hover:underline text-rouge text-xs cursor-pointer'
-														onClick={() => deleteEmployeur(index)}
-													>
-														Supp
-													</p>
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<div className='flex-col gap-8 mx-4 mb-10'>
-							<div className='flex flex-col'>
-								<label className='text-bleuF text-xs font-bold'>Début</label>
-								<input
+			<div className='w-3/4 h-fit bg-white p-4 rounded-md space-y-4'>
+				<h1 className='text-xl text-bleuF font-bold mb-10'>
+					Nouvelle Candidature Spontanée
+				</h1>
+				<div className='grid grid-cols-3 gap-10 mt-8'>
+					<div className='flex flex-col'>
+						<div className='flex w-full justify-between space-x-2'>
+							<div className='flex flex-col flex-grow'>
+								<select
 									className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-									type='date'
-									value={startDate}
-									onChange={handleStartDateChange}
-								></input>
-							</div>
-							<div className='flex flex-col'>
-								<label className='text-bleuF text-xs font-bold'>Fin</label>
-								<input
-									className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-									type='date'
-									value={endDate}
-									onChange={handleEndDateChange}
-								></input>
-							</div>
-						</div>
-					</div>
-
-					<div className='flex justify-between mt-10'>
-						<div className='flex space-x-2'>
-							<BsInfoCircleFill color={"FF584D"} />
-							<p className='text-rouge text-xs font-bold'>
-								Les candidatures spontanées se font avec votre profil. <br></br>
-								Pour modifier,{" "}
-								<span
-									className='hover:underline cursor-pointer'
-									onClick={redirectToProfile}
+									onChange={(e) => setSelectedMetier(e.target.value)}
 								>
-									cliquez ici
-								</span>
-							</p>
-						</div>
-						<div className='flex space-x-2'>
+									<option value=''>Sélectionnez un métier</option>
+									{metiers.map((item, index) => (
+										<option key={item._id} value={index}>
+											{item.nom}
+										</option>
+									))}
+								</select>
+							</div>
 							<ButtonCarre
 								couleur='bleuF'
 								couleurTexte={"violet"}
-								contenu={"Annuler"}
-								width={"fit text-xs"}
+								contenu={<FaPlus />}
+								width={"fit text-sm"}
 								height={"fit"}
-								onclick={() => onDismiss()}
+								onclick={() => {
+									addMetier(selectedMetier);
+									console.log(selectedMetiers);
+								}}
 							></ButtonCarre>
+						</div>
+						<div>
+							<table>
+								<thead>
+									<tr>
+										<th>Liste des métiers</th>
+									</tr>
+								</thead>
+								<tbody>
+									{selectedMetiers.map((item, index) => (
+										<tr key={index} className='justify-between'>
+											<td>{item.nom}</td>
+											<td>
+												<p
+													className='hover:underline text-rouge text-xs cursor-pointer'
+													onClick={() => deleteMetier(index)}
+												>
+													Supp
+												</p>
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div className='flex flex-col'>
+						<div className='flex w-full justify-between space-x-2'>
+							<div className='flex flex-col flex-grow'>
+								<select
+									className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+									onChange={(e) => setSelectedEmployeur(e.target.value)}
+								>
+									<option value=''>Sélectionnez un employeur</option>
+									{employeurs.map((item, index) => (
+										<option key={item._id} value={index}>
+											{item.entreprise}
+										</option>
+									))}
+								</select>
+							</div>
 							<ButtonCarre
-								couleur='rouge'
+								couleur='bleuF'
 								couleurTexte={"violet"}
-								contenu={"Envoyer"}
-								width={"fit text-xs"}
+								contenu={<FaPlus />}
+								width={"fit text-sm"}
 								height={"fit"}
-								onclick={() => handleSubmit()}
+								onclick={() => {
+									addEmployeur(selectedEmployeur);
+									console.log(selectedEmployeurs);
+								}}
 							></ButtonCarre>
+						</div>
+						<div>
+							<table>
+								<thead>
+									<tr>
+										<th>Liste des employeurs</th>
+									</tr>
+								</thead>
+								<tbody>
+									{selectedEmployeurs.map((item, index) => (
+										<tr key={index}>
+											<td>{item.entreprise}</td>
+											<td>
+												<p
+													className='hover:underline text-rouge text-xs cursor-pointer'
+													onClick={() => deleteEmployeur(index)}
+												>
+													Supp
+												</p>
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div className='flex-col gap-8 mx-4 mb-10'>
+						<div className='flex flex-col'>
+							<label className='text-bleuF text-xs font-bold'>Début</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='date'
+								value={startDate}
+								onChange={handleStartDateChange}
+							></input>
+						</div>
+						<div className='flex flex-col'>
+							<label className='text-bleuF text-xs font-bold'>Fin</label>
+							<input
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								type='date'
+								value={endDate}
+								onChange={handleEndDateChange}
+							></input>
 						</div>
 					</div>
 				</div>
-			)}
-			{loading && <Spinner />}
+
+				<div className='flex justify-between mt-10'>
+					<div className='flex space-x-2'>
+						<BsInfoCircleFill color={"FF584D"} />
+						<p className='text-rouge text-xs font-bold'>
+							Les candidatures spontanées se font avec votre profil. <br></br>
+							Pour modifier,{" "}
+							<span
+								className='hover:underline cursor-pointer'
+								onClick={redirectToProfile}
+							>
+								cliquez ici
+							</span>
+						</p>
+					</div>
+					<div className='flex space-x-2'>
+						<ButtonCarre
+							couleur='bleuF'
+							couleurTexte={"violet"}
+							contenu={"Annuler"}
+							width={"fit text-xs"}
+							height={"fit"}
+							onclick={() => onDismiss()}
+						></ButtonCarre>
+						<ButtonCarre
+							couleur='rouge'
+							couleurTexte={"violet"}
+							contenu={"Envoyer"}
+							width={"fit text-xs"}
+							height={"fit"}
+							onclick={() => handleSubmit()}
+						></ButtonCarre>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 }

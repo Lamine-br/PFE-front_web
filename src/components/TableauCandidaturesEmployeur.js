@@ -65,8 +65,24 @@ export function TableauCandidaturesEmployeur({
 									<p className='text-bleuF text-sm font-semibold'>
 										{item.createdAt.split("T")[0]}
 									</p>
-									<p className='text-bleuF text-sm font-semibold'>
-										{item.status}
+									<p
+										className={`${
+											item.status === "En attente" ? "text-bleuF" : ""
+										} ${
+											item.status === "Refusé" || item.status === "Supprimé"
+												? "text-rouge"
+												: ""
+										}${item.status === "Validé" ? "text-[#ffc107]" : ""} ${
+											item.status === "Validé Validé" ? "text-vertF" : ""
+										} text-sm font-semibold`}
+									>
+										{item.status === "En attente" ? "En attente" : ""}
+										{item.status === "Refusé" ? "Refusée" : ""}
+										{item.status === "Supprimé" ? "Supprimée" : ""}
+										{item.status === "Validé" ? "Validée" : ""}
+										{item.status === "Validé Validé"
+											? "Validé par le chercheur"
+											: ""}
 									</p>
 
 									<div className='flex justify-center items-center space-x-4'>

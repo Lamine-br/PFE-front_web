@@ -20,7 +20,12 @@ export function EmploiChercheur() {
 	async function getEmploi() {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.get("/emplois/chercheur/" + id);
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/emplois/chercheur/" + id, {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
 
 			console.log(response);
 

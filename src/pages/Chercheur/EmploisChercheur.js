@@ -17,11 +17,16 @@ export function EmploisChercheur() {
 	async function getEmplois() {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.get("/emplois/chercheur");
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/emplois/chercheur", {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
 
 			console.log(response);
 
-			if (response.request.status === 200) {
+			if (response.status === 200) {
 				if (response.data.length === 0) {
 					setVide(true);
 				}
@@ -32,6 +37,31 @@ export function EmploisChercheur() {
 			console.log(e);
 			setLoading(false);
 			setVide(true);
+		}
+	}
+
+	async function addToAgenda(id) {
+		try {
+			setLoading(true);
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.put(
+				"/emplois/chercheur/addToAgenda",
+				{ id: id },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			console.log(response);
+
+			if (response.status === 200) {
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
 		}
 	}
 
@@ -93,7 +123,11 @@ export function EmploisChercheur() {
 					</div>
 				</div>
 				<div>
-					<TableauEmplois data={data} onRowClick={handleClick}></TableauEmplois>
+					<TableauEmplois
+						data={data}
+						onRowClick={handleClick}
+						onAddToAgenda={(id) => addToAgenda(id)}
+					></TableauEmplois>
 				</div>
 			</div>
 
