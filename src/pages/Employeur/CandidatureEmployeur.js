@@ -140,6 +140,52 @@ export function CandidatureEmployeur() {
 		}
 	}
 
+	async function signal(titre, contenu, destinataire) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			let type_destinataire = "chercheur";
+			const response = await axiosInstance.post(
+				`/users/signaler`,
+				{ titre, contenu, destinataire, type_destinataire },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (response.request.status === 201) {
+				console.log(response.data);
+				getDetails();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async function bloque(motif, destinataire) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			let type_destinataire = "chercheur";
+			const response = await axiosInstance.post(
+				`/users/bloquer`,
+				{ motif, destinataire, type_destinataire },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (response.request.status === 201) {
+				console.log(response.data);
+				getDetails();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	useEffect(() => {
 		getDetails();
 		console.log(data);
@@ -184,6 +230,8 @@ export function CandidatureEmployeur() {
 						onContact={contact}
 						onAccept={validate}
 						onRefuse={refuse}
+						onSignal={signal}
+						onBloque={bloque}
 					></Candidature>
 				</div>
 				<div className='space-y-2 mt-2'>

@@ -1,13 +1,23 @@
-import React, { useState } from "react";
-import { FaEllipsisV, FaDollarSign } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaEllipsisV, FaDollarSign, FaFlag, FaBan } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { TiTime } from "react-icons/ti";
 import { ButtonRond } from "./ButtonRond";
 import cv from "../assets/cv.png";
 import { MessageTab } from "./MessageTab";
 import { Popup } from "./Popup";
+import { axiosInstance } from "../util/axios";
+import { FiExternalLink } from "react-icons/fi";
+import { BloqueForm } from "./BloqueForm";
 
-export function Candidature({ candidature, onContact, onAccept, onRefuse }) {
+export function Candidature({
+	candidature,
+	onContact,
+	onAccept,
+	onRefuse,
+	onSignal,
+	onBloque,
+}) {
 	// let Candidature = {
 	// 	Id: "1",
 	// 	Candidat: "Brahami Lamine",
@@ -18,6 +28,31 @@ export function Candidature({ candidature, onContact, onAccept, onRefuse }) {
 	const [showMessageTab, setShowMessageTab] = useState(false);
 	const [showAcceptConfirmation, setShowAcceptConfirmation] = useState(false);
 	const [showRefuseConfirmation, setShowRefuseConfirmation] = useState(false);
+	const [showSignal, setShowSignal] = useState(false);
+	const [showBloque, setShowBloque] = useState(false);
+
+	const [url, setUrl] = useState("");
+	async function getUrl() {
+		try {
+			const response = await axiosInstance.get("/services/candidatures");
+			if (response.status === 200) {
+				console.log(response.data);
+				setUrl(response.data);
+			} else {
+				setUrl("/");
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getUrl();
+	}, []);
+
+	const handleExternalLinkClick = () => {
+		window.open(url + candidature.dossier.cv, "_blank");
+	};
 
 	return (
 		<div className='w-full bg-violet rounded-lg px-10 py-4'>
@@ -45,15 +80,47 @@ export function Candidature({ candidature, onContact, onAccept, onRefuse }) {
 						height={"h-8"}
 						onClick={() => setShowMessageTab(true)}
 					></ButtonRond>
-					<div>
-						<FaEllipsisV />
-					</div>
+					<ButtonRond
+						couleur={"bleuF"}
+						couleurTexte={"violet"}
+						contenu={<FaFlag />}
+						width={"fit"}
+						height={"h-8"}
+						onClick={() => setShowSignal(true)}
+					></ButtonRond>
+					<ButtonRond
+						couleur={"rouge"}
+						couleurTexte={"violet"}
+						contenu={<FaBan />}
+						width={"fit"}
+						height={"h-8"}
+						onClick={() => setShowBloque(true)}
+					></ButtonRond>
 				</div>
 			</div>
 			<div className='grid grid-cols-4 gap-x-4'>
-				<div className='mt-2'>
-					<img className='bg-white w-full h-96 rounded-lg' src={cv}></img>
-				</div>
+				{candidature.dossier ? (
+					candidature.dossier.cv ? (
+						<div>
+							<FiExternalLink
+								size={10}
+								color={"#FF584D"}
+								className='cursor-pointer'
+								onClick={handleExternalLinkClick}
+							/>
+							<object
+								data={candidature.dossier ? url + candidature.dossier.cv : ""}
+								type='application/pdf'
+								width='100%'
+								height='400px'
+							/>
+						</div>
+					) : (
+						"Aucun CV"
+					)
+				) : (
+					""
+				)}
 				<div className='px-10 col-span-3 space-y-6'>
 					<p className='text-bleuF font-bold text-lg'>A propos du condidat</p>
 					<div className='grid grid-cols-4'>
@@ -123,6 +190,28 @@ export function Candidature({ candidature, onContact, onAccept, onRefuse }) {
 						onContact(candidature._id, titre, contenu)
 					}
 					onDismiss={() => setShowMessageTab(false)}
+				/>
+			)}
+			{showSignal && (
+				<MessageTab
+					titre={"Signaler cette personne"}
+					onConfirm={(titre, contenu) =>
+						onSignal(titre, contenu, candidature.chercheur._id)
+					}
+					onDismiss={() => setShowSignal(false)}
+				/>
+			)}
+			{showBloque && (
+				<BloqueForm
+					titre={
+						'Bloquer "' +
+						candidature.chercheur.nom +
+						" " +
+						candidature.chercheur.prenom +
+						'"'
+					}
+					onConfirm={(motif) => onBloque(motif, candidature.chercheur._id)}
+					onDismiss={() => setShowBloque(false)}
 				/>
 			)}
 			{showRefuseConfirmation && (
