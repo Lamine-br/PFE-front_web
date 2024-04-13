@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { FaEllipsisV, FaDollarSign, FaFlag, FaBan } from "react-icons/fa";
+import {
+	FaEllipsisV,
+	FaDollarSign,
+	FaFlag,
+	FaBan,
+	FaTag,
+} from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { TiTime } from "react-icons/ti";
 import { ButtonRond } from "./ButtonRond";
@@ -9,6 +15,7 @@ import { Popup } from "./Popup";
 import { axiosInstance } from "../util/axios";
 import { FiExternalLink } from "react-icons/fi";
 import { BloqueForm } from "./BloqueForm";
+import { EtiquetteForm } from "./EtiquetteForm";
 
 export function Candidature({
 	candidature,
@@ -17,6 +24,7 @@ export function Candidature({
 	onRefuse,
 	onSignal,
 	onBloque,
+	onAddEtiquette,
 }) {
 	// let Candidature = {
 	// 	Id: "1",
@@ -30,6 +38,7 @@ export function Candidature({
 	const [showRefuseConfirmation, setShowRefuseConfirmation] = useState(false);
 	const [showSignal, setShowSignal] = useState(false);
 	const [showBloque, setShowBloque] = useState(false);
+	const [showEtquetteForm, setShowEtiquetteForm] = useState(false);
 
 	const [url, setUrl] = useState("");
 	async function getUrl() {
@@ -58,10 +67,27 @@ export function Candidature({
 		<div className='w-full bg-violet rounded-lg px-10 py-4'>
 			<div className='flex'>
 				<div>
-					<p className='text-bleuF font-bold text-xl'>
-						{candidature.chercheur ? candidature.chercheur.nom : ""}{" "}
-						{candidature.chercheur ? candidature.chercheur.prenom : ""}
-					</p>
+					<div className='flex items-center space-x-2'>
+						<p className='text-bleuF font-bold text-xl'>
+							{candidature.chercheur ? candidature.chercheur.nom : ""}{" "}
+							{candidature.chercheur ? candidature.chercheur.prenom : ""}
+						</p>
+						<div className='flex items-center space-x-2'>
+							{candidature.etiquettes
+								? candidature.etiquettes.map((item) => (
+										<p className='text-violet bg-bleuF font-semibold p-1 rounded-lg'>
+											{item.nom}
+										</p>
+								  ))
+								: ""}
+							<FaTag
+								color='465475'
+								size={15}
+								className='cursor-pointer'
+								onClick={() => setShowEtiquetteForm(true)}
+							/>
+						</div>
+					</div>
 					<div className='flex'>
 						<p className='text-bleuF'>
 							{candidature.createdAt ? candidature.createdAt.split("T")[0] : ""}
@@ -212,6 +238,13 @@ export function Candidature({
 					}
 					onConfirm={(motif) => onBloque(motif, candidature.chercheur._id)}
 					onDismiss={() => setShowBloque(false)}
+				/>
+			)}
+			{showEtquetteForm && (
+				<EtiquetteForm
+					titre={"Ajouter une étiquette"}
+					onConfirm={(nom) => onAddEtiquette(nom, candidature._id)}
+					onDismiss={() => setShowEtiquetteForm(false)}
 				/>
 			)}
 			{showRefuseConfirmation && (

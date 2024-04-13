@@ -186,6 +186,28 @@ export function CandidatureEmployeur() {
 		}
 	}
 
+	async function addEtiquetteToCandidature(nom, id) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				`/candidatures/employeur/etiquettes/addToCandidature`,
+				{ nom, id },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (response.request.status === 201) {
+				console.log(response.data);
+				getDetails();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	useEffect(() => {
 		getDetails();
 		console.log(data);
@@ -232,6 +254,7 @@ export function CandidatureEmployeur() {
 						onRefuse={refuse}
 						onSignal={signal}
 						onBloque={bloque}
+						onAddEtiquette={addEtiquetteToCandidature}
 					></Candidature>
 				</div>
 				<div className='space-y-2 mt-2'>
