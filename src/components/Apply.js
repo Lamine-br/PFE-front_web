@@ -146,7 +146,7 @@ export function Apply({ data, onConfirm }) {
 		setPdfObjectUrl(null);
 		setCandidature((prevFormData) => ({
 			...prevFormData,
-			cv: selected,
+			cv: event.target.value,
 		}));
 	};
 
@@ -275,11 +275,13 @@ export function Apply({ data, onConfirm }) {
 						</label>
 						<select
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-							onChange={handleCvSelect}
+							onChange={(e) => handleCvSelect(e)}
 						>
 							<option value=''>Choisir un CV existant</option>
 							{data.map((item, index) => (
-								<option value={item.dossier.cv}>CV{index + 1}</option>
+								<option key={index} value={item.dossier.cv}>
+									CV{index + 1}
+								</option>
 							))}
 						</select>
 					</div>
@@ -382,7 +384,14 @@ export function Apply({ data, onConfirm }) {
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							rows='4'
 							type='text'
-							id='commentaireF'
+							value={candidature.commentaire}
+							onChange={(e) => {
+								const newValue = e.target.value;
+								setCandidature((prevCandidature) => ({
+									...prevCandidature,
+									commentaire: newValue,
+								}));
+							}}
 						/>
 					</div>
 				</div>
@@ -395,6 +404,7 @@ export function Apply({ data, onConfirm }) {
 						width={"fit"}
 						height={"fit"}
 						onClick={() => {
+							console.log(candidature);
 							onConfirm(candidature);
 						}}
 					></ButtonRond>

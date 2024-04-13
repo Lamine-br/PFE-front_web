@@ -63,7 +63,7 @@ export function CandidatureEmployeur() {
 			);
 			console.log(response);
 
-			if (response.request.status === 200) {
+			if (response.status === 200) {
 				setReponses(response.data);
 			}
 		} catch (e) {
@@ -87,7 +87,7 @@ export function CandidatureEmployeur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getReponses();
 			}
@@ -109,7 +109,7 @@ export function CandidatureEmployeur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getDetails();
 			}
@@ -131,7 +131,7 @@ export function CandidatureEmployeur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getDetails();
 			}
@@ -154,7 +154,7 @@ export function CandidatureEmployeur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getDetails();
 			}
@@ -177,7 +177,7 @@ export function CandidatureEmployeur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getDetails();
 			}
@@ -199,7 +199,7 @@ export function CandidatureEmployeur() {
 				}
 			);
 
-			if (response.request.status === 201) {
+			if (response.status === 200) {
 				console.log(response.data);
 				getDetails();
 			}
