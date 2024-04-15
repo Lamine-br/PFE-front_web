@@ -4,6 +4,8 @@ import {
 	NavBarChercheur,
 	TableauCandidaturesChercheur,
 	Spinner,
+	ButtonCarre,
+	Filtres,
 } from "../../components";
 import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
@@ -11,8 +13,9 @@ import { axiosInstance } from "../../util/axios";
 
 export function CandidaturesChercheur() {
 	let [data, setData] = useState([]);
+	let [filteredData, setFilteredData] = useState(data);
 	let [loading, setLoading] = useState(false);
-	let [vide, setVide] = useState(false);
+	let [showFiltres, setShowFiltres] = useState(false);
 	let [idOffre, setIdOffre] = useState(null);
 	// let data = [
 	// 	{
@@ -85,49 +88,97 @@ export function CandidaturesChercheur() {
 
 			console.log(response);
 
-			if (response.request.status === 200) {
-				if (response.data.length === 0) {
-					setVide(true);
-				} else {
-					switch (type) {
-						case "Refusées":
-							const refusedData = response.data.filter(
-								(item) => item.status === "Refusé"
-							);
-							setData(refusedData);
-							break;
-						case "Validées":
-							const validatedData = response.data.filter(
-								(item) => item.status === "Validé"
-							);
-							setData(validatedData);
-							break;
-						case "En attente":
-							const dataEnAttente = response.data.filter(
-								(item) => item.status === "En attente"
-							);
-							setData(dataEnAttente);
-							break;
-						case "Toutes":
-							const data = response.data.filter(
-								(item) => item.status !== "Supprimé"
-							);
-							setData(data);
-							break;
-						default:
-							const defaultData = response.data.filter(
-								(item) => item.status === "En attente"
-							);
-							setData(defaultData);
-							break;
-					}
+			if (response.status === 200) {
+				switch (type) {
+					case "Refusées":
+						const refusedData = response.data.filter(
+							(item) => item.status === "Refusé"
+						);
+						setData(refusedData);
+						break;
+					case "Validées":
+						const validatedData = response.data.filter(
+							(item) => item.status === "Validé"
+						);
+						setData(validatedData);
+						break;
+					case "En attente":
+						const dataEnAttente = response.data.filter(
+							(item) => item.status === "En attente"
+						);
+						setData(dataEnAttente);
+						break;
+					case "Toutes":
+						const data = response.data.filter(
+							(item) => item.status !== "Supprimé"
+						);
+						setData(data);
+						break;
+					default:
+						const defaultData = response.data.filter(
+							(item) => item.status === "En attente"
+						);
+						setData(defaultData);
+						break;
 				}
 				setLoading(false);
 			}
 		} catch (e) {
 			console.log(e);
 			setLoading(false);
-			setVide(true);
+		}
+	}
+
+	async function getCandidaturesPourFiltrage(type) {
+		try {
+			setLoading(true);
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/candidatures/chercheur", {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
+
+			console.log(response);
+
+			if (response.status === 200) {
+				switch (type) {
+					case "Refusées":
+						const refusedData = response.data.filter(
+							(item) => item.status === "Refusé"
+						);
+						setFilteredData(refusedData);
+						break;
+					case "Validées":
+						const validatedData = response.data.filter(
+							(item) => item.status === "Validé"
+						);
+						setFilteredData(validatedData);
+						break;
+					case "En attente":
+						const dataEnAttente = response.data.filter(
+							(item) => item.status === "En attente"
+						);
+						setFilteredData(dataEnAttente);
+						break;
+					case "Toutes":
+						const data = response.data.filter(
+							(item) => item.status !== "Supprimé"
+						);
+						setFilteredData(data);
+						break;
+					default:
+						const defaultData = response.data.filter(
+							(item) => item.status === "En attente"
+						);
+						setFilteredData(defaultData);
+						break;
+				}
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
 		}
 	}
 
@@ -145,7 +196,7 @@ export function CandidaturesChercheur() {
 				}
 			);
 
-			if (response.request.status === 200) {
+			if (response.status === 200) {
 				setLoading(false);
 				getCandidatures();
 			}
@@ -225,7 +276,12 @@ export function CandidaturesChercheur() {
 
 	useEffect(() => {
 		getCandidatures();
+		getCandidaturesPourFiltrage();
 	}, []);
+
+	const handleFilterChange = async (filteredData) => {
+		setData(filteredData);
+	};
 
 	const [selectedValue, setSelectedValue] = useState("");
 
@@ -248,7 +304,7 @@ export function CandidaturesChercheur() {
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur selected={0}></NavBarChercheur>
-			<div className='m-6 bg-white rounded-lg p-4'>
+			<div className='mx-6 my-2 bg-white rounded-lg p-4'>
 				<div className='flex justify-between'>
 					<p className='text-xl font-bold text-bleuF'>Candidatures</p>
 					<div className='flex space-x-4'>
@@ -280,6 +336,17 @@ export function CandidaturesChercheur() {
 								<MenuItem value={"Refusées"}>Refusées</MenuItem>
 							</Select>
 						</FormControl>
+						<ButtonCarre
+							couleur='bleuF'
+							couleurTexte={"violet"}
+							contenu={"Filtrer"}
+							width={"fit text-sm"}
+							height={"fit"}
+							onclick={async () => {
+								setShowFiltres(true);
+								await getCandidaturesPourFiltrage(selectedValue);
+							}}
+						></ButtonCarre>
 					</div>
 				</div>
 				<div>
@@ -293,6 +360,14 @@ export function CandidaturesChercheur() {
 					></TableauCandidaturesChercheur>
 				</div>
 			</div>
+
+			{showFiltres && (
+				<Filtres
+					data={filteredData}
+					onConfirm={handleFilterChange}
+					onDismiss={() => setShowFiltres(false)}
+				/>
+			)}
 
 			{loading && <Spinner />}
 		</div>

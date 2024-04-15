@@ -77,3 +77,4 @@ export * from "./TableauCandidaturesSpontanees";
 export * from "./CandidatureSpontanee";
 export * from "./BloqueForm";
 export * from "./EtiquetteForm";
+export * from "./Filtres";
