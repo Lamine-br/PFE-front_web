@@ -5,16 +5,16 @@ import {
 	TableauEmplois,
 	Spinner,
 } from "../../components";
-import { Button, FormControl, MenuItem, Select } from "@mui/material";
-import { FaSearch } from "react-icons/fa";
+import { FormControl, MenuItem, Select } from "@mui/material";
 import { axiosInstance } from "../../util/axios";
+import moment from "moment";
 
 export function EmploisChercheur() {
 	let [data, setData] = useState([]);
 	let [loading, setLoading] = useState(false);
 	let [vide, setVide] = useState(false);
 
-	async function getEmplois() {
+	async function getEmplois(type) {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
@@ -27,10 +27,35 @@ export function EmploisChercheur() {
 			console.log(response);
 
 			if (response.status === 200) {
-				if (response.data.length === 0) {
-					setVide(true);
+				switch (type) {
+					case "A venir":
+						const dataToCome = response.data.filter((item) =>
+							moment(item.offre.debut).isAfter(moment())
+						);
+						setData(dataToCome);
+						break;
+					case "Passés":
+						const dataPassed = response.data.filter((item) =>
+							moment(item.offre.fin).isBefore(moment())
+						);
+						setData(dataPassed);
+						break;
+					case "En cours":
+						const today = moment();
+						const dataLive = response.data.filter(
+							(item) =>
+								moment(item.offre.debut).isBefore(today) &&
+								moment(item.offre.fin).isAfter(today)
+						);
+						setData(dataLive);
+						break;
+					case "Tous":
+						setData(response.data);
+						break;
+					default:
+						setData(response.data);
+						break;
 				}
-				setData(response.data);
 				setLoading(false);
 			}
 		} catch (e) {
@@ -73,12 +98,7 @@ export function EmploisChercheur() {
 
 	const handleChange = (event) => {
 		setSelectedValue(event.target.value);
-	};
-
-	const [searchTerm, setSearchTerm] = useState("");
-
-	const handleSearchChange = (event) => {
-		setSearchTerm(event.target.value);
+		getEmplois(event.target.value);
 	};
 
 	const handleClick = (id) => {
@@ -93,18 +113,6 @@ export function EmploisChercheur() {
 				<div className='flex justify-between'>
 					<p className='text-xl font-bold text-bleuF'>Emplois</p>
 					<div className='flex space-x-4'>
-						<div className='relative'>
-							<input
-								type='text'
-								placeholder='Rechercher'
-								className='h-9 px-4 border rounded-md outline-none focus:border-blue-500'
-								value={searchTerm}
-								onChange={handleSearchChange}
-							/>
-							<button className='absolute right-3 top-1/2 transform -translate-y-1/2'>
-								<FaSearch color='#465475' />
-							</button>
-						</div>
 						<FormControl className='h-9'>
 							<Select
 								value={selectedValue}
@@ -115,9 +123,10 @@ export function EmploisChercheur() {
 								<MenuItem value='' disabled>
 									Sélectionner
 								</MenuItem>
-								<MenuItem value={"Toutes"}>Tous</MenuItem>
-								<MenuItem value={"En attente"}>A venir</MenuItem>
-								<MenuItem value={"Validées"}>Passés</MenuItem>
+								<MenuItem value={"Tous"}>Tous</MenuItem>
+								<MenuItem value={"A venir"}>A venir</MenuItem>
+								<MenuItem value={"En cours"}>En cours</MenuItem>
+								<MenuItem value={"Passés"}>Passés</MenuItem>
 							</Select>
 						</FormControl>
 					</div>

@@ -79,3 +79,4 @@ export * from "./BloqueForm";
 export * from "./EtiquetteForm";
 export * from "./Filtres";
 export * from "./RechercherCandidatures";
+export * from "./NouvelleAlerte";

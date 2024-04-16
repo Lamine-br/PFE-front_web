@@ -6,9 +6,11 @@ import {
 	Spinner,
 } from "../../components";
 import { axiosInstance } from "../../util/axios";
+import moment from "moment";
 
 export function AgendaChercheur() {
 	let [data, setData] = useState([]);
+	let [alertes, setAlertes] = useState([]);
 	let [loading, setLoading] = useState(false);
 
 	async function getEmplois() {
@@ -34,17 +36,47 @@ export function AgendaChercheur() {
 		}
 	}
 
-	const myEventsList = data.map((item) => {
-		return {
+	async function getAlertes() {
+		try {
+			setLoading(true);
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/users/profile", {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+				setAlertes(response.data.alertes);
+				setLoading(false);
+				console.log(data);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
+	const myEventsList = [
+		...data.map((item) => ({
 			id: item._id,
 			title: item.offre.titre,
 			start: new Date(item.offre.debut),
 			end: new Date(item.offre.fin),
-		};
-	});
+		})),
+		...alertes.map((alerte) => ({
+			id: alerte._id,
+			title: alerte.titre,
+			start: moment(alerte.date, "YYYY-MM-DD [à] HH:mm").toDate(),
+			end: moment(alerte.date, "YYYY-MM-DD [à] HH:mm").toDate(),
+		})),
+	];
 
 	useEffect(() => {
 		getEmplois();
+		getAlertes();
 	}, []);
 
 	return (
