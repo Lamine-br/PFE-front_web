@@ -4,6 +4,8 @@ import {
 	NavBarEmployeur,
 	TableauCandidaturesEmployeur,
 	Spinner,
+	ButtonCarre,
+	RechercherCandidatures,
 } from "../../components";
 import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
@@ -11,67 +13,10 @@ import { axiosInstance } from "../../util/axios";
 
 export function CandidaturesEmployeur() {
 	let [data, setData] = useState([]);
+	let [searchData, setSearchData] = useState([]);
 	let [loading, setLoading] = useState(false);
 	let [vide, setVide] = useState(false);
-	let [idOffre, setIdOffre] = useState(null);
-	// let data = [
-	// 	{
-	// 		Id: "1",
-	// 		Candidat: "Brahami Lamine",
-	// 		"Titre de l'offre": "Jardinier",
-	// 		Statut: "En attente",
-	// 		"Date d'envoi": "13 Février 2024",
-	// 	},
-	// 	{
-	// 		Id: "2",
-	// 		Candidat: "Brahami Lamine",
-	// 		"Titre de l'offre": "Jardinier",
-	// 		Statut: "En attente",
-	// 		"Date d'envoi": "13 Février 2024",
-	// 	},
-	// 	{
-	// 		Id: "3",
-	// 		Candidat: "Brahami Lamine",
-	// 		"Titre de l'offre": "Jardinier",
-	// 		Statut: "Refusée",
-	// 		"Date d'envoi": "13 Février 2024",
-	// 	},
-	// 	{
-	// 		Id: "4",
-	// 		Candidat: "Brahami Lamine",
-	// 		"Titre de l'offre": "Jardinier",
-	// 		Statut: "Acceptée",
-	// 		"Date d'envoi": "13 Février 2024",
-	// 	},
-	// 	{
-	// 		Id: "5",
-	// 		Candidat: "Brahami Lamine",
-	// 		"Titre de l'offre": "Jardinier",
-	// 		Statut: "En attente",
-	// 		"Date d'envoi": "13 Février 2024",
-	// 	},
-	// 	{
-	// 		Id: "6",
-	// 		Candidat: "Brahami Lamine",
-	// 		"Titre de l'offre": "Jardinier",
-	// 		Statut: "Refusée",
-	// 		"Date d'envoi": "13 Février 2024",
-	// 	},
-	// 	{
-	// 		Id: "7",
-	// 		Candidat: "Brahami Lamine",
-	// 		"Titre de l'offre": "Jardinier",
-	// 		Statut: "Acceptée",
-	// 		"Date d'envoi": "13 Février 2024",
-	// 	},
-	// 	{
-	// 		Id: "8",
-	// 		Candidat: "Brahami Lamine",
-	// 		"Titre de l'offre": "Jardinier",
-	// 		Statut: "En attente",
-	// 		"Date d'envoi": "13 Février 2024",
-	// 	},
-	// ];
+	let [showRecherche, setShowRecherche] = useState(false);
 
 	async function getCandidatures(type) {
 		try {
@@ -138,8 +83,74 @@ export function CandidaturesEmployeur() {
 		}
 	}
 
+	async function getCandidaturesPourRecherche(type) {
+		try {
+			setLoading(true);
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/candidatures/employeur", {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
+
+			console.log(response);
+
+			if (response.status === 200) {
+				if (response.data.length === 0) {
+					setVide(true);
+				} else {
+					if (!type) {
+						setSearchData(response.data);
+					} else {
+						switch (type) {
+							case "Refusées":
+								const refusedData = response.data.filter(
+									(item) => item.status === "Refusé"
+								);
+								setSearchData(refusedData);
+								break;
+							case "Validées":
+								const validatedData = response.data.filter(
+									(item) => item.status === "Validé"
+								);
+								setSearchData(validatedData);
+								break;
+							case "En attente":
+								const dataEnAttente = response.data.filter(
+									(item) => item.status === "En attente"
+								);
+								setSearchData(dataEnAttente);
+								break;
+							case "Supprimées":
+								const dataSupp = response.data.filter(
+									(item) => item.status === "Supprimé"
+								);
+								setSearchData(dataSupp);
+								break;
+							case "Toutes":
+								setSearchData(response.data);
+								break;
+							default:
+								const defaultData = response.data.filter(
+									(item) => item.valide === "En attente"
+								);
+								setSearchData(defaultData);
+								break;
+						}
+					}
+				}
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+			setVide(true);
+		}
+	}
+
 	useEffect(() => {
 		getCandidatures();
+		getCandidaturesPourRecherche();
 	}, []);
 
 	async function validate(id) {
@@ -217,14 +228,12 @@ export function CandidaturesEmployeur() {
 		getCandidatures(event.target.value);
 	};
 
-	const [searchTerm, setSearchTerm] = useState("");
-
-	const handleSearchChange = (event) => {
-		setSearchTerm(event.target.value);
-	};
-
 	const handleClick = (id) => {
 		window.location.href = `/employeur/candidatures/${id}`;
+	};
+
+	const handleSearch = async (searchData) => {
+		setData(searchData);
 	};
 
 	return (
@@ -236,16 +245,17 @@ export function CandidaturesEmployeur() {
 					<p className='text-xl font-bold text-bleuF'>Candidatures</p>
 					<div className='flex space-x-4'>
 						<div className='relative'>
-							<input
-								type='text'
-								placeholder='Rechercher'
-								className='h-9 px-4 border rounded-md outline-none focus:border-blue-500'
-								value={searchTerm}
-								onChange={handleSearchChange}
-							/>
-							<button className='absolute right-3 top-1/2 transform -translate-y-1/2'>
-								<FaSearch color='#465475' />
-							</button>
+							<ButtonCarre
+								couleur='bleuF'
+								couleurTexte={"violet"}
+								contenu={<FaSearch />}
+								width={"fit text-sm"}
+								height={"h-9"}
+								onclick={async () => {
+									setShowRecherche(true);
+									await getCandidaturesPourRecherche(selectedValue);
+								}}
+							></ButtonCarre>
 						</div>
 						<FormControl className='h-9'>
 							<Select
@@ -277,6 +287,14 @@ export function CandidaturesEmployeur() {
 					></TableauCandidaturesEmployeur>
 				</div>
 			</div>
+
+			{showRecherche && (
+				<RechercherCandidatures
+					data={searchData}
+					onConfirm={handleSearch}
+					onDismiss={() => setShowRecherche(false)}
+				/>
+			)}
 
 			{loading && <Spinner />}
 		</div>

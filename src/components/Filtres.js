@@ -2,26 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { ButtonCarre } from "./ButtonCarre";
 import { FaPlus } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
-import { BsInfoCircleFill } from "react-icons/bs";
 import moment from "moment";
 
 export function Filtres({ data, onConfirm, onDismiss }) {
 	const [startDate, setStartDate] = useState("");
-	const [endDate, setEndDate] = useState("");
 
 	const handleStartDateChange = (e) => {
 		const selectedDate = e.target.value;
 		setStartDate(selectedDate);
-		if (new Date(selectedDate) > new Date(endDate)) {
-			setEndDate(selectedDate);
-		}
-	};
-
-	const handleEndDateChange = (e) => {
-		const selectedDate = e.target.value;
-		if (new Date(selectedDate) >= new Date(startDate)) {
-			setEndDate(selectedDate);
-		}
 	};
 
 	const [selectedEmployeur, setSelectedEmployeur] = useState("");
@@ -106,10 +94,6 @@ export function Filtres({ data, onConfirm, onDismiss }) {
 		getMetiers();
 		getEmployeurs();
 	}, []);
-
-	const redirectToProfile = () => {
-		window.location.href = "/chercheur/profile";
-	};
 
 	const handleSubmit = async () => {
 		const filteredData = data.filter((item) => {
