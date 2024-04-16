@@ -9,19 +9,23 @@ export function EtiquetteForm({ titre, onConfirm, onDismiss }) {
 	const [selected, setSelected] = useState("");
 
 	async function getEtiquettes() {
-		const accessToken = localStorage.getItem("accessToken");
-		const response = await axiosInstance.get(
-			`/candidatures/employeur/etiquettes`,
-			{
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-				},
-			}
-		);
+		try {
+			const accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get(
+				`/candidatures/employeur/etiquettes`,
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
 
-		if (response.status === 200) {
-			console.log(response.data);
-			setEtiquettes(response.data);
+			if (response.status === 200) {
+				console.log(response.data);
+				setEtiquettes(response.data);
+			}
+		} catch (e) {
+			console.log(e);
 		}
 	}
 

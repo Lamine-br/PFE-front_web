@@ -34,8 +34,32 @@ export function RechercherCandidatures({ data, onConfirm, onDismiss }) {
 			console.log(e);
 		}
 	}
+
+	const [etiquettes, setEtiquettes] = useState("");
+	const [selectedEtiquette, setSelectedEtiquette] = useState(null);
+	async function getEtiquettes() {
+		try {
+			const accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get(
+				`/candidatures/employeur/etiquettes`,
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (response.status === 200) {
+				console.log(response.data);
+				setEtiquettes(response.data);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
 	useEffect(() => {
 		getOffres();
+		getEtiquettes();
 	}, []);
 
 	const handleSubmit = async () => {
@@ -43,7 +67,8 @@ export function RechercherCandidatures({ data, onConfirm, onDismiss }) {
 			return (
 				(!startDate ||
 					moment(item.createdAt).isSame(moment(startDate), "day")) &&
-				(!selectedOffre || item.offre._id === selectedOffre)
+				(!selectedOffre || item.offre._id === selectedOffre) &&
+				(!selectedEtiquette || item.etiquettes.includes(selectedEtiquette))
 			);
 		});
 		onConfirm(filteredData);
@@ -64,6 +89,7 @@ export function RechercherCandidatures({ data, onConfirm, onDismiss }) {
 								>
 									<option value=''>Sélectionnez un type de recherche</option>
 									<option value='offre'>Selon l'offre</option>
+									<option value='etiquette'>Selon une étiquette</option>
 									<option value='date'>Selon la date</option>
 								</select>
 							</div>
@@ -80,6 +106,22 @@ export function RechercherCandidatures({ data, onConfirm, onDismiss }) {
 								{offres.map((item, index) => (
 									<option key={index} value={item._id}>
 										{item.titre}
+									</option>
+								))}
+							</select>
+						</div>
+					)}
+
+					{selected === "etiquette" && (
+						<div className='flex flex-col w-full'>
+							<select
+								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+								onChange={(e) => setSelectedEtiquette(e.target.value)}
+							>
+								<option value=''>Sélectionnez une étiquette</option>
+								{etiquettes.map((item, index) => (
+									<option key={index} value={item._id}>
+										{item.nom}
 									</option>
 								))}
 							</select>
