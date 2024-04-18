@@ -78,7 +78,7 @@ export function CandidaturesSpontanees() {
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur selected={3}></NavBarChercheur>
-			<div className='m-6 bg-white rounded-lg p-4'>
+			<div className='mx-6 mt-2 bg-white rounded-lg p-4'>
 				<div className='flex justify-between'>
 					<p className='text-xl font-bold text-bleuF'>
 						Candidatures Spontanées

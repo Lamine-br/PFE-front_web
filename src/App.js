@@ -34,6 +34,8 @@ import {
 	CandidaturesSpontanees,
 	CandidatureSpontaneeChercheur,
 	FavorisChercheur,
+	EmploisEmployeur,
+	EmploiEmployeur,
 } from "./pages";
 
 function App() {
@@ -57,6 +59,9 @@ function App() {
 					path='/employeur/candidatures/:id'
 					element={<CandidatureEmployeur />}
 				/>
+				<Route path='/employeur/emplois' element={<EmploisEmployeur />} />
+				<Route path='/employeur/emplois/:id' element={<EmploiEmployeur />} />
+
 				<Route
 					path='register/employeur/abonnements/'
 					element={<AbonnementsEmployeur />}

@@ -3,6 +3,7 @@ import {
 	HeaderChercheur,
 	NavBarChercheur,
 	CadreEmploi,
+	CadreEmployeur,
 	Spinner,
 	NouvelleAlerte,
 } from "../../components";
@@ -123,21 +124,84 @@ export function EmploiChercheur() {
 		}
 	}
 
+	async function demanderAttestation() {
+		try {
+			setLoading(true);
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				"/emplois/chercheur/demanderAttestation",
+				{
+					id: id,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			console.log(response);
+
+			if (response.status === 200) {
+				setLoading(false);
+				getEmploi();
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
+	const [url, setUrl] = useState("");
+	async function getUrl() {
+		try {
+			const response = await axiosInstance.get("/services/emplois");
+			if (response.status === 200) {
+				console.log(response.data);
+				setUrl(response.data);
+			} else {
+				setUrl("/");
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	const handleExternalLinkClick = () => {
+		window.open(url + data.attestation, "_blank");
+	};
+
 	useEffect(() => {
 		getEmploi();
 		getAlertes();
+		getUrl();
 	}, []);
 
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur selected={1}></NavBarChercheur>
-			<div className='m-6 bg-white rounded-lg p-4'>
-				<div className='flex flex-col w-1/2'>
-					<div className='flex items-center space-x-6'>
-						<p className='text-xl font-bold text-bleuF'>Emploi</p>
-						<div className='flex-grow'>
-							<CadreEmploi Emploi={data} className={""} />
+			<div className='mx-6 mt-2 bg-white rounded-lg p-4'>
+				<div className='flex flex-col'>
+					<div className='grid grid-cols-2 gap-4'>
+						<div className='flex flex-col'>
+							<div className='flex items-center space-x-6'>
+								<p className='text-xl font-bold text-rouge'>Emploi</p>
+								<div className='flex-grow'>
+									<CadreEmploi Emploi={data} className={""} />
+								</div>
+							</div>
+						</div>
+						<div className='flex flex-col'>
+							<div className='flex items-center space-x-6'>
+								<p className='text-xl font-bold text-rouge'>Employeur</p>
+								<div className='flex-grow'>
+									<CadreEmployeur
+										data={data.offre ? data.offre.employeur : {}}
+										className={""}
+									/>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div className='flex items-center space-x-2 mt-10'>
@@ -164,29 +228,62 @@ export function EmploiChercheur() {
 						))}
 					</div>
 
+					{data.spontanee ? (
+						<div className='flex items-center justify-between space-x-2 mt-4'>
+							<p className='text-bleuF'>Faire une condidature spontanée</p>
+							<ButtonCarre
+								couleur='rouge'
+								couleurTexte={"violet"}
+								contenu={"Candidater"}
+								width={"w-32 text-xs"}
+								height={"fit"}
+								onclick={() => {}}
+							></ButtonCarre>
+						</div>
+					) : (
+						""
+					)}
 					<div className='flex items-center justify-between space-x-2 mt-10'>
 						<p className='text-bleuF'>Imprimer une attestation de travail</p>
-						<ButtonCarre
-							couleur='rouge'
-							couleurTexte={"violet"}
-							contenu={"Demander"}
-							width={"w-32 text-xs"}
-							height={"fit"}
-							onclick={() => {}}
-						></ButtonCarre>
-					</div>
-					<div className='flex items-center justify-between space-x-2 mt-4'>
-						<p className='text-bleuF'>Faire une condidature spontanée</p>
-						<ButtonCarre
-							couleur='rouge'
-							couleurTexte={"violet"}
-							contenu={"Candidater"}
-							width={"w-32 text-xs"}
-							height={"fit"}
-							onclick={() => {}}
-						></ButtonCarre>
+						{data.attestation ? (
+							data.attestation === "demandée" ? (
+								<ButtonCarre
+									couleur='bleuF'
+									couleurTexte={"violet"}
+									contenu={"Demandée"}
+									width={"w-32 text-xs"}
+									height={"fit"}
+									onclick={() => {}}
+								></ButtonCarre>
+							) : (
+								<ButtonCarre
+									couleur='vertF'
+									couleurTexte={"violet"}
+									contenu={"Imprimer"}
+									width={"w-32 text-xs"}
+									height={"fit"}
+									onclick={() => handleExternalLinkClick()}
+								></ButtonCarre>
+							)
+						) : (
+							<ButtonCarre
+								couleur='rouge'
+								couleurTexte={"violet"}
+								contenu={"Demander"}
+								width={"w-32 text-xs"}
+								height={"fit"}
+								onclick={demanderAttestation}
+							></ButtonCarre>
+						)}
 					</div>
 				</div>
+				{data.attestation ? (
+					<div className='mt-4'>
+						<iframe src={url + data.attestation} width='100%' height='500px' />
+					</div>
+				) : (
+					""
+				)}
 			</div>
 			{showNouvelleAlerte && (
 				<NouvelleAlerte

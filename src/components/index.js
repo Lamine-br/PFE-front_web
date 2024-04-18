@@ -80,3 +80,7 @@ export * from "./EtiquetteForm";
 export * from "./Filtres";
 export * from "./RechercherCandidatures";
 export * from "./NouvelleAlerte";
+export * from "./TableauEmploisEmployeur";
+export * from "./AttestationForm";
+export * from "./CadreChercheur";
+export * from "./CadreEmployeur";

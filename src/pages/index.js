@@ -32,3 +32,5 @@ export * from "./Chercheur/PostulerChercheur";
 export * from "./Chercheur/CandidaturesSpontanees";
 export * from "./Chercheur/CandidatureSpontaneeChercheur";
 export * from "./Chercheur/FavorisChercheur";
+export * from "./Employeur/EmploisEmployeur";
+export * from "./Employeur/EmploiEmployeur";

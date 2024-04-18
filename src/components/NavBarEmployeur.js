@@ -28,7 +28,7 @@ export function NavBarEmployeur({ selected }) {
 								selectedItem === 2 ? "bg-bleuF text-violet" : "text-bleuF"
 							}`}
 						>
-							<NavLink to={"/employeur/autres"}>Autres</NavLink>
+							<NavLink to={"/employeur/emplois"}>Emplois</NavLink>
 						</li>
 					</ul>
 				</nav>

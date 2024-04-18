@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
-	HeaderChercheur,
-	NavBarChercheur,
-	TableauEmplois,
+	HeaderEmployeur,
+	NavBarEmployeur,
+	TableauEmploisEmployeur,
 	Spinner,
 } from "../../components";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { axiosInstance } from "../../util/axios";
 import moment from "moment";
 
-export function EmploisChercheur() {
+export function EmploisEmployeur() {
 	let [data, setData] = useState([]);
 	let [loading, setLoading] = useState(false);
 	let [vide, setVide] = useState(false);
@@ -18,7 +18,7 @@ export function EmploisChercheur() {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.get("/emplois/chercheur", {
+			const response = await axiosInstance.get("/emplois/employeur", {
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
 				},
@@ -65,31 +65,6 @@ export function EmploisChercheur() {
 		}
 	}
 
-	async function addToAgenda(id) {
-		try {
-			setLoading(true);
-			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.put(
-				"/emplois/chercheur/addToAgenda",
-				{ id: id },
-				{
-					headers: {
-						Authorization: `Bearer ${accessToken}`,
-					},
-				}
-			);
-
-			console.log(response);
-
-			if (response.status === 200) {
-				setLoading(false);
-			}
-		} catch (e) {
-			console.log(e);
-			setLoading(false);
-		}
-	}
-
 	useEffect(() => {
 		getEmplois();
 	}, []);
@@ -102,14 +77,14 @@ export function EmploisChercheur() {
 	};
 
 	const handleClick = (id) => {
-		window.location.href = `/chercheur/emplois/${id}`;
+		window.location.href = `/employeur/emplois/${id}`;
 	};
 
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
-			<HeaderChercheur></HeaderChercheur>
-			<NavBarChercheur selected={1}></NavBarChercheur>
-			<div className='mx-6 mt-2 bg-white rounded-lg p-4'>
+			<HeaderEmployeur></HeaderEmployeur>
+			<NavBarEmployeur selected={2}></NavBarEmployeur>
+			<div className='m-6 bg-white rounded-lg p-4'>
 				<div className='flex justify-between'>
 					<p className='text-xl font-bold text-bleuF'>Emplois</p>
 					<div className='flex space-x-4'>
@@ -132,11 +107,10 @@ export function EmploisChercheur() {
 					</div>
 				</div>
 				<div>
-					<TableauEmplois
+					<TableauEmploisEmployeur
 						data={data}
 						onRowClick={handleClick}
-						onAddToAgenda={(id) => addToAgenda(id)}
-					></TableauEmplois>
+					></TableauEmploisEmployeur>
 				</div>
 			</div>
 

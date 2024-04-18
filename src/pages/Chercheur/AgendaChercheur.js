@@ -83,7 +83,7 @@ export function AgendaChercheur() {
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur selected={2}></NavBarChercheur>
-			<div className='m-6 bg-white rounded-lg p-4'>
+			<div className='mx-6 mt-2 bg-white rounded-lg p-4'>
 				<div className=''>
 					<div className='w-full'>
 						<Agenda data={myEventsList} />

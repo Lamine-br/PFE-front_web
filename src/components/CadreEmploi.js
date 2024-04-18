@@ -7,7 +7,7 @@ import google from "../assets/google.png";
 export function CadreEmploi({ Emploi, className, onClick }) {
 	return (
 		<div
-			className={`bg-violet rounded-lg w-full ${className} cursor-pointer`}
+			className={`bg-violet rounded-lg w-full ${className} cursor-pointer border border-bleuF`}
 			onClick={onClick}
 		>
 			<div className='flex w-full px-4 py-2'>
