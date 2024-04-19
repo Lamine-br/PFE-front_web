@@ -4,7 +4,11 @@ import { FaPlus } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
 import { BsInfoCircleFill } from "react-icons/bs";
 
-export function NouvelleCandidatureSpontanee({ onConfirm, onDismiss }) {
+export function NouvelleCandidatureSpontanee({
+	employeur,
+	onConfirm,
+	onDismiss,
+}) {
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
 
@@ -25,7 +29,9 @@ export function NouvelleCandidatureSpontanee({ onConfirm, onDismiss }) {
 
 	const [selectedEmployeur, setSelectedEmployeur] = useState("");
 	const [employeurs, setEmployeurs] = useState([]);
-	const [selectedEmployeurs, setSelectedEmployeurs] = useState([]);
+	const [selectedEmployeurs, setSelectedEmployeurs] = useState(
+		employeur ? [employeur] : []
+	);
 
 	const addEmployeur = (selectedIndex) => {
 		if (selectedIndex !== "") {
@@ -124,9 +130,14 @@ export function NouvelleCandidatureSpontanee({ onConfirm, onDismiss }) {
 	return (
 		<div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
 			<div className='w-3/4 h-fit bg-white p-4 rounded-md space-y-4'>
-				<h1 className='text-xl text-bleuF font-bold mb-10'>
-					Nouvelle Candidature Spontanée
+				<h1 className='text-xl text-bleuF font-bold'>
+					Nouvelle Candidature Spontanée{" "}
+					{employeur ? 'chez "' + employeur.entreprise + '"' : ""}
 				</h1>
+				<p className='mb-10'>
+					Vous avez la possibilité de sélectionner plusieurs employeurs et
+					plusieurs métiers.
+				</p>
 				<div className='grid grid-cols-3 gap-10 mt-8'>
 					<div className='flex flex-col'>
 						<div className='flex w-full justify-between space-x-2'>

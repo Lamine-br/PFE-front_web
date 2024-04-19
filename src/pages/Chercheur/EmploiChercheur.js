@@ -11,6 +11,7 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { axiosInstance } from "../../util/axios";
 import { ButtonCarre } from "../../components";
+import { NouvelleCandidatureSpontanee } from "../../components";
 
 export function EmploiChercheur() {
 	let [data, setData] = useState([]);
@@ -18,6 +19,8 @@ export function EmploiChercheur() {
 	let [loading, setLoading] = useState(false);
 	let [vide, setVide] = useState(false);
 	let [showNouvelleAlerte, setShowNouvelleAlerte] = useState(false);
+	let [showNouvelleCandidatureSP, setShowNouvelleCandidatureSP] =
+		useState(false);
 
 	const { id } = useParams();
 
@@ -152,6 +155,31 @@ export function EmploiChercheur() {
 		}
 	}
 
+	async function addCandidatureSpontanee(data) {
+		try {
+			setLoading(true);
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				"/candidatures/chercheur/spontanees/add",
+				data,
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			console.log(response);
+
+			if (response.status === 201) {
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
 	const [url, setUrl] = useState("");
 	async function getUrl() {
 		try {
@@ -228,22 +256,28 @@ export function EmploiChercheur() {
 						))}
 					</div>
 
-					{data.spontanee ? (
-						<div className='flex items-center justify-between space-x-2 mt-4'>
-							<p className='text-bleuF'>Faire une condidature spontanée</p>
-							<ButtonCarre
-								couleur='rouge'
-								couleurTexte={"violet"}
-								contenu={"Candidater"}
-								width={"w-32 text-xs"}
-								height={"fit"}
-								onclick={() => {}}
-							></ButtonCarre>
-						</div>
+					{data.offre ? (
+						data.offre.employeur.spontanee ? (
+							<div className='flex items-center justify-between space-x-2 mt-10'>
+								<p className='text-bleuF'>Faire une condidature spontanée</p>
+								<ButtonCarre
+									couleur='rouge'
+									couleurTexte={"violet"}
+									contenu={"Candidater"}
+									width={"w-32 text-xs"}
+									height={"fit"}
+									onclick={() => {
+										setShowNouvelleCandidatureSP(true);
+									}}
+								></ButtonCarre>
+							</div>
+						) : (
+							""
+						)
 					) : (
 						""
 					)}
-					<div className='flex items-center justify-between space-x-2 mt-10'>
+					<div className='flex items-center justify-between space-x-2 mt-4'>
 						<p className='text-bleuF'>Imprimer une attestation de travail</p>
 						{data.attestation ? (
 							data.attestation === "demandée" ? (
@@ -278,7 +312,7 @@ export function EmploiChercheur() {
 					</div>
 				</div>
 				{data.attestation ? (
-					<div className='mt-4'>
+					<div className='mt-10'>
 						<iframe src={url + data.attestation} width='100%' height='500px' />
 					</div>
 				) : (
@@ -289,6 +323,14 @@ export function EmploiChercheur() {
 				<NouvelleAlerte
 					onConfirm={addAlerte}
 					onDismiss={() => setShowNouvelleAlerte(false)}
+				/>
+			)}
+
+			{showNouvelleCandidatureSP && (
+				<NouvelleCandidatureSpontanee
+					employeur={data.offre ? data.offre.employeur : null}
+					onConfirm={(data) => addCandidatureSpontanee(data)}
+					onDismiss={() => setShowNouvelleCandidatureSP(false)}
 				/>
 			)}
 

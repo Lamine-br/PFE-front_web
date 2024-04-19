@@ -5,6 +5,7 @@ import { FiEdit } from "react-icons/fi";
 import { OneForm } from "./OneForm";
 import { PasswordForm } from "./PasswordForm";
 import { Abonnements } from "./Abonnements";
+import Switch from "react-switch";
 
 export function ProfileE({ data, onUpdate }) {
 	const [loading, setLoading] = useState(false);
@@ -13,6 +14,12 @@ export function ProfileE({ data, onUpdate }) {
 	const [showPasswordForm, setShowPasswordForm] = useState(false);
 
 	const [showAbonnements, setShowAbonnements] = useState(false);
+
+	const handleChange = () => {
+		const spontanee = !data.spontanee;
+		console.log(spontanee);
+		onUpdate({ spontanee: spontanee });
+	};
 
 	return (
 		<div className=''>
@@ -387,6 +394,26 @@ export function ProfileE({ data, onUpdate }) {
 								</div>
 						  ))
 						: ""}
+				</div>
+			</div>
+			<div className='m-6 bg-white rounded-lg p-4 border border-bleuF shadow-md'>
+				<div className='col-span-3 space-y-6'>
+					<p className='text-rouge font-bold text-lg'>Candidatures</p>
+					<div className='grid grid-cols-2'>
+						<div className='flex flex-col space-y-1'>
+							<div className='flex items-center space-x-2'>
+								<p className='text-bleuF font-bold'>Candidatures spontanées</p>
+								<Switch
+									onChange={handleChange}
+									checked={data.spontanee}
+									height={20}
+									width={40}
+									onColor='#5cb85c'
+									offColor='#d9534f'
+								/>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 
