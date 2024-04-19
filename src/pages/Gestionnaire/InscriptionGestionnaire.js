@@ -46,7 +46,7 @@ export function InscriptionGestionnaire() {
 
 			console.log(response);
 
-			if (response.request.status === 200) {
+			if (response.status === 200) {
 				setData(response.data);
 				setLoading(false);
 			}
@@ -63,7 +63,7 @@ export function InscriptionGestionnaire() {
 			});
 			console.log(response);
 
-			if (response.request.status === 200) {
+			if (response.status === 200) {
 				setReponses(response.data);
 			}
 		} catch (e) {
@@ -107,7 +107,7 @@ export function InscriptionGestionnaire() {
 
 	async function contact(id, titre, contenu) {
 		try {
-			const type_emetteur = "employeur";
+			const type_emetteur = "gestionnaire";
 			const emetteur = id;
 			const type_destinataire = "employeur";
 			const destinataire = id;
@@ -143,6 +143,28 @@ export function InscriptionGestionnaire() {
 		getReponses();
 	}, []);
 
+	const couleur = (emetteur) => {
+		switch (emetteur) {
+			case "gestionnaire":
+				return "bleu";
+			case "employeur":
+				return "violet";
+			default:
+				return "";
+		}
+	};
+
+	const position = (emetteur) => {
+		switch (emetteur) {
+			case "gestionnaire":
+				return "justify-end";
+			case "employeur":
+				return "justify-start";
+			default:
+				return "";
+		}
+	};
+
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<HeaderGestionnaire></HeaderGestionnaire>
@@ -170,15 +192,22 @@ export function InscriptionGestionnaire() {
 					<div className='space-y-2 mt-2'>
 						<p className='text-bleuF font-bold text-xl'>Conversation</p>
 						{reponses.map((item, index) => (
-							<div className='flex flex-col space-y-1 border border-bleuF rounded-lg p-2'>
-								<div className='flex justify-between'>
-									<p className='text-bleuF font-semibold'>{item.titre}</p>
-									<p className='text-bleuF'>
-										{item.createdAt.split("T")[0]} |{" "}
-										{item.createdAt.split("T")[1].split(".")[0]}
-									</p>
+							<div className={`flex ${position(item.type_emetteur)}`}>
+								<div
+									key={index}
+									className={`flex flex-col w-1/2 space-y-1 border border-bleuF rounded-lg p-2 bg-${couleur(
+										item.type_emetteur
+									)}`}
+								>
+									<div className='flex justify-between'>
+										<p className='text-bleuF font-semibold'>{item.titre}</p>
+										<p className='text-bleuF'>
+											{item.createdAt.split("T")[0]} |{" "}
+											{item.createdAt.split("T")[1].split(".")[0]}
+										</p>
+									</div>
+									<p className='text-sm text-bleuF'>{item.contenu}</p>
 								</div>
-								<p className='text-sm text-bleuF'>{item.contenu}</p>
 							</div>
 						))}
 					</div>

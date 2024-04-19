@@ -85,3 +85,5 @@ export * from "./AttestationForm";
 export * from "./CadreChercheur";
 export * from "./CadreEmployeur";
 export * from "./FiltresEmplois";
+export * from "./TableauEmployeurs";
+export * from "./TableauChercheurs";

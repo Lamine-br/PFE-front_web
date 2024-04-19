@@ -1,39 +1,72 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	HeaderGestionnaire,
 	NavBarGestionnaire,
-	TableauGestionnaire,
+	TableauEmployeurs,
+	TableauChercheurs,
 } from "../../components";
 import { Button, FormControl, MenuItem, Select } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
+import { axiosInstance } from "../../util/axios";
 
 export function UtilisateursGestionnaire() {
-	let data = [
-		{
-			Id: "1",
-			Nom: "Brahami Lamine",
-			Type: "Chercheur d'emplois",
-			Etat: "Bloqué",
-		},
-		{
-			Id: "2",
-			Nom: "ESI",
-			Type: "Agence",
-			Etat: "Actif",
-		},
-		{
-			Id: "3",
-			Nom: "LIRMM",
-			Type: "Agence",
-			Etat: "Actif",
-		},
-		{
-			Id: "4",
-			Nom: "KPMG",
-			Type: "Employeur",
-			Etat: "Bloqué",
-		},
-	];
+	const [employeurs, setEmployeurs] = useState([]);
+	const [chercheurs, setChercheurs] = useState([]);
+	const [loading, setLoading] = useState(false);
+
+	async function getUtilisateurs() {
+		try {
+			setLoading(true);
+			const response = await axiosInstance.get("/users");
+
+			console.log(response);
+
+			if (response.request.status === 200) {
+				setEmployeurs(response.data.employeurs);
+				setChercheurs(response.data.chercheurs);
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
+	async function bloquer(type, id) {
+		try {
+			const response = await axiosInstance.post(`/users/bloquerUser`, {
+				type,
+				id,
+			});
+
+			if (response.status === 200) {
+				console.log(response.data);
+				getUtilisateurs();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async function debloquer(type, id) {
+		try {
+			const response = await axiosInstance.post(`/users/debloquerUser`, {
+				type,
+				id,
+			});
+
+			if (response.status === 200) {
+				console.log(response.data);
+				getUtilisateurs();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getUtilisateurs();
+	}, []);
 
 	const [selectedValue, setSelectedValue] = useState("");
 
@@ -81,17 +114,34 @@ export function UtilisateursGestionnaire() {
 								<MenuItem value='' disabled>
 									Sélectionner
 								</MenuItem>
-								<MenuItem value={"option1"}>Toutes</MenuItem>
-								<MenuItem value={"option2"}>Refusée</MenuItem>
+								<MenuItem value={"employeurs"}>Employeurs</MenuItem>
+								<MenuItem value={"chercheurs"}>Chercheurs</MenuItem>
 							</Select>
 						</FormControl>
 					</div>
 				</div>
 				<div>
-					<TableauGestionnaire
-						data={data}
-						onRowClick={handleClick}
-					></TableauGestionnaire>
+					{selectedValue === "employeurs" ? (
+						<TableauEmployeurs
+							data={employeurs}
+							onRowClick={handleClick}
+							onBloque={(id) => bloquer("employeur", id)}
+							onDebloque={(id) => debloquer("employeur", id)}
+						></TableauEmployeurs>
+					) : (
+						""
+					)}
+
+					{selectedValue === "chercheurs" ? (
+						<TableauChercheurs
+							data={chercheurs}
+							onRowClick={handleClick}
+							onBloque={(id) => bloquer("chercheur", id)}
+							onDebloque={(id) => debloquer("chercheur", id)}
+						></TableauChercheurs>
+					) : (
+						""
+					)}
 				</div>
 			</div>
 		</div>

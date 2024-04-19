@@ -98,7 +98,7 @@ export function InscriptionsGestionnaire() {
 
 	async function contact(id, titre, contenu) {
 		try {
-			const type_emetteur = "employeur";
+			const type_emetteur = "gestionnaire";
 			const emetteur = id;
 			const type_destinataire = "employeur";
 			const destinataire = id;
