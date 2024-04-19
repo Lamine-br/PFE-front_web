@@ -122,7 +122,7 @@ export default function Notifications() {
 				sx={{ width: 40, height: 40 }}
 			>
 				<Badge badgeContent={totalUnRead} color='error'>
-					<FaBell />
+					<FaBell color='EEEDFF' />
 				</Badge>
 			</IconButton>
 

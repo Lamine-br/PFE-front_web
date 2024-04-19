@@ -8,11 +8,15 @@ import {
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { axiosInstance } from "../../util/axios";
 import moment from "moment";
+import { FiltresEmplois } from "../../components";
+import { ButtonCarre } from "../../components";
 
 export function EmploisChercheur() {
 	let [data, setData] = useState([]);
+	let [filteredData, setFilteredData] = useState([]);
 	let [loading, setLoading] = useState(false);
 	let [vide, setVide] = useState(false);
+	let [showFiltres, setShowFiltres] = useState(false);
 
 	async function getEmplois(type) {
 		try {
@@ -65,6 +69,57 @@ export function EmploisChercheur() {
 		}
 	}
 
+	async function getEmploisPourFiltrage(type) {
+		try {
+			setLoading(true);
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/emplois/chercheur", {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
+
+			console.log(response);
+
+			if (response.status === 200) {
+				switch (type) {
+					case "A venir":
+						const dataToCome = response.data.filter((item) =>
+							moment(item.offre.debut).isAfter(moment())
+						);
+						setFilteredData(dataToCome);
+						break;
+					case "Passés":
+						const dataPassed = response.data.filter((item) =>
+							moment(item.offre.fin).isBefore(moment())
+						);
+						setFilteredData(dataPassed);
+						break;
+					case "En cours":
+						const today = moment();
+						const dataLive = response.data.filter(
+							(item) =>
+								moment(item.offre.debut).isBefore(today) &&
+								moment(item.offre.fin).isAfter(today)
+						);
+						setFilteredData(dataLive);
+						break;
+					case "Tous":
+						setFilteredData(response.data);
+						break;
+					default:
+						setFilteredData(response.data);
+						break;
+				}
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+			setVide(true);
+		}
+	}
+
 	async function addToAgenda(id) {
 		try {
 			setLoading(true);
@@ -92,7 +147,12 @@ export function EmploisChercheur() {
 
 	useEffect(() => {
 		getEmplois();
+		getEmploisPourFiltrage();
 	}, []);
+
+	const handleFilterChange = async (filteredData) => {
+		setData(filteredData);
+	};
 
 	const [selectedValue, setSelectedValue] = useState("");
 
@@ -129,6 +189,17 @@ export function EmploisChercheur() {
 								<MenuItem value={"Passés"}>Passés</MenuItem>
 							</Select>
 						</FormControl>
+						<ButtonCarre
+							couleur='bleuF'
+							couleurTexte={"violet"}
+							contenu={"Filtrer"}
+							width={"fit text-sm"}
+							height={"fit"}
+							onclick={async () => {
+								setShowFiltres(true);
+								await getEmploisPourFiltrage(selectedValue);
+							}}
+						></ButtonCarre>
 					</div>
 				</div>
 				<div>
@@ -139,6 +210,14 @@ export function EmploisChercheur() {
 					></TableauEmplois>
 				</div>
 			</div>
+
+			{showFiltres && (
+				<FiltresEmplois
+					data={filteredData}
+					onConfirm={handleFilterChange}
+					onDismiss={() => setShowFiltres(false)}
+				/>
+			)}
 
 			{loading && <Spinner />}
 		</div>
