@@ -13,7 +13,7 @@ import {
 	InscriptionsGestionnaire,
 	InscriptionGestionnaire,
 	UtilisateursGestionnaire,
-	UtilisateurGestionnaire,
+	UtilisateurEGestionnaire,
 	StatistiquesGestionnaire,
 	HomeAgence,
 	FichiersAgence,
@@ -36,6 +36,7 @@ import {
 	FavorisChercheur,
 	EmploisEmployeur,
 	EmploiEmployeur,
+	UtilisateurCGestionnaire,
 } from "./pages";
 
 function App() {
@@ -83,8 +84,12 @@ function App() {
 					element={<UtilisateursGestionnaire />}
 				/>
 				<Route
-					path='/gestionnaire/utilisateurs/:id'
-					element={<UtilisateurGestionnaire />}
+					path='/gestionnaire/utilisateurs/employeurs/:id'
+					element={<UtilisateurEGestionnaire />}
+				/>
+				<Route
+					path='/gestionnaire/utilisateurs/chercheurs/:id'
+					element={<UtilisateurCGestionnaire />}
 				/>
 				<Route
 					path='/gestionnaire/statistiques'

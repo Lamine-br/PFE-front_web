@@ -20,11 +20,12 @@ export function TableauEmplois({ data, onRowClick, onAddToAgenda, vide }) {
 				{data.length === 0 ? (
 					<>
 						<div
-							className={`grid grid-cols-4 text-center bg-bleuF items-center p-2 rounded-lg`}
+							className={`grid grid-cols-5 text-center bg-bleuF items-center p-2 rounded-lg`}
 						>
 							<p className='text-violet text-sm font-bold'>Offre</p>
 							<p className='text-violet text-sm font-bold'>Date debut</p>
 							<p className='text-violet text-sm font-bold'>Date fin</p>
+							<p className='text-violet text-sm font-bold'>Attestation</p>
 							<p className='text-violet text-sm font-bold'>Actions</p>
 						</div>
 						<p className='text-bleuF text-lg font-bold'>
@@ -34,18 +35,19 @@ export function TableauEmplois({ data, onRowClick, onAddToAgenda, vide }) {
 				) : (
 					<>
 						<div
-							className={`grid grid-cols-4 text-center bg-bleuF items-center p-2 rounded-lg`}
+							className={`grid grid-cols-5 text-center bg-bleuF items-center p-2 rounded-lg`}
 						>
 							<p className='text-violet text-sm font-bold'>Offre</p>
 							<p className='text-violet text-sm font-bold'>Date debut</p>
 							<p className='text-violet text-sm font-bold'>Date fin</p>
+							<p className='text-violet text-sm font-bold'>Attestation</p>
 							<p className='text-violet text-sm font-bold'>Actions</p>
 						</div>
 						<div className='w-full space-y-1 '>
 							{data.map((item, itemIndex) => (
 								<div
 									key={itemIndex}
-									className={`grid grid-cols-4 text-center justify-center bg-violet items-center p-2 rounded-lg cursor-pointer`}
+									className={`grid grid-cols-5 text-center justify-center bg-violet items-center p-2 rounded-lg cursor-pointer`}
 									onClick={() => onRowClick(item._id)}
 								>
 									<p className='text-bleuF text-sm font-semibold'>
@@ -57,6 +59,20 @@ export function TableauEmplois({ data, onRowClick, onAddToAgenda, vide }) {
 									<p className='text-bleuF text-sm font-semibold'>
 										{item.offre.fin}
 									</p>
+
+									{item.attestation ? (
+										item.attestation === "demandée" ? (
+											<p className='text-rouge text-sm font-semibold'>
+												Demandée
+											</p>
+										) : (
+											<p className='text-vertF text-sm font-semibold'>
+												Disponible
+											</p>
+										)
+									) : (
+										""
+									)}
 
 									<div className='flex justify-center items-center space-x-4'>
 										{item.agenda ? (

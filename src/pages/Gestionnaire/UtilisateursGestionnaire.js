@@ -64,6 +64,24 @@ export function UtilisateursGestionnaire() {
 		}
 	}
 
+	async function avertir(type_destinataire, destinataire, titre, contenu) {
+		try {
+			const response = await axiosInstance.post(`/users/avertirUser`, {
+				type_destinataire,
+				destinataire,
+				titre,
+				contenu,
+			});
+
+			if (response.status === 201) {
+				console.log(response.data);
+				getUtilisateurs();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	useEffect(() => {
 		getUtilisateurs();
 	}, []);
@@ -80,8 +98,12 @@ export function UtilisateursGestionnaire() {
 		setSearchTerm(event.target.value);
 	};
 
-	const handleClick = (id) => {
-		window.location.href = `/gestionnaire/utilisateurs/${id}`;
+	const handleClickChercheur = (id) => {
+		window.location.href = `/gestionnaire/utilisateurs/chercheurs/${id}`;
+	};
+
+	const handleClickEmployeur = (id) => {
+		window.location.href = `/gestionnaire/utilisateurs/employeurs/${id}`;
 	};
 
 	return (
@@ -124,9 +146,12 @@ export function UtilisateursGestionnaire() {
 					{selectedValue === "employeurs" ? (
 						<TableauEmployeurs
 							data={employeurs}
-							onRowClick={handleClick}
+							onRowClick={handleClickEmployeur}
 							onBloque={(id) => bloquer("employeur", id)}
 							onDebloque={(id) => debloquer("employeur", id)}
+							onAvertir={(destinataire, titre, contenu) =>
+								avertir("employeur", destinataire, titre, contenu)
+							}
 						></TableauEmployeurs>
 					) : (
 						""
@@ -135,9 +160,12 @@ export function UtilisateursGestionnaire() {
 					{selectedValue === "chercheurs" ? (
 						<TableauChercheurs
 							data={chercheurs}
-							onRowClick={handleClick}
+							onRowClick={handleClickChercheur}
 							onBloque={(id) => bloquer("chercheur", id)}
 							onDebloque={(id) => debloquer("chercheur", id)}
+							onAvertir={(destinataire, titre, contenu) =>
+								avertir("chercheur", destinataire, titre, contenu)
+							}
 						></TableauChercheurs>
 					) : (
 						""

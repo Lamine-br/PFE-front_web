@@ -65,19 +65,15 @@ export function TableauEmploisEmployeur({ data, onRowClick, vide }) {
 
 									<div className='flex justify-center items-center space-x-4'>
 										{item.attestation ? (
-											<>
-												<FaCalendarPlus
-													size={12}
-													color={"#30CA3F"}
-													className='cursor-pointer'
-													onClick={(e) => {
-														setSelectedEmploi(item._id);
-														console.log(item._id);
-														e.stopPropagation();
-														setShowAddToAgenda(true);
-													}}
-												/>
-											</>
+											item.attestation === "demandée" ? (
+												<p className='text-rouge text-sm font-semibold'>
+													Demandée
+												</p>
+											) : (
+												<p className='text-vertF text-sm font-semibold'>
+													Disponible
+												</p>
+											)
 										) : (
 											""
 										)}
@@ -88,15 +84,6 @@ export function TableauEmploisEmployeur({ data, onRowClick, vide }) {
 					</>
 				)}
 			</div>
-
-			{showAddToAgenda && (
-				<Popup
-					Titre={"Confirmation"}
-					Texte={"Êtes-vous sûr de vouloir ajouter cet emploi à votre agenda ?"}
-					onConfirm={() => {}}
-					onDismiss={() => setShowAddToAgenda(false)}
-				/>
-			)}
 		</div>
 	);
 }
