@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Notifications from "./Notifications";
 import Compte from "./Compte";
+import Groupes from "./Groupes";
 
 export function HeaderChercheur({}) {
 	return (
@@ -9,6 +10,9 @@ export function HeaderChercheur({}) {
 				<h1 className='text-2xl font-bold text-violet'>Intérim - Chercheur</h1>
 				<nav>
 					<ul className='flex space-x-6 items-center'>
+						<li className='cursor-pointer'>
+							<Groupes />
+						</li>
 						<li className='cursor-pointer relative'>
 							<Notifications />
 						</li>

@@ -88,3 +88,4 @@ export * from "./FiltresEmplois";
 export * from "./TableauEmployeurs";
 export * from "./TableauChercheurs";
 export * from "./CadreUtilisateurC";
+export * from "./Groupes";
