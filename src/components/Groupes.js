@@ -30,6 +30,7 @@ import {
 } from "@mui/material";
 import { axiosInstance } from "../util/axios";
 import { NouveauGroupe } from "./NouveauGroupe";
+import { AjouterUser } from "./AjouterUser";
 
 // const NOTIFICATIONS = [
 // 	{
@@ -73,11 +74,35 @@ export default function Groupes() {
 		}
 	}
 
+	async function addGroupe(nom, description) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				"/users/chercheur/addGroupe",
+				{
+					nom,
+					description,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			console.log(response);
+
+			if (response.status === 201) {
+				getGroupes();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	useEffect(() => {
 		getGroupes();
 	}, []);
-
-	const total = groupes.length;
 
 	const [open, setOpen] = useState(null);
 
@@ -96,7 +121,7 @@ export default function Groupes() {
 				onClick={handleOpen}
 				sx={{ width: 40, height: 40 }}
 			>
-				<Badge badgeContent={total} color='error'>
+				<Badge badgeContent={groupes.length} color='error'>
 					<FaUsers color='EEEDFF' />
 				</Badge>
 			</IconButton>
@@ -119,7 +144,7 @@ export default function Groupes() {
 					<Box sx={{ flexGrow: 1 }}>
 						<Typography variant='subtitle1'>Groupes</Typography>
 						<Typography variant='body2' sx={{ color: "text.secondary" }}>
-							Vous faites partie de {total} groupes
+							Vous faites partie de {groupes.length} groupes
 						</Typography>
 					</Box>
 
@@ -138,14 +163,17 @@ export default function Groupes() {
 
 				<Divider sx={{ borderStyle: "dashed" }} />
 
-				<List disablePadding>
-					{groupes.slice(0, 2).map((groupe) => (
-						<GroupeItem key={groupe._id} groupe={groupe} />
+				<List disablePadding sx={{ maxHeight: 300, overflowY: "auto" }}>
+					{groupes.map((groupe) => (
+						<GroupeItem
+							key={groupe._id}
+							groupe={groupe}
+							onUpdate={getGroupes}
+						/>
 					))}
 				</List>
 
 				<Divider sx={{ borderStyle: "dashed" }} />
-
 				<Box sx={{ p: 1 }}>
 					<Button fullWidth disableRipple>
 						Voir tout
@@ -154,7 +182,10 @@ export default function Groupes() {
 			</Popover>
 
 			{showNouveauGroupe && (
-				<NouveauGroupe onDismiss={() => setShowNouveauGroupe(false)} />
+				<NouveauGroupe
+					onDismiss={() => setShowNouveauGroupe(false)}
+					onConfirm={(nom, description) => addGroupe(nom, description)}
+				/>
 			)}
 		</>
 	);
@@ -171,9 +202,10 @@ GroupeItem.propTypes = {
 	}),
 };
 
-function GroupeItem({ groupe }) {
+function GroupeItem({ groupe, onUpdate }) {
 	const { avatar, title } = renderContent(groupe);
 	const [url, setUrl] = useState("");
+	const [showAddUser, setShowAddUser] = useState(false);
 	const user = JSON.parse(localStorage.getItem("user"));
 
 	async function getUrl() {
@@ -183,6 +215,31 @@ function GroupeItem({ groupe }) {
 				setUrl(response.data);
 			} else {
 				setUrl("/");
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async function addUserToGroupe(id, email, numero) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				"/users/chercheur/addUserToGroupe",
+				{
+					id,
+					email,
+					numero,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (response.status === 200) {
+				onUpdate();
 			}
 		} catch (e) {
 			console.log(e);
@@ -205,39 +262,58 @@ function GroupeItem({ groupe }) {
 				}),
 			}}
 		>
-			<ListItemAvatar>
-				{groupe.membres
-					? groupe.membres.map((item, index) => (
-							<Avatar
-								sx={{ bgcolor: "background.neutral" }}
-								key={index}
-								src={url + item.image}
-							>
-								{avatar}
-							</Avatar>
-					  ))
-					: ""}
-			</ListItemAvatar>
 			<ListItemText
 				primary={title}
 				secondary={
-					<Typography
-						variant='caption'
-						sx={{
-							mt: 0.5,
-							display: "flex",
-							alignItems: "center",
-							color: "text.disabled",
-						}}
-					>
-						{groupe.description}
-					</Typography>
+					<>
+						<Typography
+							variant='caption'
+							sx={{
+								mt: 0.5,
+								display: "flex",
+								alignItems: "center",
+								color: "text.disabled",
+							}}
+						>
+							{groupe.description}
+						</Typography>
+						<ListItemAvatar className='flex gap-[-5px] mt-1'>
+							{groupe.membres.map((item) => (
+								<Avatar
+									sx={{ bgcolor: "background.neutral" }}
+									src={url + item.image}
+									className='-mr-3'
+									title={item.nom + " " + item.prenom}
+								>
+									{avatar}
+								</Avatar>
+							))}
+						</ListItemAvatar>
+					</>
 				}
 			/>
 			{user.email === (groupe.createur ? groupe.createur.email : "") ? (
-				<FaUserPlus color='FF584D' size={20} onClick={() => {}} />
+				<FaUserPlus
+					className='m-2'
+					color='FF584D'
+					size={20}
+					onClick={(e) => {
+						e.stopPropagation();
+						setShowAddUser(true);
+					}}
+				/>
 			) : (
 				""
+			)}
+
+			{showAddUser && (
+				<AjouterUser
+					data={groupe}
+					onConfirm={(email, numero) =>
+						addUserToGroupe(groupe._id, email, numero)
+					}
+					onDismiss={() => setShowAddUser(false)}
+				/>
 			)}
 		</ListItemButton>
 	);
