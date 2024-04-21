@@ -9,6 +9,7 @@ import {
 	FaTag,
 	FaUsers,
 	FaPlus,
+	FaUserPlus,
 } from "react-icons/fa";
 import { fToNow } from "../util/formatTime";
 import {
@@ -28,6 +29,7 @@ import {
 	ListItemText,
 } from "@mui/material";
 import { axiosInstance } from "../util/axios";
+import { NouveauGroupe } from "./NouveauGroupe";
 
 // const NOTIFICATIONS = [
 // 	{
@@ -49,12 +51,13 @@ import { axiosInstance } from "../util/axios";
 // ];
 
 export default function Groupes() {
-	const [notifications, setNotifications] = useState([]);
+	const [groupes, setGroupes] = useState([]);
+	const [showNouveauGroupe, setShowNouveauGroupe] = useState(false);
 
-	async function getNotifications() {
+	async function getGroupes() {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
-			const response = await axiosInstance.get("/notifications", {
+			const response = await axiosInstance.get("/users/chercheur/groupes", {
 				headers: {
 					Authorization: `Bearer ${accessToken}`,
 				},
@@ -63,10 +66,7 @@ export default function Groupes() {
 			console.log(response);
 
 			if (response.status === 200) {
-				const dataNonLu = response.data.filter(
-					(item) => item.statut === "non lu"
-				);
-				setNotifications(dataNonLu);
+				setGroupes(response.data);
 			}
 		} catch (e) {
 			console.log(e);
@@ -74,12 +74,10 @@ export default function Groupes() {
 	}
 
 	useEffect(() => {
-		getNotifications();
+		getGroupes();
 	}, []);
 
-	const totalUnRead = notifications.filter(
-		(item) => item.statut === "non lu"
-	).length;
+	const total = groupes.length;
 
 	const [open, setOpen] = useState(null);
 
@@ -91,36 +89,6 @@ export default function Groupes() {
 		setOpen(null);
 	};
 
-	const handleMarkAllAsRead = () => {
-		notifications.map(
-			async (notification) => await handleMarkAsRead(notification._id)
-		);
-	};
-
-	const handleMarkAsRead = async (id) => {
-		try {
-			let accessToken = localStorage.getItem("accessToken");
-			console.log(accessToken);
-			const response = await axiosInstance.put(
-				"/notifications/" + id,
-				{},
-				{
-					headers: {
-						Authorization: `Bearer ${accessToken}`,
-					},
-				}
-			);
-
-			console.log(response);
-
-			if (response.request.status === 200) {
-				getNotifications();
-			}
-		} catch (e) {
-			console.log(e);
-		}
-	};
-
 	return (
 		<>
 			<IconButton
@@ -128,7 +96,7 @@ export default function Groupes() {
 				onClick={handleOpen}
 				sx={{ width: 40, height: 40 }}
 			>
-				<Badge badgeContent={totalUnRead} color='error'>
+				<Badge badgeContent={total} color='error'>
 					<FaUsers color='EEEDFF' />
 				</Badge>
 			</IconButton>
@@ -151,12 +119,18 @@ export default function Groupes() {
 					<Box sx={{ flexGrow: 1 }}>
 						<Typography variant='subtitle1'>Groupes</Typography>
 						<Typography variant='body2' sx={{ color: "text.secondary" }}>
-							Vous faites partie de {totalUnRead} groupes
+							Vous faites partie de {total} groupes
 						</Typography>
 					</Box>
 
 					<Tooltip title=' Ajouter un groupe'>
-						<IconButton color='primary' onClick={handleMarkAllAsRead}>
+						<IconButton
+							color='primary'
+							onClick={() => {
+								handleClose();
+								setShowNouveauGroupe(true);
+							}}
+						>
 							<FaPlus />
 						</IconButton>
 					</Tooltip>
@@ -164,22 +138,9 @@ export default function Groupes() {
 
 				<Divider sx={{ borderStyle: "dashed" }} />
 
-				<List
-					disablePadding
-					subheader={
-						<ListSubheader
-							disableSticky
-							sx={{ py: 1, px: 2.5, typography: "overline" }}
-						>
-							Nouveau
-						</ListSubheader>
-					}
-				>
-					{notifications.slice(0, 2).map((notification) => (
-						<NotificationItem
-							key={notification._id}
-							notification={notification}
-						/>
+				<List disablePadding>
+					{groupes.slice(0, 2).map((groupe) => (
+						<GroupeItem key={groupe._id} groupe={groupe} />
 					))}
 				</List>
 
@@ -191,65 +152,71 @@ export default function Groupes() {
 					</Button>
 				</Box>
 			</Popover>
+
+			{showNouveauGroupe && (
+				<NouveauGroupe onDismiss={() => setShowNouveauGroupe(false)} />
+			)}
 		</>
 	);
 }
 
-NotificationItem.propTypes = {
-	notification: PropTypes.shape({
+GroupeItem.propTypes = {
+	groupe: PropTypes.shape({
 		_id: PropTypes.string,
-		type: PropTypes.string,
-		contenu: PropTypes.string,
-		date_creation: PropTypes.string,
-		statut: PropTypes.string,
+		nom: PropTypes.string,
+		description: PropTypes.string,
+		createur: PropTypes.string,
+		membres: PropTypes.arrayOf(PropTypes.string),
+		offres: PropTypes.arrayOf(PropTypes.string),
 	}),
 };
 
-function NotificationItem({ notification }) {
-	const { avatar, title } = renderContent(notification);
+function GroupeItem({ groupe }) {
+	const { avatar, title } = renderContent(groupe);
+	const [url, setUrl] = useState("");
+	const user = JSON.parse(localStorage.getItem("user"));
 
-	const handleMarkAsRead = async (id) => {
+	async function getUrl() {
 		try {
-			let accessToken = localStorage.getItem("accessToken");
-			console.log(accessToken);
-			const response = await axiosInstance.put(
-				"/notifications/" + id,
-				{},
-				{
-					headers: {
-						Authorization: `Bearer ${accessToken}`,
-					},
-				}
-			);
-
-			console.log(response);
-
-			if (response.request.status === 200) {
+			const response = await axiosInstance.get("/services/auth");
+			if (response.status === 200) {
+				setUrl(response.data);
+			} else {
+				setUrl("/");
 			}
 		} catch (e) {
 			console.log(e);
 		}
-	};
+	}
 
-	const handleNotificationClick = async (notification) => {
-		await handleMarkAsRead(notification._id);
-		window.location.href = notification.lien;
-	};
+	useEffect(() => {
+		getUrl();
+	}, []);
 
 	return (
 		<ListItemButton
-			onClick={() => handleNotificationClick(notification)}
+			onClick={() => {}}
 			sx={{
 				py: 1.5,
 				px: 2.5,
 				mt: "1px",
-				...(notification.isUnRead && {
+				...(groupe.isUnRead && {
 					bgcolor: "action.selected",
 				}),
 			}}
 		>
 			<ListItemAvatar>
-				<Avatar sx={{ bgcolor: "background.neutral" }}>{avatar}</Avatar>
+				{groupe.membres
+					? groupe.membres.map((item, index) => (
+							<Avatar
+								sx={{ bgcolor: "background.neutral" }}
+								key={index}
+								src={url + item.image}
+							>
+								{avatar}
+							</Avatar>
+					  ))
+					: ""}
 			</ListItemAvatar>
 			<ListItemText
 				primary={title}
@@ -263,18 +230,22 @@ function NotificationItem({ notification }) {
 							color: "text.disabled",
 						}}
 					>
-						<FaClock className='mr-1' />
-						{fToNow(notification.createdAt)}
+						{groupe.description}
 					</Typography>
 				}
 			/>
+			{user.email === (groupe.createur ? groupe.createur.email : "") ? (
+				<FaUserPlus color='FF584D' size={20} onClick={() => {}} />
+			) : (
+				""
+			)}
 		</ListItemButton>
 	);
 }
 
-function renderContent(notification) {
-	let avatar = notification.type;
-	let title = notification.contenu;
+function renderContent(groupe) {
+	let avatar = groupe.nom;
+	let title = groupe.nom;
 
 	return { avatar, title };
 }
