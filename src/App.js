@@ -37,6 +37,7 @@ import {
 	EmploisEmployeur,
 	EmploiEmployeur,
 	UtilisateurCGestionnaire,
+	GroupesChercheur,
 } from "./pages";
 
 function App() {
@@ -134,6 +135,7 @@ function App() {
 					element={<EnregistrementsChercheur />}
 				/>
 				<Route path='/chercheur/favoris' element={<FavorisChercheur />} />
+				<Route path='/chercheur/groupes' element={<GroupesChercheur />} />
 			</Routes>
 		</BrowserRouter>
 	);

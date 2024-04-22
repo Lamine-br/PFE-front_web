@@ -114,6 +114,10 @@ export default function Groupes() {
 		setOpen(null);
 	};
 
+	const redirectToMainPage = () => {
+		window.location.href = "/chercheur/groupes";
+	};
+
 	return (
 		<>
 			<IconButton
@@ -175,7 +179,7 @@ export default function Groupes() {
 
 				<Divider sx={{ borderStyle: "dashed" }} />
 				<Box sx={{ p: 1 }}>
-					<Button fullWidth disableRipple>
+					<Button fullWidth disableRipple onClick={() => redirectToMainPage()}>
 						Voir tout
 					</Button>
 				</Box>
@@ -274,6 +278,7 @@ function GroupeItem({ groupe, onUpdate }) {
 								alignItems: "center",
 								color: "text.disabled",
 							}}
+							className='max-w-1/2'
 						>
 							{groupe.description}
 						</Typography>
