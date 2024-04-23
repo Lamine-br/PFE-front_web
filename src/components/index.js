@@ -90,3 +90,6 @@ export * from "./TableauChercheurs";
 export * from "./CadreUtilisateurC";
 export * from "./Groupes";
 export * from "./NouveauGroupe";
+export * from "./AjouterUser";
+export * from "./CadrePartage";
+export * from "./PartagerOffre";

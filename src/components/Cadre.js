@@ -18,10 +18,12 @@ import {
 	calculateDuration,
 } from "../util/formatTime";
 import { axiosInstance } from "../util/axios";
+import { PartagerOffre } from "./PartagerOffre";
 
 export function Cadre({ Offre }) {
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 	const [showMessage, setShowMessage] = useState(false);
+	const [showPartageTab, setShowPartageTab] = useState(false);
 	const [message, setMessage] = useState("");
 	const [isFavorite, setIsFavorite] = useState(
 		user ? (user.favoris ? user.favoris.includes(Offre._id) : false) : false
@@ -98,6 +100,32 @@ export function Cadre({ Offre }) {
 		}
 	}
 
+	async function partagerOffre(id_groupe, offre) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				"/users/chercheur/partagerOffreDansGroupe",
+				{ id_groupe, offre },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+			console.log(response);
+
+			if (response.status === 200) {
+				setMessage(response.data.message);
+				setShowMessage(true);
+				setTimeout(() => {
+					setShowMessage(false);
+				}, 1000);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	const toggleFavorite = () => {
 		likeOffre();
 	};
@@ -119,7 +147,7 @@ export function Cadre({ Offre }) {
 					<p className='text-bleuF'>{fDate(Offre.date)}</p>
 				</div>
 				<div className='ml-auto my-auto'>
-					<Modal />
+					<Modal onShare={() => setShowPartageTab(true)} />
 				</div>
 				{showMessage && (
 					<div className='fixed left-1/2 top-1/2 transform -translate-x-1/2'>
@@ -179,6 +207,14 @@ export function Cadre({ Offre }) {
 					onClick={redirect}
 				></ButtonRond>
 			</div>
+
+			{showPartageTab && (
+				<PartagerOffre
+					offre={Offre}
+					onConfirm={partagerOffre}
+					onDismiss={() => setShowPartageTab(false)}
+				/>
+			)}
 		</div>
 	);
 }

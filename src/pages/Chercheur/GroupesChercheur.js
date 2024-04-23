@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { HeaderChercheur, Spinner, ProfileC } from "../../components";
 import { axiosInstance } from "../../util/axios";
 import { FaPlus, FaUserPlus } from "react-icons/fa";
-import { NouveauGroupe } from "../../components";
-import { AjouterUser } from "../../components/AjouterUser";
+import { NouveauGroupe, CadrePartage, AjouterUser } from "../../components";
 
 export function GroupesChercheur() {
 	const [groupes, setGroupes] = useState([]);
@@ -119,7 +118,13 @@ export function GroupesChercheur() {
 										className={`flex flex-col justify-between bg-${
 											selectedGroupe._id === item._id ? "bleu" : "violet"
 										} p-2 rounded-lg border border-bleuF cursor-pointer`}
-										onClick={() => setSelectedGroupe(item)}
+										onClick={() => {
+											setLoading(true);
+											setTimeout(() => {
+												setSelectedGroupe(item);
+												setLoading(false);
+											}, 500);
+										}}
 									>
 										<p className='text-sm text-bleuF font-bold'>
 											Groupe {item.nom}
@@ -198,7 +203,37 @@ export function GroupesChercheur() {
 						</div>
 
 						<div className='border border-bleuF rounded-lg h-96 mt-2 p-2 overflow-y-scroll scrollbar-track-transparent'>
-							<div className='flex flex-col space-y-2'></div>
+							<div className='flex flex-col space-y-2'>
+								{selectedGroupe.offres
+									? selectedGroupe.offres.map((item, index) => (
+											<div className='flex items-center space-x-4'>
+												<img
+													key={index}
+													src={url + (item.emetteur ? item.emetteur.image : "")}
+													alt={item.altText}
+													title={
+														item.emetteur
+															? item.emetteur.nom + " " + item.emetteur.prenom
+															: ""
+													}
+													className='w-10 h-10 rounded-full'
+												/>
+												<div className='w-2/3'>
+													<CadrePartage
+														Offre={item.offre}
+														onClick={() => {
+															window.open(
+																"/offres/" + item.offre._id,
+																"_blank"
+															);
+														}}
+													></CadrePartage>
+												</div>
+												<p className='text-bleuF text-xs'>{item.date}</p>
+											</div>
+									  ))
+									: ""}
+							</div>
 						</div>
 					</div>
 				</div>

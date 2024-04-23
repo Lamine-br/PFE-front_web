@@ -4,24 +4,26 @@ import { alpha } from "@mui/material/styles";
 import { Stack, MenuItem, IconButton, Popover } from "@mui/material";
 
 import esi from "../assets/logo_esi.png";
-import { FaEllipsisV } from "react-icons/fa";
+import { FaEllipsisV, FaShareSquare, FaTrash } from "react-icons/fa";
 
 // ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [
-	{
-		label: "Modifier",
-		icon: "eva:home-fill",
-	},
-	{
-		label: "Supprimer",
-		icon: "eva:person-fill",
-	},
-];
-
 // ----------------------------------------------------------------------
 
-export function Modal() {
+export function Modal({ onShare }) {
+	const MENU_OPTIONS = [
+		{
+			label: "Partager",
+			icon: FaShareSquare,
+			onClick: onShare,
+		},
+		{
+			label: "Supprimer",
+			icon: FaTrash,
+			onClick: () => {},
+		},
+	];
+
 	const [open, setOpen] = useState(null);
 
 	const handleOpen = (event) => {
@@ -76,8 +78,17 @@ export function Modal() {
 			>
 				<Stack sx={{ p: 1 }}>
 					{MENU_OPTIONS.map((option) => (
-						<MenuItem key={option.label} onClick={handleClose}>
-							{option.label}
+						<MenuItem
+							key={option.label}
+							onClick={(e) => {
+								handleClose(e);
+								option.onClick();
+							}}
+						>
+							<Stack direction='row' alignItems='center'>
+								<option.icon size={16} style={{ marginRight: 8 }} />
+								{option.label}
+							</Stack>
 						</MenuItem>
 					))}
 				</Stack>
