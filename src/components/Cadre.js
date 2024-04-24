@@ -138,6 +138,25 @@ export function Cadre({ Offre }) {
 		window.location.href = "/offres/" + Offre._id;
 	};
 
+	const [url, setUrl] = useState("");
+	async function getUrl() {
+		try {
+			const response = await axiosInstance.get("/services/offres");
+			if (response.status === 200) {
+				console.log(response.data);
+				setUrl(response.data);
+			} else {
+				setUrl("/");
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getUrl();
+	}, []);
+
 	return (
 		<div className='bg-violet rounded-lg'>
 			<div className='flex px-4 py-2'>
@@ -159,8 +178,8 @@ export function Cadre({ Offre }) {
 			</div>
 			<div>
 				<img
-					className='border-t border-b border-black w-full h-48'
-					src={esi}
+					className='w-full h-48'
+					src={Offre.image ? url + Offre.image : esi}
 					alt='image'
 				/>
 			</div>
@@ -178,7 +197,7 @@ export function Cadre({ Offre }) {
 				<div className='flex items-center justify-between'>
 					<div className='flex items-center'>
 						<MdLocationOn color='#465475' />
-						<p className='text-bleuF'>Alger</p>
+						<p className='text-bleuF'>{Offre.lieu ? Offre.lieu : "Alger"}</p>
 					</div>
 					<div className='flex items-center'>
 						<FaDollarSign color='#465475' />

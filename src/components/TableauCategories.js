@@ -32,7 +32,7 @@ export function TableauCategories({
 								selectedId === 0 ? "bg-vertF" : "bg-violet"
 							}`}
 							onClick={() => {
-								onRowClick(0);
+								onRowClick(0, "All");
 								setSelectedId(0);
 							}}
 						>
@@ -45,7 +45,7 @@ export function TableauCategories({
 									item._id === selectedId ? "bg-vertF" : "bg-violet"
 								}`}
 								onClick={() => {
-									onRowClick(item._id);
+									onRowClick(item._id, item.nom);
 									setSelectedId(item._id);
 								}}
 							>

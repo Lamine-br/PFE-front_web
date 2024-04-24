@@ -15,6 +15,7 @@ import { FaPlus } from "react-icons/fa";
 
 export function OffresEmployeur() {
 	let [selected, setSelected] = useState(0);
+	let [selectedCategorie, setSelectedCategorie] = useState("All");
 	console.log(selected);
 	let [data, setData] = useState([]);
 	let [categories, setCategories] = useState([]);
@@ -129,8 +130,9 @@ export function OffresEmployeur() {
 		window.location.href = `/employeur/offres/${id}`;
 	};
 
-	const handleCategorieClick = (id) => {
+	const handleCategorieClick = (id, nom) => {
 		setSelected(id);
+		setSelectedCategorie(nom);
 	};
 
 	const handleAddOffre = async () => {
@@ -206,7 +208,7 @@ export function OffresEmployeur() {
 					<div>
 						<TableauCategories
 							data={categories}
-							onRowClick={(id) => handleCategorieClick(id)}
+							onRowClick={(id, nom) => handleCategorieClick(id, nom)}
 							onDelete={handleDeleteCategorie}
 							onModify={handleModifyOffre}
 							vide={vide}
@@ -215,7 +217,10 @@ export function OffresEmployeur() {
 				</div>
 				<div className='my-6 bg-white rounded-lg p-4 col-span-3'>
 					<div className='flex justify-between'>
-						<p className='text-xl font-bold text-bleuF'>Mes offres</p>
+						<p className='text-xl font-bold text-bleuF'>
+							Mes offres {"> "}
+							{selectedCategorie}
+						</p>
 						<div className='flex space-x-4'>
 							<ButtonCarre
 								couleur='rouge'

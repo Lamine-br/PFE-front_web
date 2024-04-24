@@ -49,7 +49,7 @@ export function CadreP({ Offre, className, onClick, onDelete }) {
 					<div className='flex items-center justify-between mt-2 mr-6'>
 						<div className='flex items-center'>
 							<MdLocationOn color='#465475' />
-							<p className='text-bleuF'>Alger</p>
+							<p className='text-bleuF'>{Offre.lieu ? Offre.lieu : "Alger"}</p>
 						</div>
 						<div className='flex items-center'>
 							<FaDollarSign color='#465475' />

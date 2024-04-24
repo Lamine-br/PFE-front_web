@@ -42,6 +42,25 @@ export function CadreG({ id }) {
 		window.location.href = `/offres/${id}/postuler`;
 	};
 
+	const [url, setUrl] = useState("");
+	async function getUrl() {
+		try {
+			const response = await axiosInstance.get("/services/offres");
+			if (response.status === 200) {
+				console.log(response.data);
+				setUrl(response.data);
+			} else {
+				setUrl("/");
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getUrl();
+	}, []);
+
 	return (
 		<div className='w-full bg-violet rounded-lg'>
 			<div className='flex px-10 py-2'>
@@ -63,7 +82,10 @@ export function CadreG({ id }) {
 				</div>
 			</div>
 			<div>
-				<img className=' bg-white w-full h-48' src={esi}></img>
+				<img
+					className=' bg-white w-full h-48'
+					src={offre.image ? url + offre.image : esi}
+				></img>
 			</div>
 
 			<div className='px-10 py-2'>
