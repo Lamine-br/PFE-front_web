@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaEllipsisV, FaDollarSign } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { TiTime } from "react-icons/ti";
 import { ButtonRond } from "./ButtonRond";
 import { FaTimes } from "react-icons/fa";
 import google from "../assets/google.png";
+import { axiosInstance } from "../util/axios";
 
 export function CadreP({ Offre, className, onClick, onDelete }) {
 	// let Offre = {
@@ -18,6 +19,25 @@ export function CadreP({ Offre, className, onClick, onDelete }) {
 	// 		"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
 	// };
 
+	const [urlAuth, setUrlAuth] = useState("");
+	async function getUrlAuth() {
+		try {
+			const response = await axiosInstance.get("/services/auth");
+			if (response.status === 200) {
+				console.log(response.data);
+				setUrlAuth(response.data);
+			} else {
+				setUrlAuth("/");
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getUrlAuth();
+	}, []);
+
 	return (
 		<div
 			className={`bg-violet rounded-lg w-full ${className} cursor-pointer`}
@@ -26,7 +46,7 @@ export function CadreP({ Offre, className, onClick, onDelete }) {
 			<div className='flex w-full px-4 py-2'>
 				<img
 					className='rounded-full w-12 h-12 border border-bleuF'
-					src={google}
+					src={Offre.employeur ? urlAuth + Offre.employeur.image : google}
 				></img>
 
 				<div className='flex flex-col w-full pl-4'>

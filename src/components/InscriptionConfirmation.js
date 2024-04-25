@@ -44,28 +44,28 @@ export function InscriptionConfirmation({ data, onConfirm }) {
 
 	return (
 		<div className='overlay flex justify-center items-center w-full'>
-			<div className='z-50 justify-center items-center p-10 w-fit h-4/5 bg-bleuF rounded-lg'>
+			<div className='z-50 justify-center items-center p-10 w-fit h-4/5 bg-white rounded-lg'>
 				<div className='flex flex-col items-center justify-center space-y-4'>
 					{status ? (
-						<FaCheckCircle size={40} color={"#EEEDFF"} />
+						<FaCheckCircle size={40} className='text-vertF' />
 					) : (
-						<RiLockFill size={40} color={"#EEEDFF"} />
+						<RiLockFill size={40} className='text-bleuF' />
 					)}
 
 					{status ? (
-						<h1 className='text-xl text-violet font-bold'>Code vérifié !</h1>
+						<h1 className='text-xl text-vertF font-bold'>Code vérifié !</h1>
 					) : (
-						<h1 className='text-xl text-violet font-bold'>
+						<h1 className='text-xl text-bleuF font-bold'>
 							Vérification de code
 						</h1>
 					)}
 				</div>
 				{status ? (
-					<h1 className='text-sm text-violet mt-6'>
+					<h1 className='text-sm text-bleuF mt-6'>
 						Le code a été vérifié avec succés.
 					</h1>
 				) : (
-					<p className='text-sm text-violet mt-10'>
+					<p className='text-sm text-bleuF mt-10'>
 						{" "}
 						On vous a envoyé un code de confirmation à <strong>{data}</strong>.
 					</p>
@@ -75,7 +75,7 @@ export function InscriptionConfirmation({ data, onConfirm }) {
 					""
 				) : (
 					<div className='flex flex-col items-center justify-between mt-10 space-y-2'>
-						<p className='text-sm text-violet'> Veuillez entrer le code </p>
+						<p className='text-sm text-bleuF'> Veuillez entrer le code </p>
 						<input
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='text'

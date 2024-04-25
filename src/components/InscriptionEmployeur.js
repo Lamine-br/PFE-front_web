@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ButtonRond } from "./ButtonRond";
-import { FaTimes, FaPlus } from "react-icons/fa";
+import { FaTimes, FaPlus, FaCheck } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
 import { Spinner } from "./Spinner";
 import { InscriptionConfirmation } from "./InscriptionConfirmation";
@@ -162,17 +162,84 @@ export function InscriptionEmployeur({ onPass }) {
 		}
 	}
 
+	const [folderName, setFolderName] = useState("");
+	const [selectedImage, setSelectedImage] = useState(null);
+	const [previewUrlImage, setPreviewUrlImage] = useState(null);
+	const [uploadedImage, setUploadedImage] = useState(false);
+
+	const handleImageChange = (event) => {
+		const file = event.target.files[0];
+		setSelectedImage(file);
+		console.log(file);
+		if (file) {
+			setUploadedImage(false);
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setPreviewUrlImage(reader.result);
+			};
+			reader.readAsDataURL(file);
+		} else {
+			setPreviewUrlImage(null);
+		}
+	};
+
+	const handleImageUpload = async () => {
+		if (selectedImage) {
+			setLoading(true);
+			const data = new FormData();
+			data.append("image", selectedImage);
+
+			try {
+				const response = await axiosInstance.post(
+					"/auth/upload/" + folderName,
+					data,
+					{
+						headers: {
+							"Content-Type": "multipart/form-data",
+						},
+					}
+				);
+				console.log(response);
+				if (response.status === 200) {
+					console.log("done");
+					setFormData((prevFormData) => ({
+						...prevFormData,
+						["image"]: response.data.image[0],
+					}));
+					console.log(formData);
+					setUploadedImage(true);
+
+					setLoading(false);
+				}
+			} catch (error) {
+				console.error("Error uploading file:", error);
+			}
+		} else {
+			console.log("Please select a file.");
+		}
+	};
+
+	const generateUniqueFolderName = () => {
+		const prefix = "folderEmployeur";
+		const uniqueId = Date.now().toString(36);
+		return `${prefix}-${uniqueId}`;
+	};
+
+	useEffect(() => {
+		setFolderName(generateUniqueFolderName());
+	}, []);
+
 	return (
 		<div className='overlay flex justify-center items-center w-full'>
 			{!showConfirmation && (
-				<div className='z-50 justify-center items-center p-4 w-3/4 h-4/5 bg-bleuF rounded-lg'>
-					<h1 className='text-xl text-violet font-bold mb-6 ml-4'>
+				<div className='z-50 justify-center items-center p-4 w-3/4 h-4/5 bg-white rounded-lg'>
+					<h1 className='text-xl text-bleuF font-bold mb-6 ml-4'>
 						S'inscrire - Employeur
 					</h1>
 
 					<div className='grid grid-cols-3 gap-8 mx-4 mb-4'>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Email <span className='text-rouge'>*</span>
 							</label>
 							<input
@@ -185,7 +252,7 @@ export function InscriptionEmployeur({ onPass }) {
 							<p className='text-rouge text-xs'>{emailError}</p>
 						</div>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Mot de passe <span className='text-rouge'>*</span>
 							</label>
 							<input
@@ -197,11 +264,42 @@ export function InscriptionEmployeur({ onPass }) {
 							></input>
 							<p className='text-rouge text-xs'>{passwordError}</p>
 						</div>
+						<div className='flex items-center space-x-4 justify-center'>
+							<label
+								htmlFor='imageInput'
+								className='rounded bg-violet text-bleuF text-sm h-fit font-bold px-2 py-1 cursor-pointer'
+							>
+								Importer
+							</label>
+
+							<input
+								id='imageInput'
+								className='hidden'
+								type='file'
+								onChange={handleImageChange}
+							/>
+
+							<div>
+								<img
+									src={previewUrlImage}
+									className={`w-16 h-16 rounded-full border border-bleuF`}
+								/>
+							</div>
+							{!uploadedImage && previewUrlImage && (
+								<button
+									className='rounded bg-violet text-bleuF text-sm font-bold px-2 py-2'
+									onClick={() => handleImageUpload()}
+								>
+									<FaCheck color='465475' />
+								</button>
+							)}
+							{uploadedImage && <FaCheck color='30CA3F' />}
+						</div>
 					</div>
 
 					<div className='grid grid-cols-3 gap-8 mx-4 mb-4'>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Nom de l'entreprise / Employeur{" "}
 								<span className='text-rouge'>*</span>
 							</label>
@@ -215,7 +313,7 @@ export function InscriptionEmployeur({ onPass }) {
 							<p className='text-rouge text-xs'>{entrepriseError}</p>
 						</div>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Nom d’un service / département
 							</label>
 							<input
@@ -226,7 +324,7 @@ export function InscriptionEmployeur({ onPass }) {
 							></input>
 						</div>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Nom d’un sous service / sous département
 							</label>
 							<input
@@ -240,7 +338,7 @@ export function InscriptionEmployeur({ onPass }) {
 
 					<div className='grid grid-cols-3 gap-8 mx-4 mb-10'>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Numéro national de l’EDA
 							</label>
 							<input
@@ -251,7 +349,7 @@ export function InscriptionEmployeur({ onPass }) {
 							></input>
 						</div>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>Adresse</label>
+							<label className='text-bleuF text-xs font-bold'>Adresse</label>
 							<input
 								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 								type='text'
@@ -260,7 +358,7 @@ export function InscriptionEmployeur({ onPass }) {
 							></input>
 						</div>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>Ville</label>
+							<label className='text-bleuF text-xs font-bold'>Ville</label>
 							<input
 								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 								type='text'
@@ -271,7 +369,7 @@ export function InscriptionEmployeur({ onPass }) {
 					</div>
 
 					<div className='flex space-x-4'>
-						<p className='text-violet text-sm font-bold ml-4 mb-2'>Contacts</p>
+						<p className='text-bleuF text-base font-bold ml-4 mb-2'>Contacts</p>
 						<button
 							className='flex justify-center items-center bg-rouge text-violet w-6 h-6 rounded-full'
 							onClick={addContact}
@@ -283,7 +381,7 @@ export function InscriptionEmployeur({ onPass }) {
 					{formData.contacts.map((contact, index) => (
 						<div key={index} className='grid grid-cols-7 gap-8 mx-4 mb-4'>
 							<div className='flex flex-col col-span-2'>
-								<label className='text-violet text-xs font-bold'>Nom</label>
+								<label className='text-bleuF text-xs font-bold'>Nom</label>
 								<input
 									className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 									type='text'
@@ -292,7 +390,7 @@ export function InscriptionEmployeur({ onPass }) {
 								></input>
 							</div>
 							<div className='flex flex-col col-span-2'>
-								<label className='text-violet text-xs font-bold'>Email</label>
+								<label className='text-bleuF text-xs font-bold'>Email</label>
 								<input
 									className=' bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 									type='email'
@@ -301,7 +399,7 @@ export function InscriptionEmployeur({ onPass }) {
 								></input>
 							</div>
 							<div className='flex flex-col col-span-2'>
-								<label className='text-violet text-xs font-bold'>Numero</label>
+								<label className='text-bleuF text-xs font-bold'>Numero</label>
 								<input
 									className=' bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 									type='tel'
@@ -323,13 +421,13 @@ export function InscriptionEmployeur({ onPass }) {
 						</div>
 					))}
 
-					<p className='text-violet text-sm font-bold ml-4 mb-2'>
+					<p className='text-bleuF text-base font-bold ml-4 mb-2'>
 						Liens publics
 					</p>
 
 					<div className='grid grid-cols-3 gap-8 mx-4 mb-6'>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>Site web</label>
+							<label className='text-bleuF text-xs font-bold'>Site web</label>
 							<input
 								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 								type='text'
@@ -338,7 +436,7 @@ export function InscriptionEmployeur({ onPass }) {
 							></input>
 						</div>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>Facebook</label>
+							<label className='text-bleuF text-xs font-bold'>Facebook</label>
 							<input
 								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 								type='text'
@@ -347,7 +445,7 @@ export function InscriptionEmployeur({ onPass }) {
 							></input>
 						</div>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>Linkedin</label>
+							<label className='text-bleuF text-xs font-bold'>Linkedin</label>
 							<input
 								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 								type='text'

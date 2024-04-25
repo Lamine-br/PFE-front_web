@@ -60,7 +60,7 @@ export function TableauCandidaturesEmployeur({
 										{item.chercheur ? item.chercheur.prenom : ""}
 									</p>
 									<p className='text-bleuF text-sm font-semibold'>
-										{item.offre.titre}
+										{item.offre ? item.offre.titre : ""}
 									</p>
 									<p className='text-bleuF text-sm font-semibold'>
 										{item.createdAt.split("T")[0]}

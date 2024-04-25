@@ -51,16 +51,17 @@ export function TableauEmploisEmployeur({ data, onRowClick, vide }) {
 									onClick={() => onRowClick(item._id)}
 								>
 									<p className='text-bleuF text-sm font-semibold'>
-										{item.offre.titre}
+										{item.offre ? item.offre.titre : ""}
 									</p>
 									<p className='text-bleuF text-sm font-semibold'>
-										{item.chercheur.nom} {item.chercheur.prenom}
+										{item.chercheur ? item.chercheur.nom : ""}{" "}
+										{item.chercheur ? item.chercheur.prenom : ""}
 									</p>
 									<p className='text-bleuF text-sm font-semibold'>
-										{item.offre.debut}
+										{item.offre ? item.offre.debut : ""}
 									</p>
 									<p className='text-bleuF text-sm font-semibold'>
-										{item.offre.fin}
+										{item.offre ? item.offre.fin : ""}
 									</p>
 
 									<div className='flex justify-center items-center space-x-4'>

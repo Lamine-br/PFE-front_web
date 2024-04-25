@@ -138,15 +138,30 @@ export function Cadre({ Offre }) {
 		window.location.href = "/offres/" + Offre._id;
 	};
 
-	const [url, setUrl] = useState("");
-	async function getUrl() {
+	const [urlOffres, setUrlOffres] = useState("");
+	async function getUrlOffres() {
 		try {
 			const response = await axiosInstance.get("/services/offres");
 			if (response.status === 200) {
 				console.log(response.data);
-				setUrl(response.data);
+				setUrlOffres(response.data);
 			} else {
-				setUrl("/");
+				setUrlOffres("/");
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	const [urlAuth, setUrlAuth] = useState("");
+	async function getUrlAuth() {
+		try {
+			const response = await axiosInstance.get("/services/auth");
+			if (response.status === 200) {
+				console.log(response.data);
+				setUrlAuth(response.data);
+			} else {
+				setUrlAuth("/");
 			}
 		} catch (e) {
 			console.log(e);
@@ -154,13 +169,18 @@ export function Cadre({ Offre }) {
 	}
 
 	useEffect(() => {
-		getUrl();
+		getUrlOffres();
+		getUrlAuth();
 	}, []);
 
 	return (
 		<div className='bg-violet rounded-lg'>
 			<div className='flex px-4 py-2'>
-				<img className='rounded-full w-12 h-12' src={esi} alt='logo' />
+				<img
+					className='rounded-full w-12 h-12'
+					src={urlAuth + Offre.employeur.image}
+					alt='logo'
+				/>
 				<div className='ml-4'>
 					<p className='text-bleuF font-bold'>{Offre.employeur.entreprise}</p>
 					<p className='text-bleuF'>{fDate(Offre.date)}</p>
@@ -179,7 +199,7 @@ export function Cadre({ Offre }) {
 			<div>
 				<img
 					className='w-full h-48'
-					src={Offre.image ? url + Offre.image : esi}
+					src={Offre.image ? urlOffres + Offre.image : esi}
 					alt='image'
 				/>
 			</div>

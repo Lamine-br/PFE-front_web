@@ -89,6 +89,7 @@ export default function Compte() {
 
 	useEffect(() => {
 		getUrl();
+		console.log(url + account.image);
 	}, []);
 
 	return (
