@@ -22,6 +22,11 @@ export function StatistiquesGestionnaire() {
 		Mois: [10, 15, 20, 25, 10, 15, 20, 25, 10, 15, 20, 25],
 	});
 
+	let [offres, setOffres] = useState({
+		Semaine: [10, 15, 20, 25],
+		Mois: [10, 15, 20, 25, 10, 15, 20, 25, 10, 15, 20, 25],
+	});
+
 	async function getStatistics() {
 		try {
 			setLoading(true);
@@ -95,9 +100,64 @@ export function StatistiquesGestionnaire() {
 		}
 	}
 
+	async function getOffresStatistics(lieu, metier) {
+		try {
+			setLoading(true);
+			const response = await axiosInstance.get("/offres/statistics", {
+				params: {
+					lieu: lieu ? lieu : undefined,
+					metier: metier ? metier : undefined,
+				},
+			});
+
+			console.log(response);
+
+			if (response.status === 200) {
+				const statisticsSemaine = response.data.statisticsSemaine; // Tableau d'objets avec les statistiques Semaine
+				const statisticsMois = response.data.statisticsMois; // Tableau d'objets avec les statistiques Mois
+
+				const semaineData = Array(4).fill(0);
+				const moisData = Array(12).fill(0);
+
+				const dateActuelle = moment();
+
+				statisticsSemaine.forEach((stat) => {
+					const { _id, total } = stat;
+					const semaine = _id.semaine - 1;
+
+					const numSemaine = 4 - (dateActuelle.isoWeek() - semaine);
+
+					if (numSemaine <= 4) {
+						semaineData[numSemaine] = total;
+					}
+					console.log(dateActuelle.isoWeek(), semaine, numSemaine);
+				});
+
+				statisticsMois.forEach((stat) => {
+					const { _id, total } = stat;
+					const mois = _id.mois - 1;
+
+					moisData[mois] = total;
+				});
+
+				// Mettez à jour l'état candidatures avec les nouvelles données
+				setOffres({
+					Semaine: semaineData,
+					Mois: moisData,
+				});
+
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
 	useEffect(() => {
 		getStatistics();
-		getCandidaturesStatistics("Paris", "Technicien");
+		getCandidaturesStatistics("", "");
+		getOffresStatistics("", "");
 	}, []);
 
 	return (
@@ -144,8 +204,9 @@ export function StatistiquesGestionnaire() {
 					<div>
 						<p className='text-bleuF font-bold mb-2'>Nombre d'annonces</p>
 						<LineChart
-							title={"Nombre d’annonces"}
-							data={candidatures}
+							title={"Nombre d'annonces"}
+							data={offres}
+							onChange={getOffresStatistics}
 						></LineChart>
 					</div>
 					<div>

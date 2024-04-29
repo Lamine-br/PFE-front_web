@@ -55,8 +55,8 @@ export function LineChart({ title, data, onChange }) {
 	};
 
 	const [selectedPeriod, setSelectedPeriod] = useState("Semaine");
-	const [selectedLieu, setSelectedLieu] = useState("Alger");
-	const [selectedMetier, setSelectedMetier] = useState("Technicien");
+	const [selectedLieu, setSelectedLieu] = useState("");
+	const [selectedMetier, setSelectedMetier] = useState("");
 
 	useEffect(() => {
 		getMetiers();
@@ -75,7 +75,7 @@ export function LineChart({ title, data, onChange }) {
 			},
 			series: [
 				{
-					name: "Annonces",
+					name: title,
 					data: dataUsed[selectedPeriod],
 				},
 			],
@@ -147,6 +147,7 @@ export function LineChart({ title, data, onChange }) {
 						value={selectedLieu}
 						onChange={handleLieuChange}
 					>
+						<option value=''></option>
 						{regions.map((key, index) => (
 							<option key={index} value={key}>
 								{key}
@@ -161,6 +162,7 @@ export function LineChart({ title, data, onChange }) {
 						value={selectedMetier}
 						onChange={handleMetierChange}
 					>
+						<option value=''></option>
 						{metiers.map((key, index) => (
 							<option key={index} value={key}>
 								{key}
