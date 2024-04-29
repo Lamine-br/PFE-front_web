@@ -1,16 +1,104 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
 	HeaderGestionnaire,
 	NavBarGestionnaire,
 	LineChart,
 	ColumnChart,
+	Spinner,
 } from "../../components";
+import { axiosInstance } from "../../util/axios";
+import moment from "moment";
 
 export function StatistiquesGestionnaire() {
-	let data = {
+	const [nbInscrits, setNbInscrits] = useState(0);
+	const [nbAgences, setNbAgences] = useState(0);
+	const [nbEmployeurs, setNbEmployeurs] = useState(0);
+	const [nbChercheurs, setNbChercheurs] = useState(0);
+
+	const [loading, setLoading] = useState(false);
+
+	let [candidatures, setCandidatures] = useState({
 		Semaine: [10, 15, 20, 25],
 		Mois: [10, 15, 20, 25, 10, 15, 20, 25, 10, 15, 20, 25],
-	};
+	});
+
+	async function getStatistics() {
+		try {
+			setLoading(true);
+			const response = await axiosInstance.get("/users/statistics");
+
+			console.log(response);
+
+			if (response.status === 200) {
+				setNbInscrits(response.data.inscrits);
+				setNbEmployeurs(response.data.employeurs);
+				setNbChercheurs(response.data.chercheurs);
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
+	async function getCandidaturesStatistics(lieu, metier) {
+		try {
+			setLoading(true);
+			const response = await axiosInstance.get("/candidatures/statistics", {
+				params: {
+					lieu: lieu,
+					metier: metier,
+				},
+			});
+
+			console.log(response);
+
+			if (response.status === 200) {
+				const statisticsSemaine = response.data.statisticsSemaine; // Tableau d'objets avec les statistiques Semaine
+				const statisticsMois = response.data.statisticsMois; // Tableau d'objets avec les statistiques Mois
+
+				const semaineData = Array(4).fill(0);
+				const moisData = Array(12).fill(0);
+
+				const dateActuelle = moment();
+
+				statisticsSemaine.forEach((stat) => {
+					const { _id, total } = stat;
+					const semaine = _id.semaine - 1;
+
+					const numSemaine = 4 - (dateActuelle.isoWeek() - semaine);
+
+					if (numSemaine <= 4) {
+						semaineData[numSemaine] = total;
+					}
+					console.log(dateActuelle.isoWeek(), semaine, numSemaine);
+				});
+
+				statisticsMois.forEach((stat) => {
+					const { _id, total } = stat;
+					const mois = _id.mois - 1;
+
+					moisData[mois] = total;
+				});
+
+				// Mettez à jour l'état candidatures avec les nouvelles données
+				setCandidatures({
+					Semaine: semaineData,
+					Mois: moisData,
+				});
+
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
+	useEffect(() => {
+		getStatistics();
+		getCandidaturesStatistics("Paris", "Technicien");
+	}, []);
 
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
@@ -24,34 +112,49 @@ export function StatistiquesGestionnaire() {
 					<div className='bg-bleuF rounded-lg p-4'>
 						<p className='text-violet font-bold text-sm'>Nombre d’inscrits</p>
 						<br></br>
-						<p className='text-violet font-bold text-sm text-right'>1000</p>
+						<p className='text-violet font-bold text-sm text-right'>
+							{nbInscrits}
+						</p>
 					</div>
 					<div className='bg-bleu rounded-lg p-4'>
 						<p className='text-violet font-bold text-sm'>Agences</p>
 						<br></br>
-						<p className='text-violet font-bold text-sm text-right'>72</p>
+						<p className='text-violet font-bold text-sm text-right'>
+							{nbAgences}
+						</p>
 					</div>
 					<div className='bg-bleu rounded-lg p-4'>
 						<p className='text-violet font-bold text-sm'>Employeurs</p>
 						<br></br>
-						<p className='text-violet font-bold text-sm text-right'>30</p>
+						<p className='text-violet font-bold text-sm text-right'>
+							{nbEmployeurs}
+						</p>
 					</div>
 					<div className='bg-bleu rounded-lg p-4'>
 						<p className='text-violet font-bold text-sm'>
 							Chercheurs d'emplois
 						</p>
 						<br></br>
-						<p className='text-violet font-bold text-sm text-right'>898</p>
+						<p className='text-violet font-bold text-sm text-right'>
+							{nbChercheurs}
+						</p>
 					</div>
 				</div>
 				<div className='grid grid-cols-2 space-x-2'>
 					<div>
 						<p className='text-bleuF font-bold mb-2'>Nombre d'annonces</p>
-						<LineChart title={"Nombre d’annonces"} data={data}></LineChart>
+						<LineChart
+							title={"Nombre d’annonces"}
+							data={candidatures}
+						></LineChart>
 					</div>
 					<div>
 						<p className='text-bleuF font-bold mb-2'>Nombre de candidatures</p>
-						<LineChart title={"Nombre de candidatures"} data={data}></LineChart>
+						<LineChart
+							title={"Nombre de candidatures"}
+							data={candidatures}
+							onChange={getCandidaturesStatistics}
+						></LineChart>
 					</div>
 				</div>
 				<div className='grid grid-cols-3 space-x-2'>
@@ -59,22 +162,33 @@ export function StatistiquesGestionnaire() {
 						<p className='text-bleuF font-bold my-2'>
 							Les métiers les plus demandés
 						</p>
-						<ColumnChart title={"Nombre d’annonces"} data={data}></ColumnChart>
+						<ColumnChart
+							title={"Nombre d’annonces"}
+							data={candidatures}
+						></ColumnChart>
 					</div>
 					<div>
 						<p className='text-bleuF font-bold my-2'>
 							Les métiers les plus proposés
 						</p>
-						<ColumnChart title={"Nombre d’annonces"} data={data}></ColumnChart>
+						<ColumnChart
+							title={"Nombre d’annonces"}
+							data={candidatures}
+						></ColumnChart>
 					</div>
 				</div>
 				<div className='grid grid-cols-2 space-x-2'>
 					<div>
 						<p className='text-bleuF font-bold my-2'>Nombre de consultations</p>
-						<LineChart title={"Nombre de candidatures"} data={data}></LineChart>
+						<LineChart
+							title={"Nombre de candidatures"}
+							data={candidatures}
+						></LineChart>
 					</div>
 				</div>
 			</div>
+
+			{loading && <Spinner />}
 		</div>
 	);
 }

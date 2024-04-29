@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import ApexCharts from "apexcharts";
-
+import { axiosInstance } from "../util/axios";
 /**
  * statistic chart
  * @component
  * @returns {React.ReactElement}
  */
-export function LineChart({ title, data }) {
+export function LineChart({ title, data, onChange }) {
 	const chartRef = useRef(null);
 
 	const labels = {
@@ -27,9 +27,27 @@ export function LineChart({ title, data }) {
 		],
 	};
 
-	const regions = ["Alger", "Oran", "Annaba", "Béjaia"];
+	const regions = ["Alger", "Paris", "Oran", "Annaba", "Béjaia"];
 
-	const metiers = ["Développeur", "Designer", "Administrateur BDD"];
+	const [metiers, setMetiers] = useState([
+		"Développeur",
+		"Designer",
+		"Administrateur BDD",
+	]);
+
+	async function getMetiers() {
+		try {
+			const response = await axiosInstance.get("/offres/metiers");
+
+			console.log(response);
+
+			if (response.status === 200) {
+				setMetiers(response.data.map((item) => item.nom));
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
 
 	const dataUsed = {
 		Semaine: data.Semaine,
@@ -37,8 +55,11 @@ export function LineChart({ title, data }) {
 	};
 
 	const [selectedPeriod, setSelectedPeriod] = useState("Semaine");
+	const [selectedLieu, setSelectedLieu] = useState("Alger");
+	const [selectedMetier, setSelectedMetier] = useState("Technicien");
 
 	useEffect(() => {
+		getMetiers();
 		const options = {
 			chart: {
 				type: "line",
@@ -92,6 +113,16 @@ export function LineChart({ title, data }) {
 		setSelectedPeriod(e.target.value);
 	};
 
+	const handleLieuChange = (e) => {
+		setSelectedLieu(e.target.value);
+		onChange(e.target.value, selectedMetier);
+	};
+
+	const handleMetierChange = (e) => {
+		setSelectedMetier(e.target.value);
+		onChange(selectedLieu, e.target.value);
+	};
+
 	return (
 		<div className='chart-container w-full rounded shadow pt-4 bg-violet'>
 			<div className='flex flex-row justify-between px-4'>
@@ -113,8 +144,8 @@ export function LineChart({ title, data }) {
 					<label className='font-semibold text-bleuF text-xs'>Région </label>
 					<select
 						className='appearance-none ml-2 border text-center text-xs text-bleuF border-bleuF rounded-md shadow-sm focus:border-success focus:outline-none px-2 py-1'
-						value={() => {}}
-						onChange={() => {}}
+						value={selectedLieu}
+						onChange={handleLieuChange}
 					>
 						{regions.map((key, index) => (
 							<option key={index} value={key}>
@@ -127,8 +158,8 @@ export function LineChart({ title, data }) {
 					<label className='font-semibold text-bleuF text-xs'>Métier </label>
 					<select
 						className='appearance-none ml-2 border text-center text-bleuF text-xs border-bleuF rounded-md shadow-sm focus:border-success focus:outline-none px-2 py-1'
-						value={() => {}}
-						onChange={() => {}}
+						value={selectedMetier}
+						onChange={handleMetierChange}
 					>
 						{metiers.map((key, index) => (
 							<option key={index} value={key}>

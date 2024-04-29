@@ -86,7 +86,7 @@ export function UtilisateursGestionnaire() {
 		getUtilisateurs();
 	}, []);
 
-	const [selectedValue, setSelectedValue] = useState("");
+	const [selectedValue, setSelectedValue] = useState("employeurs");
 
 	const handleChange = (event) => {
 		setSelectedValue(event.target.value);
@@ -133,9 +133,6 @@ export function UtilisateursGestionnaire() {
 								displayEmpty
 								className='select-empty h-full'
 							>
-								<MenuItem value='' disabled>
-									Sélectionner
-								</MenuItem>
 								<MenuItem value={"employeurs"}>Employeurs</MenuItem>
 								<MenuItem value={"chercheurs"}>Chercheurs</MenuItem>
 							</Select>
