@@ -6,35 +6,36 @@ import ApexCharts from "apexcharts";
  * @component
  * @returns {React.ReactElement}
  */
-export function ColumnChart({ title, data }) {
+export function ColumnChart({ title, data, onChange }) {
 	const chartRef = useRef(null);
 
-	const labels = {
-		Semaine: ["Semaine1", "Semaine2", "Semaine3", "Semaine4"],
-		Mois: [
-			"Janvier",
-			"Février",
-			"Mars",
-			"Avril",
-			"Mai",
-			"Juin",
-			"Juillet",
-			"Aout",
-			"Septembre",
-			"Octobre",
-			"Novembre",
-			"Décembre",
-		],
-	};
+	const mois = [
+		"Janvier",
+		"Février",
+		"Mars",
+		"Avril",
+		"Mai",
+		"Juin",
+		"Juillet",
+		"Aout",
+		"Septembre",
+		"Octobre",
+		"Novembre",
+		"Décembre",
+	];
+	const annees = ["2023", "2024"];
+	const regions = ["Alger", "Oran", "Annaba", "Béjaia", "Paris"];
 
-	const regions = ["Alger", "Oran", "Annaba", "Béjaia"];
+	const organizedData = data
+		? data.map(({ _id, total }) => ({
+				x: _id[0],
+				y: total,
+		  }))
+		: [];
 
-	const dataUsed = {
-		Semaine: data.Semaine,
-		Mois: data.Mois,
-	};
-
-	const [selectedPeriod, setSelectedPeriod] = useState("Semaine");
+	const [selectedMois, setSelectedMois] = useState("");
+	const [selectedAnnee, setSelectedAnnee] = useState("");
+	const [selectedLieu, setSelectedLieu] = useState("");
 
 	useEffect(() => {
 		const options = {
@@ -53,11 +54,11 @@ export function ColumnChart({ title, data }) {
 			series: [
 				{
 					name: "Annonces",
-					data: dataUsed[selectedPeriod],
+					data: organizedData,
 				},
 			],
 			xaxis: {
-				categories: labels[selectedPeriod],
+				categories: organizedData.map((item) => item.x),
 				labels: {
 					style: {
 						colors: "#465475",
@@ -83,36 +84,65 @@ export function ColumnChart({ title, data }) {
 		return () => {
 			chart.destroy();
 		};
-	}, [selectedPeriod, data]);
+	}, [selectedAnnee, selectedMois, selectedLieu, data]);
 
-	const handlePeriodChange = (e) => {
-		setSelectedPeriod(e.target.value);
+	const handleMoisChange = (e) => {
+		setSelectedMois(e.target.value);
+		onChange(selectedLieu, e.target.value, selectedAnnee);
+	};
+
+	const handleAnneeChange = (e) => {
+		setSelectedAnnee(e.target.value);
+		onChange(selectedLieu, selectedMois, e.target.value);
+	};
+
+	const handleLieuChange = (e) => {
+		setSelectedLieu(e.target.value);
+		onChange(e.target.value, selectedMois, selectedAnnee);
 	};
 
 	return (
 		<div className='chart-container w-full rounded shadow pt-4 bg-violet'>
 			<div className='flex flex-row justify-between px-4'>
 				<div className='flex items-center'>
-					<label className='font-semibold text-bleuF text-xs'>Par </label>
+					<label className='font-semibold text-bleuF text-xs'>Année </label>
 					<select
 						className='appearance-none ml-2 border text-center text-xs text-bleuF border-bleuF rounded-md shadow-sm focus:border-success focus:outline-none px-2 py-1'
-						value={selectedPeriod}
-						onChange={handlePeriodChange}
+						value={selectedAnnee}
+						onChange={handleAnneeChange}
 					>
-						{Object.keys(labels).map((key, index) => (
-							<option key={index} value={key}>
-								{key}
+						<option value=''></option>
+						{annees.map((item, index) => (
+							<option key={index} value={item}>
+								{item}
 							</option>
 						))}
 					</select>
 				</div>
 				<div className='flex items-center'>
+					<label className='font-semibold text-bleuF text-xs'>Mois </label>
+					<select
+						className='appearance-none ml-2 border text-center text-xs text-bleuF border-bleuF rounded-md shadow-sm focus:border-success focus:outline-none px-2 py-1'
+						value={selectedMois}
+						onChange={handleMoisChange}
+					>
+						<option value=''></option>
+						{mois.map((item, index) => (
+							<option key={index} value={index + 1}>
+								{item}
+							</option>
+						))}
+					</select>
+				</div>
+
+				<div className='flex items-center'>
 					<label className='font-semibold text-bleuF text-xs'>Région </label>
 					<select
 						className='appearance-none ml-2 border text-center text-xs text-bleuF border-bleuF rounded-md shadow-sm focus:border-success focus:outline-none px-2 py-1'
-						value={() => {}}
-						onChange={() => {}}
+						value={selectedLieu}
+						onChange={handleLieuChange}
 					>
+						<option value=''></option>
 						{regions.map((key, index) => (
 							<option key={index} value={key}>
 								{key}

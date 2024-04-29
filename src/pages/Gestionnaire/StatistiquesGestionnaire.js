@@ -27,6 +27,20 @@ export function StatistiquesGestionnaire() {
 		Mois: [10, 15, 20, 25, 10, 15, 20, 25, 10, 15, 20, 25],
 	});
 
+	let [metiersProposes, setMetiersProposes] = useState([
+		{
+			_id: ["Maçon"],
+			total: 1,
+		},
+	]);
+
+	let [metiersDemandes, setMetiersDemandes] = useState([
+		{
+			_id: ["Maçon"],
+			total: 1,
+		},
+	]);
+
 	async function getStatistics() {
 		try {
 			setLoading(true);
@@ -46,13 +60,62 @@ export function StatistiquesGestionnaire() {
 		}
 	}
 
+	async function getMetiersProposes(lieu, mois, annee) {
+		try {
+			setLoading(true);
+			const response = await axiosInstance.get("/offres/statisticsMetiers", {
+				params: {
+					lieu: lieu ? lieu : undefined,
+					mois: mois ? mois : undefined,
+					annee: annee ? annee : undefined,
+				},
+			});
+
+			console.log(response);
+
+			if (response.status === 200) {
+				setMetiersProposes(response.data.statistics);
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
+	async function getMetiersDemandes(lieu, mois, annee) {
+		try {
+			setLoading(true);
+			const response = await axiosInstance.get(
+				"/candidatures/statisticsMetiers",
+				{
+					params: {
+						lieu: lieu ? lieu : undefined,
+						mois: mois ? mois : undefined,
+						annee: annee ? annee : undefined,
+					},
+				}
+			);
+
+			console.log(response);
+
+			if (response.status === 200) {
+				setMetiersDemandes(response.data.statistics);
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
 	async function getCandidaturesStatistics(lieu, metier) {
 		try {
 			setLoading(true);
 			const response = await axiosInstance.get("/candidatures/statistics", {
 				params: {
-					lieu: lieu,
-					metier: metier,
+					lieu: lieu ? lieu : undefined,
+					metier: metier ? metier : undefined,
 				},
 			});
 
@@ -158,6 +221,8 @@ export function StatistiquesGestionnaire() {
 		getStatistics();
 		getCandidaturesStatistics("", "");
 		getOffresStatistics("", "");
+		getMetiersProposes();
+		getMetiersDemandes();
 	}, []);
 
 	return (
@@ -218,14 +283,15 @@ export function StatistiquesGestionnaire() {
 						></LineChart>
 					</div>
 				</div>
-				<div className='grid grid-cols-3 space-x-2'>
+				<div className='grid grid-cols-2 space-x-2'>
 					<div>
 						<p className='text-bleuF font-bold my-2'>
 							Les métiers les plus demandés
 						</p>
 						<ColumnChart
 							title={"Nombre d’annonces"}
-							data={candidatures}
+							data={metiersDemandes}
+							onChange={getMetiersDemandes}
 						></ColumnChart>
 					</div>
 					<div>
@@ -234,7 +300,8 @@ export function StatistiquesGestionnaire() {
 						</p>
 						<ColumnChart
 							title={"Nombre d’annonces"}
-							data={candidatures}
+							data={metiersProposes}
+							onChange={getMetiersProposes}
 						></ColumnChart>
 					</div>
 				</div>

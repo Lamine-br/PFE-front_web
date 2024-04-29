@@ -107,7 +107,7 @@ export function LineChart({ title, data, onChange }) {
 		return () => {
 			chart.destroy();
 		};
-	}, [selectedPeriod, data]);
+	}, [selectedPeriod, selectedMetier, selectedMetier, data]);
 
 	const handlePeriodChange = (e) => {
 		setSelectedPeriod(e.target.value);
