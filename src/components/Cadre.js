@@ -19,6 +19,7 @@ import {
 } from "../util/formatTime";
 import { axiosInstance } from "../util/axios";
 import { PartagerOffre } from "./PartagerOffre";
+import { ShareButtons } from "./ShareButtons";
 
 export function Cadre({ Offre }) {
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
@@ -40,9 +41,10 @@ export function Cadre({ Offre }) {
 		const updatedUser = {
 			...user,
 			enregistrements: user ? user.enregistrements : [],
+			favoris: user ? user.favoris : [],
 		};
 		localStorage.setItem("user", JSON.stringify(updatedUser));
-	}, [isSaved]);
+	}, [isSaved, isFavorite]);
 
 	async function saveOffre() {
 		try {
@@ -236,13 +238,15 @@ export function Cadre({ Offre }) {
 					{Offre.description}{" "}
 				</p>
 			</div>
-			<div className='flex justify-end m-4'>
+
+			<div className='flex justify-between m-4 h-10'>
+				<ShareButtons url={"esi.dz"} title='' description={""} />
 				<ButtonRond
 					couleur={"rouge"}
 					couleurTexte={"violet"}
 					contenu={"Condidater"}
 					width={"fit"}
-					height={"fit"}
+					height={"h-8"}
 					onClick={redirect}
 				></ButtonRond>
 			</div>

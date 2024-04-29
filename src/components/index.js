@@ -93,3 +93,4 @@ export * from "./NouveauGroupe";
 export * from "./AjouterUser";
 export * from "./CadrePartage";
 export * from "./PartagerOffre";
+export * from "./ShareButtons";
