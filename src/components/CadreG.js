@@ -94,38 +94,6 @@ export function CadreG({ id }) {
 					<p className='text-bleuF font-bold'>Description</p>
 					<p className='text-sm text-bleuF'>{offre.description} </p>
 				</div>
-				<div className='mt-2'>
-					<p className='text-bleuF font-bold'>Conditions</p>
-					<ul className='list-disc text-bleuF'>
-						<li>
-							<p className='text-sm text-bleuF'>+5 ans d’éxpérience</p>
-						</li>
-						<li>
-							<p className='text-sm text-bleuF'>De métier jardinier</p>
-						</li>
-						<li>
-							<p className='text-sm text-bleuF'>Excellent en communication</p>
-						</li>
-						<li>
-							<p className='text-sm text-bleuF'>
-								A l’habitude de travailler sur de grands espaces
-							</p>
-						</li>
-					</ul>
-				</div>
-				<div className='mt-2'>
-					<p className='text-bleuF font-bold'>Notes importantes</p>
-					<ul className='list-disc text-bleuF'>
-						<li>
-							<p className='text-sm text-bleuF'>
-								On accepte seulement les condidats originaires d’Alger
-							</p>
-						</li>
-						<li>
-							<p className='text-sm text-bleuF'>Salaire attractif</p>
-						</li>
-					</ul>
-				</div>
 			</div>
 
 			<div></div>

@@ -85,6 +85,7 @@ export function HomeChercheur() {
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur></NavBarChercheur>
 			<BarreRecherche
+				onSearch={setOffres}
 				onSuggestionClick={handleSearch}
 				onAdvancedSearchClick={handleAdvancedSearch}
 			></BarreRecherche>

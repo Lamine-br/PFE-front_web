@@ -9,12 +9,64 @@ import {
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { axiosInstance } from "../util/axios";
+import { calculateDuration } from "../util/formatTime";
 
 export function Offre() {
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
 	const [selectedOffer, setSelectedOffer] = useState(0);
 	const [offres, setOffres] = useState([]);
+
+	const [isCheckedEmployeur, setIsCheckedEmployeur] = useState(false);
+	const [isCheckedPeriode, setIsCheckedPeriode] = useState(false);
+	const [isCheckedMetier, setIsCheckedMetier] = useState(false);
+	const [isCheckedLieu, setIsCheckedLieu] = useState(false);
+	const [filtredOffres, setFiltredOffres] = useState([]);
+	const handleCheckboxChange = (event) => {
+		const { name, checked } = event.target;
+
+		switch (name) {
+			case "memeEmployeur":
+				setIsCheckedEmployeur(checked);
+				break;
+			case "memePeriode":
+				setIsCheckedPeriode(checked);
+				break;
+			case "memeMetier":
+				setIsCheckedMetier(checked);
+				break;
+			case "memeLieu":
+				setIsCheckedLieu(checked);
+				break;
+			default:
+				break;
+		}
+	};
+
+	const handleFiltering = () => {
+		let newData = [...offres];
+
+		if (isCheckedEmployeur) {
+			const selectedEmployeur = newData[selectedOffer].employeur._id;
+			newData = newData.filter(
+				(item) => item.employeur._id === selectedEmployeur
+			);
+		}
+		if (isCheckedPeriode) {
+			const selectedPeriode = calculateDuration(newData[selectedOffer].debut, newData[selectedOffer].fin);
+			newData = newData.filter((item) => calculateDuration(item.debut, item.fin) === selectedPeriode);
+		}
+		if (isCheckedMetier) {
+			const selectedMetier = newData[selectedOffer].metier._id;
+			newData = newData.filter((item) => item.metier._id === selectedMetier);
+		}
+		if (isCheckedLieu) {
+			const selectedLieu = newData[selectedOffer].lieu;
+			newData = newData.filter((item) => item.lieu === selectedLieu);
+		}
+
+		setFiltredOffres(newData);
+	};
 
 	async function getOffres() {
 		try {
@@ -33,6 +85,7 @@ export function Offre() {
 						...data.slice(indexToMove + 1),
 					];
 					setOffres(updatedOffres);
+					setFiltredOffres(updatedOffres);
 					setSelectedOffer(0);
 				}
 			} else {
@@ -47,6 +100,10 @@ export function Offre() {
 		getOffres();
 	}, []);
 
+	useEffect(() => {
+		handleFiltering();
+	}, [isCheckedEmployeur, isCheckedPeriode, isCheckedMetier, isCheckedLieu]);
+
 	let { id } = useParams();
 	const [selectedId, setSelectedId] = useState(id);
 
@@ -55,11 +112,11 @@ export function Offre() {
 		setSelectedId(idOffre);
 	};
 	const handleDeleteOffer = (e, index) => {
-		const updatedOffres = [...offres];
-		if (offres.length > 1) {
+		const updatedOffres = [...filtredOffres];
+		if (filtredOffres.length > 1) {
 			updatedOffres.splice(index, 1);
 		}
-		setOffres(updatedOffres);
+		setFiltredOffres(updatedOffres);
 		if (index == updatedOffres.length) {
 			handleOfferSelection(index - 1, updatedOffres[index - 1]._id);
 		} else {
@@ -78,15 +135,17 @@ export function Offre() {
 				<Header></Header>
 			)}
 
-			<div className='m-10 bg-white rounded-lg p-4'>
+			<div className='m-6 bg-white rounded-lg p-4'>
 				<div className='flex'>
 					<div className='w-2/5'>
 						<div className='grid grid-cols-2 mr-6'>
 							<label className='flex items-center justify-start rounded-lg'>
 								<input
 									type='checkbox'
-									name='options'
+									name='memeEmployeur'
 									className='h-4 w-4 text-blue-500 focus:ring-blue-200'
+									checked={isCheckedEmployeur}
+									onChange={handleCheckboxChange}
 								/>
 								<span className='ml-2 text-bleuF font-bold text-sm'>
 									Même employeur
@@ -95,8 +154,10 @@ export function Offre() {
 							<label className='flex items-center justify-start rounded-lg'>
 								<input
 									type='checkbox'
-									name='options'
+									name='memePeriode'
 									className='h-4 w-4 text-blue-50 focus:ring-blue-200'
+									checked={isCheckedPeriode}
+									onChange={handleCheckboxChange}
 								/>
 								<span className='ml-2 text-bleuF font-bold text-sm'>
 									Même période
@@ -106,8 +167,10 @@ export function Offre() {
 							<label className='flex items-center justify-start rounded-lg'>
 								<input
 									type='checkbox'
-									name='options'
+									name='memeMetier'
 									className='h-4 w-4 text-blue-500 border-gray-300 focus:ring-blue-200'
+									checked={isCheckedMetier}
+									onChange={handleCheckboxChange}
 								/>
 								<span className='ml-2 text-bleuF font-bold text-sm'>
 									Même métier
@@ -116,8 +179,10 @@ export function Offre() {
 							<label className='flex items-center justify-start rounded-lg'>
 								<input
 									type='checkbox'
-									name='options'
+									name='memeLieu'
 									className='h-4 w-4 text-blue-500 border-gray-300 focus:ring-blue-200'
+									checked={isCheckedLieu}
+									onChange={handleCheckboxChange}
 								/>
 								<span className='ml-2 text-bleuF font-bold text-sm'>
 									Même lieu
@@ -125,7 +190,7 @@ export function Offre() {
 							</label>
 						</div>
 						<div className='border border-bleuF rounded-lg h-96 mt-2 mr-6 p-2 overflow-y-scroll scrollbar-track-transparent'>
-							{offres.map((item, index) => (
+							{filtredOffres.map((item, index) => (
 								<div className='mb-2'>
 									<CadreP
 										onClick={() => handleOfferSelection(index, item._id)}
@@ -133,7 +198,7 @@ export function Offre() {
 										className={`${
 											selectedOffer === index ? "border-2 border-bleuF" : ""
 										}`}
-										Offre={offres[index]}
+										Offre={filtredOffres[index]}
 									></CadreP>
 								</div>
 							))}

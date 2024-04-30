@@ -6,6 +6,7 @@ import { ButtonRond } from "./ButtonRond";
 import { FaTimes } from "react-icons/fa";
 import google from "../assets/google.png";
 import { axiosInstance } from "../util/axios";
+import { calculateDuration } from "../util/formatTime";
 
 export function CadreP({ Offre, className, onClick, onDelete }) {
 	// let Offre = {
@@ -77,7 +78,9 @@ export function CadreP({ Offre, className, onClick, onDelete }) {
 						</div>
 						<div className='flex items-center'>
 							<TiTime size={20} color='#465475' />
-							<p className='text-bleuF ml-1'>{Offre.debut}</p>
+							<p className='text-bleuF ml-1'>
+								{calculateDuration(Offre.debut, Offre.fin)}
+							</p>
 						</div>
 					</div>
 				</div>
