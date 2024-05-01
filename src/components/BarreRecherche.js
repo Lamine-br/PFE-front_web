@@ -4,15 +4,8 @@ import { Carousel } from "./Carousel";
 import { VoiceRecognition } from "./VoiceRecognition";
 import { RechercheAvancee } from "./RechercheAvancee";
 import { axiosInstance } from "../util/axios";
-import { Spinner } from "./Spinner";
 
-export function BarreRecherche({
-	onSearch,
-	onSuggestionClick,
-	onAdvancedSearchClick,
-}) {
-	const [loading, setLoading] = useState(false);
-
+export function BarreRecherche({ onSearch }) {
 	const suggestionsRef = useRef(null);
 
 	const lieuRef = useRef(null);
@@ -23,7 +16,7 @@ export function BarreRecherche({
 		setShowLieux(false);
 		setShowSuggestions(false);
 		setShowMetiers(false);
-		getResults(
+		onSearch(
 			searchRef.current.value,
 			metierRef.current.value,
 			lieuRef.current.value
@@ -31,7 +24,6 @@ export function BarreRecherche({
 	};
 
 	const handleAdvancedSearch = () => {
-		onAdvancedSearchClick();
 		setShowRechercheAvancee(false);
 	};
 
@@ -140,29 +132,6 @@ export function BarreRecherche({
 	useEffect(() => {
 		getMetiers();
 	}, []);
-
-	async function getResults(search, metier, lieu) {
-		try {
-			setLoading(true);
-			const response = await axiosInstance.get("/offres/search", {
-				params: {
-					search: search ? search : undefined,
-					lieu: lieu ? lieu : undefined,
-					metier: metier ? metier : undefined,
-				},
-			});
-
-			console.log(response);
-
-			if (response.status === 200) {
-				onSearch(response.data);
-				setLoading(false);
-			}
-		} catch (e) {
-			console.log(e);
-			setLoading(false);
-		}
-	}
 
 	return (
 		<div>
@@ -296,13 +265,13 @@ export function BarreRecherche({
 				</div>
 			</div>
 			<div className='flex justify-center'>
-				<Carousel items={carouselItems} onClick={onSuggestionClick}></Carousel>
+				<Carousel items={carouselItems} onClick={() => {}}></Carousel>
 			</div>
 
 			{showVocal && (
 				<VoiceRecognition
 					onClose={() => setShowVocal(false)}
-					onConfirm={onSuggestionClick}
+					onConfirm={() => {}}
 				/>
 			)}
 
@@ -312,8 +281,6 @@ export function BarreRecherche({
 					onConfirm={handleAdvancedSearch}
 				/>
 			)}
-
-			{loading && <Spinner />}
 		</div>
 	);
 }

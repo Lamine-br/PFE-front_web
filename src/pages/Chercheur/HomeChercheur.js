@@ -12,18 +12,18 @@ export function HomeChercheur() {
 	const [offres, setOffres] = useState([]);
 	async function getOffres() {
 		try {
-			setShowLoading(true);
+			setLoading(true);
 			const response = await axiosInstance.get("/offres");
 
 			console.log(response);
 
 			if (response.request.status === 200) {
 				setOffres(response.data);
-				setShowLoading(false);
+				setLoading(false);
 			}
 		} catch (e) {
 			console.log(e);
-			setShowLoading(false);
+			setLoading(false);
 		}
 	}
 	useEffect(() => {
@@ -31,52 +31,48 @@ export function HomeChercheur() {
 	}, []);
 
 	const [searchOn, setSearchOn] = useState(false);
-	const [showLoading, setShowLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const [search, setSearch] = useState("");
 
-	const getResults = (search) => {
-		return [
-			{
-				employeur: "ESI",
-				"Date de publication": "12 Décembre, 20:20",
-				titre: "Jardinier",
-				Localisation: "Alger",
-				Salaire: "10$/heure",
-				Duree: "2 semaines",
-				Description:
-					"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
-			},
-			{
-				employeur: "ESI",
-				"Date de publication": "12 Décembre, 20:20",
-				titre: "Jardinier",
-				Localisation: "Alger",
-				Salaire: "10$/heure",
-				Duree: "2 semaines",
-				Description:
-					"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
-			},
-		];
-	};
+	async function getResults(search, metier, lieu) {
+		try {
+			setLoading(true);
+			const response = await axiosInstance.get("/offres/search", {
+				params: {
+					search: search ? search : undefined,
+					lieu: lieu ? lieu : undefined,
+					metier: metier ? metier : undefined,
+				},
+			});
 
-	const handleSearch = (search) => {
-		setShowLoading(true);
-		setTimeout(() => {
-			setOffres(getResults(search));
-			setSearch(search);
-			setSearchOn(true);
-			setShowLoading(false);
-		}, 1000);
+			console.log(response);
+
+			if (response.status === 200) {
+				setOffres(response.data);
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
+	const handleSearch = (search, metier, lieu) => {
+		setLoading(true);
+		getResults(search, metier, lieu);
+		console.log(offres);
+		setSearch(search);
+		setSearchOn(true);
 	};
 
 	const handleAdvancedSearch = () => {
-		setShowLoading(true);
+		setLoading(true);
 		setTimeout(() => {
 			setOffres(getResults("Votre recherche"));
 			setSearch("Votre recherche avancée");
 			setSearchOn(true);
-			setShowLoading(false);
+			setLoading(false);
 		}, 1000);
 	};
 
@@ -85,12 +81,10 @@ export function HomeChercheur() {
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur></NavBarChercheur>
 			<BarreRecherche
-				onSearch={setOffres}
-				onSuggestionClick={handleSearch}
-				onAdvancedSearchClick={handleAdvancedSearch}
+				onSearch={(search, metier, lieu) => handleSearch(search, metier, lieu)}
 			></BarreRecherche>
 			<Cadres search={search} data={offres}></Cadres>
-			{showLoading && <Spinner />}
+			{loading && <Spinner />}
 		</div>
 	);
 }
