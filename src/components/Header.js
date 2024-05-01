@@ -25,7 +25,7 @@ export function Header() {
 					connexionVisible || inscriptionVisible ? "block" : "hidden"
 				}`}
 			/>
-			<div className='flex mx-20 justify-between'>
+			<div className='flex mx-10 justify-between'>
 				<h1
 					className='text-2xl font-bold text-bleuF mt-2 cursor-pointer'
 					onClick={redirect}

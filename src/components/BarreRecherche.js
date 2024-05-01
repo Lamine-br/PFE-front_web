@@ -5,7 +5,7 @@ import { VoiceRecognition } from "./VoiceRecognition";
 import { RechercheAvancee } from "./RechercheAvancee";
 import { axiosInstance } from "../util/axios";
 
-export function BarreRecherche({ onSearch }) {
+export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 	const suggestionsRef = useRef(null);
 
 	const lieuRef = useRef(null);
@@ -23,8 +23,25 @@ export function BarreRecherche({ onSearch }) {
 		);
 	};
 
-	const handleAdvancedSearch = () => {
+	const handleAdvancedSearch = (
+		date_debut,
+		date_fin,
+		salaire_min,
+		salaire_max,
+		entreprise,
+		lieu,
+		metier
+	) => {
 		setShowRechercheAvancee(false);
+		onAdvancedSearch(
+			date_debut,
+			date_fin,
+			salaire_min,
+			salaire_max,
+			entreprise,
+			lieu,
+			metier
+		);
 	};
 
 	const [showSuggestions, setShowSuggestions] = useState(false);
@@ -132,6 +149,12 @@ export function BarreRecherche({ onSearch }) {
 	useEffect(() => {
 		getMetiers();
 	}, []);
+
+	const handleVoiceSearch = (search) => {
+		const cleanedSearch = search.replace(/[.,]/g, "");
+		searchRef.current.value = cleanedSearch;
+		onSearch(cleanedSearch);
+	};
 
 	return (
 		<div>
@@ -271,7 +294,7 @@ export function BarreRecherche({ onSearch }) {
 			{showVocal && (
 				<VoiceRecognition
 					onClose={() => setShowVocal(false)}
-					onConfirm={() => {}}
+					onConfirm={(search) => handleVoiceSearch(search)}
 				/>
 			)}
 

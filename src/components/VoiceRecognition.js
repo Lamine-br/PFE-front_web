@@ -28,14 +28,10 @@ export const VoiceRecognition = ({ onClose, onConfirm }) => {
 			<div
 				className={`fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40 block`}
 			/>
-			<div className='fixed z-50 overlay flex flex-col items-center p-4 w-1/4 h-fit bg-bleuF left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg'>
+			<div className='fixed z-50 overlay flex flex-col items-center p-4 w-1/4 h-fit bg-white left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg'>
 				<div className='flex justify-between w-full mb-6'>
-					<h1 className='text-xl text-violet font-bold'>Recherche vocale</h1>
-					<FaTimes
-						className='cursor-pointer'
-						color='#EEEDFF'
-						onClick={onClose}
-					/>
+					<h1 className='text-xl text-bleuF font-bold'>Recherche vocale</h1>
+					<FaTimes className='cursor-pointer text-bleuF' onClick={onClose} />
 				</div>
 
 				<div className='flex justify-between items-center w-full'>

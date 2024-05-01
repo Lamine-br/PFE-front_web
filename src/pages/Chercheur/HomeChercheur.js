@@ -59,21 +59,65 @@ export function HomeChercheur() {
 	}
 
 	const handleSearch = (search, metier, lieu) => {
-		setLoading(true);
 		getResults(search, metier, lieu);
-		console.log(offres);
 		setSearch(search);
 		setSearchOn(true);
 	};
 
-	const handleAdvancedSearch = () => {
-		setLoading(true);
-		setTimeout(() => {
-			setOffres(getResults("Votre recherche"));
-			setSearch("Votre recherche avancée");
-			setSearchOn(true);
+	async function advancedSearch(
+		date_debut,
+		date_fin,
+		salaire_min,
+		salaire_max,
+		entreprise,
+		lieu,
+		metier
+	) {
+		try {
+			setLoading(true);
+			const response = await axiosInstance.get("/offres/advancedSearch", {
+				params: {
+					date_debut: date_debut ? date_debut : undefined,
+					date_fin: date_fin ? date_fin : undefined,
+					salaire_min: salaire_min ? salaire_min : undefined,
+					salaire_max: salaire_max ? salaire_max : undefined,
+					entreprise: entreprise ? entreprise : undefined,
+					lieu: lieu ? lieu : undefined,
+					metier: metier ? metier : undefined,
+				},
+			});
+
+			console.log(response);
+
+			if (response.status === 200) {
+				setOffres(response.data);
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
 			setLoading(false);
-		}, 1000);
+		}
+	}
+
+	const handleAdvancedSearch = (
+		date_debut,
+		date_fin,
+		salaire_min,
+		salaire_max,
+		entreprise,
+		lieu,
+		metier
+	) => {
+		advancedSearch(
+			date_debut,
+			date_fin,
+			salaire_min,
+			salaire_max,
+			entreprise,
+			lieu,
+			metier
+		);
+		setSearchOn(true);
 	};
 
 	return (
@@ -82,6 +126,7 @@ export function HomeChercheur() {
 			<NavBarChercheur></NavBarChercheur>
 			<BarreRecherche
 				onSearch={(search, metier, lieu) => handleSearch(search, metier, lieu)}
+				onAdvancedSearch={handleAdvancedSearch}
 			></BarreRecherche>
 			<Cadres search={search} data={offres}></Cadres>
 			{loading && <Spinner />}
