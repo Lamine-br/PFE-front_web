@@ -8,40 +8,22 @@ import {
 	BarreRecherche,
 	Spinner,
 } from "../components";
+import { IoMdLocate } from "react-icons/io";
 import { axiosInstance } from "../util/axios";
 
 export function Home() {
-	let data = [
-		{
-			employeur: "ESI",
-			"Date de publication": "12 Décembre, 20:20",
-			titre: "Jardinier",
-			Localisation: "Alger",
-			Salaire: "10$/heure",
-			Duree: "2 semaines",
-			Description:
-				"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
-		},
-		{
-			employeur: "ESI",
-			"Date de publication": "12 Décembre, 20:20",
-			titre: "Jardinier",
-			Localisation: "Alger",
-			Salaire: "10$/heure",
-			Duree: "2 semaines",
-			Description:
-				"Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.Votre mission sera de planter quelques plantes dans les espaces verts de l’entreprise, afin de rendre le paysage plus radieux.",
-		},
-	];
-
-	async function getOffres() {
+	async function getOffres(lieu) {
 		try {
 			setLoading(true);
-			const response = await axiosInstance.get("/offres");
+			const response = await axiosInstance.get("/offres", {
+				params: {
+					lieu: lieu ? lieu : undefined,
+				},
+			});
 
 			console.log(response);
 
-			if (response.request.status === 200) {
+			if (response.status === 200) {
 				setOffres(response.data);
 				setLoading(false);
 			}
@@ -52,10 +34,10 @@ export function Home() {
 	}
 
 	useEffect(() => {
-		getOffres();
+		getOffres(city);
 	}, []);
 
-	const [offres, setOffres] = useState(data);
+	const [offres, setOffres] = useState([]);
 
 	async function getResults(search, metier, lieu) {
 		try {
@@ -149,9 +131,53 @@ export function Home() {
 		setSearchOn(true);
 	};
 
+	const [location, setLocation] = useState(null);
+	const [city, setCity] = useState(null);
+	useEffect(() => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(
+				async (position) => {
+					setLocation({
+						latitude: position.coords.latitude,
+						longitude: position.coords.longitude,
+					});
+					try {
+						const response = await fetch(
+							`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`
+						);
+						const data = await response.json();
+						setCity(data.address.state);
+						console.log(data);
+					} catch (error) {
+						console.error(
+							"Erreur lors de la récupération de la ville :",
+							error
+						);
+					}
+				},
+				(error) => {
+					console.error(
+						"Erreur lors de la récupération de la position :",
+						error.message
+					);
+				}
+			);
+		} else {
+			console.error(
+				"La géolocalisation n'est pas prise en charge par ce navigateur."
+			);
+		}
+	}, []);
+
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>
 			<Header />
+			{city && (
+				<div className='flex items-center justify-center space-x-2'>
+					<IoMdLocate className='text-rouge' />
+					<p className='text-bleuF'>{city}</p>
+				</div>
+			)}
 			<BarreRecherche
 				onSearch={handleSearch}
 				onAdvancedSearch={handleAdvancedSearch}

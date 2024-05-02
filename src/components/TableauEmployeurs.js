@@ -80,53 +80,82 @@ export function TableauEmployeurs({
 									<div className='flex justify-center items-center space-x-4'>
 										{item.bloque ? (
 											<>
-												<FaCheck
-													size={12}
-													color={"#30CA3F"}
-													className='cursor-pointer'
+												<button
+													className='flex justify-center items-center bg-[#30CA3F] py-1 px-2 rounded space-x-2'
 													onClick={(e) => {
 														setSelectedId(item._id);
 														console.log(item._id);
 														e.stopPropagation();
 														setShowDebloqueConfirmation(true);
 													}}
-												/>
-												<FaExclamationTriangle
-													size={12}
-													color={"#f59e0b"}
-													className='cursor-pointer'
+												>
+													<FaCheck
+														size={10}
+														color={"white"}
+														className='cursor-pointer'
+													/>
+													<p className='text-white font-semibold text-xs'>
+														Débloquer
+													</p>
+												</button>
+
+												<button
+													className='flex justify-center items-center bg-[#f59e0b] py-1 px-2 rounded space-x-2'
 													onClick={(e) => {
 														setSelectedId(item._id);
 														console.log(item._id);
 														e.stopPropagation();
 														setShowAvertissementTab(true);
 													}}
-												/>
+												>
+													<FaExclamationTriangle
+														size={10}
+														color={"white"}
+														className='cursor-pointer'
+													/>
+													<p className='text-white font-semibold text-xs'>
+														Avertir
+													</p>
+												</button>
 											</>
 										) : (
 											<>
-												<FaTimes
-													size={14}
-													color={"#FF584D"}
-													className='cursor-pointer'
+												<button
+													className='flex justify-center items-center bg-[#FF584D] py-1 px-2 rounded space-x-2'
 													onClick={(e) => {
 														setSelectedId(item._id);
 														console.log(item._id);
 														e.stopPropagation();
 														setShowBloqueConfirmation(true);
 													}}
-												/>
-												<FaExclamationTriangle
-													size={12}
-													color={"#f59e0b"}
-													className='cursor-pointer'
+												>
+													<FaTimes
+														size={10}
+														color={"white"}
+														className='cursor-pointer'
+													/>
+													<p className='text-white text-xs font-semibold'>
+														Bloquer
+													</p>
+												</button>
+												<button
+													className='flex justify-center items-center bg-[#f59e0b] py-1 px-2 rounded space-x-2'
 													onClick={(e) => {
 														setSelectedId(item._id);
 														console.log(item._id);
 														e.stopPropagation();
 														setShowAvertissementTab(true);
 													}}
-												/>
+												>
+													<FaExclamationTriangle
+														size={10}
+														color={"white"}
+														className='cursor-pointer'
+													/>
+													<p className='text-white font-semibold text-xs'>
+														Avertir
+													</p>
+												</button>
 											</>
 										)}
 									</div>

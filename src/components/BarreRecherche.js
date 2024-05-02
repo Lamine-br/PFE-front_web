@@ -70,7 +70,7 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 
 			console.log(response);
 
-			if (response.request.status === 200) {
+			if (response.status === 200) {
 				const metiers = response.data.map((item) => item.nom);
 				setMetiers(metiers);
 				setFilteredMetiers(metiers);
@@ -117,7 +117,7 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 
 	const carouselItems = [
 		"Développeur Web",
-		"Assistant Administratif",
+		"Technicien",
 		"Technicien de Maintenance",
 		"Agent de Sécurité",
 		"Infirmier Intérimaire",
@@ -288,7 +288,13 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 				</div>
 			</div>
 			<div className='flex justify-center'>
-				<Carousel items={carouselItems} onClick={() => {}}></Carousel>
+				<Carousel
+					items={carouselItems}
+					onClick={(item, index) => {
+						metierRef.current.value = item;
+						onSearch("", item, "");
+					}}
+				></Carousel>
 			</div>
 
 			{showVocal && (
