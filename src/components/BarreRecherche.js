@@ -157,11 +157,16 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 	};
 
 	return (
-		<div>
-			<div className='mt-20 mb-10 flex items-center justify-center w-full'>
-				<div className={`relative flex bg-white items-center rounded-full`}>
+		<div className='mt-20'>
+			<p className='text-center text-rouge font-semibold text-xl mb-4'>
+				Trouvez votre offre d'intérim
+			</p>
+			<div className='mb-10 flex items-center justify-center w-full'>
+				<div
+					className={`relative flex bg-white items-center rounded-full border `}
+				>
 					<button
-						className={`bg-violet h-10 rounded-l-full`}
+						className={`bg-violet h-10 rounded-l-full border-r`}
 						onClick={handleSearchIconClick}
 						title={"Recherche textuelle"}
 					>
@@ -172,7 +177,7 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 						<input
 							ref={searchRef}
 							placeholder='Rechercher ...'
-							className={`p-2 bg-white rounded-lg outline-none pr-8`}
+							className={`p-2 bg-white outline-none pr-8`}
 							onFocus={() => {
 								setShowSuggestions(true);
 								setShowLieux(false);

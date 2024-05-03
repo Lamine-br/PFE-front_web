@@ -5,6 +5,7 @@ import {
 	NavBarChercheur,
 	CadreP,
 	CadreG,
+	Footer,
 } from "../components";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -53,8 +54,13 @@ export function Offre() {
 			);
 		}
 		if (isCheckedPeriode) {
-			const selectedPeriode = calculateDuration(newData[selectedOffer].debut, newData[selectedOffer].fin);
-			newData = newData.filter((item) => calculateDuration(item.debut, item.fin) === selectedPeriode);
+			const selectedPeriode = calculateDuration(
+				newData[selectedOffer].debut,
+				newData[selectedOffer].fin
+			);
+			newData = newData.filter(
+				(item) => calculateDuration(item.debut, item.fin) === selectedPeriode
+			);
 		}
 		if (isCheckedMetier) {
 			const selectedMetier = newData[selectedOffer].metier._id;
@@ -125,7 +131,7 @@ export function Offre() {
 	};
 
 	return (
-		<div className='min-h-screen bg-bleu pb-10'>
+		<div className='min-h-screen'>
 			{user.type === "chercheur" ? (
 				<>
 					<HeaderChercheur />
@@ -147,7 +153,7 @@ export function Offre() {
 									checked={isCheckedEmployeur}
 									onChange={handleCheckboxChange}
 								/>
-								<span className='ml-2 text-bleuF font-bold text-sm'>
+								<span className='ml-2 text-rouge font-bold text-sm'>
 									Même employeur
 								</span>
 							</label>
@@ -159,7 +165,7 @@ export function Offre() {
 									checked={isCheckedPeriode}
 									onChange={handleCheckboxChange}
 								/>
-								<span className='ml-2 text-bleuF font-bold text-sm'>
+								<span className='ml-2 text-rouge font-bold text-sm'>
 									Même période
 								</span>
 							</label>
@@ -172,7 +178,7 @@ export function Offre() {
 									checked={isCheckedMetier}
 									onChange={handleCheckboxChange}
 								/>
-								<span className='ml-2 text-bleuF font-bold text-sm'>
+								<span className='ml-2 text-rouge font-bold text-sm'>
 									Même métier
 								</span>
 							</label>
@@ -184,7 +190,7 @@ export function Offre() {
 									checked={isCheckedLieu}
 									onChange={handleCheckboxChange}
 								/>
-								<span className='ml-2 text-bleuF font-bold text-sm'>
+								<span className='ml-2 text-rouge font-bold text-sm'>
 									Même lieu
 								</span>
 							</label>
@@ -221,11 +227,14 @@ export function Offre() {
 						`}</style>
 					</div>
 
-					<div className='w-3/5 flex justify-center items-center'>
-						<CadreG id={selectedId}></CadreG>
+					<div className='w-3/5 flex justify-center border border-bleuF rounded-lg p-2 h-96 overflow-y-scroll scrollbar-track-transparent mt-12'>
+						<div className='w-full'>
+							<CadreG id={selectedId}></CadreG>
+						</div>
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 }

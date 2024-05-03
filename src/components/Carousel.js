@@ -20,7 +20,7 @@ export const Carousel = ({ items, onClick }) => {
 							className={`${
 								selectedItem === index
 									? "bg-bleuF text-white"
-									: "bg-white text-bleuF"
+									: "bg-violet text-bleuF"
 							} px-2 py-1 rounded-lg text-sm font-semibold cursor-pointer hover:filter hover:brightness-90 transition-all duration-300`}
 						>
 							{item}

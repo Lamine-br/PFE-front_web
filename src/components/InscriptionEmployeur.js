@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ButtonRond } from "./ButtonRond";
+import { ButtonCarre } from "./ButtonCarre";
 import { FaTimes, FaPlus, FaCheck } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
 import { Spinner } from "./Spinner";
@@ -232,7 +233,7 @@ export function InscriptionEmployeur({ onPass }) {
 	return (
 		<div className='overlay flex justify-center items-center w-full'>
 			{!showConfirmation && (
-				<div className='z-50 justify-center items-center p-4 w-3/4 h-4/5 bg-white rounded-lg'>
+				<div className='z-50 justify-center items-center p-4 w-3/4 h-4/5 bg-white rounded-lg border border-bleuF'>
 					<h1 className='text-xl text-bleuF font-bold mb-6 ml-4'>
 						S'inscrire - Employeur
 					</h1>
@@ -456,14 +457,16 @@ export function InscriptionEmployeur({ onPass }) {
 					</div>
 
 					<div className='flex justify-end mr-4'>
-						<ButtonRond
-							couleur={"rouge"}
-							couleurTexte={"violet"}
-							contenu={"Continuer"}
-							width={"w-1/4"}
-							height={"fit"}
-							onClick={handleClick}
-						></ButtonRond>
+						<div className='w-1/4'>
+							<ButtonCarre
+								couleur={"rouge"}
+								couleurTexte={"violet"}
+								contenu={"Continuer"}
+								width={"w-full mt-2"}
+								height={"fit"}
+								onclick={handleClick}
+							></ButtonCarre>
+						</div>
 					</div>
 				</div>
 			)}

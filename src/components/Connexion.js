@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
 import { ButtonRond } from "./ButtonRond";
+import { ButtonCarre } from "./ButtonCarre";
 import { FaTimes } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
 
-export function Connexion({ onClose }) {
+export function Connexion({ onClose, onInscription }) {
 	const [selectedOption, setSelectedOption] = useState(null);
 
 	const emailRef = useRef();
@@ -62,20 +63,21 @@ export function Connexion({ onClose }) {
 	};
 
 	return (
-		<div className='fixed z-50 overlay flex flex-col justify-center items-center p-4 w-1/3 h-4/5 bg-bleuF left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg'>
+		<div className='fixed z-50 overlay flex flex-col justify-center items-center p-4 w-1/3 h-4/5 bg-white left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg'>
 			<div className='flex justify-end w-full mb-6'>
-				<FaTimes
-					className='cursor-pointer absolute top-4 right-4'
-					color='#EEEDFF'
+				<div
 					onClick={onClose}
-				/>
+					className='cursor-pointer absolute top-4 right-4 flex justify-center items-center w-8 h-8 rounded-full hover:bg-bleu transition duration-300'
+				>
+					<FaTimes color='#465475' />
+				</div>
 			</div>
 
 			{!show && (
 				<div className='flex flex-col items-center justify-center'>
-					<h1 className='text-xl text-violet font-bold mb-6'>Se connecter</h1>
+					<h1 className='text-xl text-bleuF font-bold mb-6'>Se connecter</h1>
 					<div className='flex flex-col m-2 w-full'>
-						<p className='text-violet text-sm font-semibold'>
+						<p className='text-bleuF text-sm font-semibold'>
 							Vous voulez vous connecter en tant que :{" "}
 						</p>
 					</div>
@@ -121,24 +123,37 @@ export function Connexion({ onClose }) {
 							</span>
 						</label>
 					</div>
-					<ButtonRond
-						couleur={"rouge"}
-						couleurTexte={"violet"}
-						contenu={"Continuer"}
-						width={"w-full mt-2"}
-						height={"fit"}
-						onClick={handleClick}
-					></ButtonRond>
+
+					<div className='w-full'>
+						<ButtonCarre
+							couleur={"rouge"}
+							couleurTexte={"violet"}
+							contenu={"Continuer"}
+							width={"w-full mt-2"}
+							height={"fit"}
+							onclick={handleClick}
+						></ButtonCarre>
+					</div>
+
+					<div className='flex mt-8'>
+						<p className='text-xs text-bleuF'>Vous n'avez pas de compte ? </p>
+						<p
+							className='text-xs text-rouge underline ml-1 cursor-pointer'
+							onClick={onInscription}
+						>
+							S'inscrire
+						</p>
+					</div>
 				</div>
 			)}
 
 			{show && (
 				<div className='flex flex-col w-full items-center'>
-					<h1 className='text-xl text-violet font-bold mb-6'>
+					<h1 className='text-xl text-bleuF font-bold mb-6'>
 						Se connecter - {selectedOption}
 					</h1>
 					<div className='flex flex-col m-2 w-3/4'>
-						<label className='text-violet text-xs font-bold'>Email</label>
+						<label className='text-bleuF text-xs font-bold'>Email</label>
 						<input
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='email'
@@ -147,16 +162,14 @@ export function Connexion({ onClose }) {
 						></input>
 					</div>
 					<div className='flex flex-col m-2 w-3/4 mb-4'>
-						<label className='text-violet text-xs font-bold'>
-							Mot de passe
-						</label>
+						<label className='text-bleuF text-xs font-bold'>Mot de passe</label>
 						<input
 							className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='password'
 							ref={passwordRef}
 							onFocus={() => setErr("")}
 						></input>
-						<p className='text-violet text-xs underline'>
+						<p className='text-bleuF text-xs underline'>
 							Mot de passe oublié ?
 						</p>
 						<p className='text-rouge text-xs mt-4'>{err}</p>
@@ -164,31 +177,25 @@ export function Connexion({ onClose }) {
 
 					<div className='flex items-center justify-center'></div>
 
-					<ButtonRond
-						couleur={"rouge"}
-						couleurTexte={"violet"}
-						contenu={"Se connecter"}
-						width={"w-3/4"}
-						height={"fit"}
-						onClick={(e) => handleLogin(e)}
-					></ButtonRond>
-
-					<div className='flex items-center w-3/4 mx-2 my-1'>
-						<div className='flex-grow border-t border-violet w-1/8 mx-2'></div>
-						<span className='text-xs text-violet'>OU</span>
-						<div className='flex-grow border-t border-violet w-1/8 mx-2'></div>
+					<div className='w-3/4'>
+						<ButtonCarre
+							couleur={"rouge"}
+							couleurTexte={"violet"}
+							contenu={"Continuer"}
+							width={"w-full mt-2"}
+							height={"fit"}
+							onclick={(e) => handleLogin(e)}
+						></ButtonCarre>
 					</div>
 
-					<ButtonRond
-						couleur={"violet"}
-						couleurTexte={"bleuF"}
-						contenu={"Continuer avec Google"}
-						width={"w-3/4"}
-						height={"fit"}
-					></ButtonRond>
 					<div className='flex mt-8'>
-						<p className='text-xs text-violet'>Vous n'avez pas de compte ? </p>
-						<p className='text-xs text-rouge underline ml-1'>S'inscrire</p>
+						<p className='text-xs text-bleuF'>Vous n'avez pas de compte ? </p>
+						<p
+							className='text-xs text-rouge underline ml-1 cursor-pointer'
+							onClick={onInscription}
+						>
+							S'inscrire
+						</p>
 					</div>
 				</div>
 			)}

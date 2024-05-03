@@ -7,6 +7,7 @@ import {
 	Cadres,
 	BarreRecherche,
 	Spinner,
+	Footer,
 } from "../components";
 import { IoMdLocate } from "react-icons/io";
 import { axiosInstance } from "../util/axios";
@@ -185,14 +186,15 @@ export function Home() {
 	}, [city]);
 
 	return (
-		<div className='min-h-screen bg-bleu pb-10'>
+		<div className='min-h-screen'>
 			<Header />
-			{city && (
-				<div className='flex items-center justify-center space-x-2'>
+			{/* {city && (
+				<div className='flex items-center justify-center space-x-2 p-10'>
 					<IoMdLocate className='text-rouge' />
 					<p className='text-bleuF'>{city}</p>
 				</div>
-			)}
+			)} */}
+
 			<BarreRecherche
 				onSearch={handleSearch}
 				onAdvancedSearch={handleAdvancedSearch}
@@ -201,13 +203,14 @@ export function Home() {
 			{!searchOn && (
 				<>
 					<WelcomeDiv></WelcomeDiv>
-					<Cadres search={search} data={offres}></Cadres>
 					<BarreEmployeurs></BarreEmployeurs>
+					<Cadres search={search} data={offres}></Cadres>
 				</>
 			)}
 
 			{searchOn && <Cadres search={search} data={offres}></Cadres>}
 			{loading && <Spinner />}
+			<Footer />
 		</div>
 	);
 }

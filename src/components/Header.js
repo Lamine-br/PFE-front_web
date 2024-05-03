@@ -19,7 +19,7 @@ export function Header() {
 		window.location.href = "/";
 	};
 	return (
-		<div className='py-4'>
+		<div className='py-4 sticky top-0 z-10 bg-white border-b'>
 			<div
 				className={`fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40 ${
 					connexionVisible || inscriptionVisible ? "block" : "hidden"
@@ -56,8 +56,28 @@ export function Header() {
 				</nav>
 			</div>
 
-			{connexionVisible && <Connexion onClose={handleConnexionToggle} />}
-			{inscriptionVisible && <Inscription onClose={handleInscriptionToggle} />}
+			{connexionVisible && (
+				<Connexion
+					onClose={handleConnexionToggle}
+					onInscription={() => {
+						handleConnexionToggle();
+						setTimeout(() => {
+							handleInscriptionToggle();
+						}, 200);
+					}}
+				/>
+			)}
+			{inscriptionVisible && (
+				<Inscription
+					onClose={handleInscriptionToggle}
+					onConnect={() => {
+						handleInscriptionToggle();
+						setTimeout(() => {
+							handleConnexionToggle();
+						}, 200);
+					}}
+				/>
+			)}
 		</div>
 	);
 }

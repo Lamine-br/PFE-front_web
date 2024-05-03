@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import { ButtonRond } from "./ButtonRond";
+import { ButtonCarre } from "./ButtonCarre";
 import { FaTimes } from "react-icons/fa";
 
-export function Inscription({ onClose }) {
+export function Inscription({ onClose, onConnect }) {
 	const [selectedOption, setSelectedOption] = useState(null);
 
 	const handleOptionChange = (option) => {
@@ -20,18 +20,19 @@ export function Inscription({ onClose }) {
 	};
 
 	return (
-		<div className='fixed z-50 overlay flex flex-col justify-center items-center p-4 w-1/3 h-4/5 bg-bleuF left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg'>
+		<div className='fixed z-50 overlay flex flex-col justify-center items-center p-4 w-1/3 h-4/5 bg-white left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg'>
 			<div className='flex justify-end w-full'>
-				<FaTimes
-					className='cursor-pointer absolute top-4 right-4'
-					color='#EEEDFF'
+				<div
 					onClick={onClose}
-				/>
+					className='cursor-pointer absolute top-4 right-4 flex justify-center items-center w-8 h-8 rounded-full hover:bg-bleu transition duration-300'
+				>
+					<FaTimes color='#465475' />
+				</div>
 			</div>
-			<h1 className='text-xl text-violet font-bold mb-6'>S'inscrire</h1>
+			<h1 className='text-xl text-bleuF font-bold mb-6'>S'inscrire</h1>
 
 			<div className='flex flex-col m-2 w-3/4'>
-				<p className='text-violet text-sm font-semibold'>
+				<p className='text-bleuF text-sm font-semibold'>
 					Vous voulez vous inscrire en tant que :{" "}
 				</p>
 			</div>
@@ -75,18 +76,25 @@ export function Inscription({ onClose }) {
 				</label>
 			</div>
 
-			<ButtonRond
-				couleur={"rouge"}
-				couleurTexte={"violet"}
-				contenu={"Continuer"}
-				width={"w-3/4"}
-				height={"fit"}
-				onClick={handleRedirection}
-			></ButtonRond>
+			<div className='w-3/4'>
+				<ButtonCarre
+					couleur={"rouge"}
+					couleurTexte={"violet"}
+					contenu={"Continuer"}
+					width={"w-full mt-2"}
+					height={"fit"}
+					onclick={handleRedirection}
+				></ButtonCarre>
+			</div>
 
 			<div className='flex mt-8'>
-				<p className='text-xs text-violet'>Vous avez un compte ? </p>
-				<p className='text-xs text-rouge underline ml-1'>S'authentifier</p>
+				<p className='text-xs text-bleuF'>Vous avez un compte ? </p>
+				<p
+					className='text-xs text-rouge underline ml-1 cursor-pointer'
+					onClick={onConnect}
+				>
+					Se connecter
+				</p>
 			</div>
 		</div>
 	);

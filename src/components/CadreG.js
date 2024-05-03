@@ -3,11 +3,14 @@ import { FaEllipsisV, FaDollarSign } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { TiTime } from "react-icons/ti";
 import { ButtonRond } from "./ButtonRond";
+import { ButtonCarre } from "./ButtonCarre";
 import { Modal } from "./Modal";
 import esi from "../assets/logo_esi.png";
 import { axiosInstance } from "../util/axios";
+import { Connexion } from "./Connexion";
 
 export function CadreG({ id }) {
+	const [show, setShow] = useState(false);
 	// let offre = {
 	// 	employeur: "KPMG",
 	// 	"Date de publication": "12 Décembre, 20:20",
@@ -39,7 +42,12 @@ export function CadreG({ id }) {
 	}, [id]);
 
 	const redirect = () => {
-		window.location.href = `/offres/${id}/postuler`;
+		const user = JSON.parse(localStorage.getItem("user"));
+		if (user.username) {
+			window.location.href = `/offres/${id}/postuler`;
+		} else {
+			setShow(true);
+		}
 	};
 
 	const [url, setUrl] = useState("");
@@ -98,15 +106,21 @@ export function CadreG({ id }) {
 
 			<div></div>
 			<div className='flex justify-end m-4'>
-				<ButtonRond
+				<ButtonCarre
 					couleur={"rouge"}
 					couleurTexte={"violet"}
 					contenu={"Condidater"}
 					width={"fit"}
 					height={"fit"}
-					onClick={redirect}
-				></ButtonRond>
+					onclick={redirect}
+				></ButtonCarre>
 			</div>
+
+			{show && (
+				<div className='fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center z-50 justify-center'>
+					<Connexion onClose={() => setShow(false)} />
+				</div>
+			)}
 		</div>
 	);
 }

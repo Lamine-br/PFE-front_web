@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ButtonRond } from "./ButtonRond";
+import { ButtonCarre } from "./ButtonCarre";
 import { FaFileUpload, FaCheck } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
 import { Spinner } from "./Spinner";
@@ -279,14 +280,14 @@ export function InscriptionChercheur() {
 	return (
 		<div className='overlay flex justify-center items-center w-full'>
 			{!showConfirmation && (
-				<div className='z-50 justify-center items-center p-4 w-3/4 h-4/5 bg-bleuF rounded-lg'>
-					<h1 className='text-xl text-violet font-bold mb-6 ml-4'>
+				<div className='z-50 justify-center items-center p-4 w-3/4 h-4/5 bg-white rounded-lg border border-bleuF'>
+					<h1 className='text-xl text-bleuF font-bold mb-6 ml-4'>
 						S'inscrire - Chercheur d'emplois
 					</h1>
 
 					<div className='grid grid-cols-3 gap-8 mx-4 mb-10'>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Email <span className='text-rouge'>*</span>
 							</label>
 							<input
@@ -298,7 +299,7 @@ export function InscriptionChercheur() {
 							<p className='text-rouge text-xs'>{emailError}</p>
 						</div>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Mot de passe <span className='text-rouge'>*</span>
 							</label>
 							<input
@@ -327,7 +328,7 @@ export function InscriptionChercheur() {
 							<div>
 								<img
 									src={previewUrlImage}
-									className={`w-16 h-16 rounded-full bg-black`}
+									className={`w-16 h-16 rounded-full border border-bleuF`}
 								/>
 							</div>
 							{!uploadedImage && previewUrlImage && (
@@ -344,7 +345,7 @@ export function InscriptionChercheur() {
 
 					<div className='grid grid-cols-3 gap-8 mx-4 mb-10'>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Nom <span className='text-rouge'>*</span>
 							</label>
 							<input
@@ -356,7 +357,7 @@ export function InscriptionChercheur() {
 							<p className='text-rouge text-xs'>{nomError}</p>
 						</div>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Prénom <span className='text-rouge'>*</span>
 							</label>
 							<input
@@ -368,7 +369,7 @@ export function InscriptionChercheur() {
 							<p className='text-rouge text-xs'>{prenomError}</p>
 						</div>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Date de naissance <span className='text-rouge'>*</span>
 							</label>
 							<input
@@ -383,7 +384,7 @@ export function InscriptionChercheur() {
 
 					<div className='grid grid-cols-3 gap-8 mx-4 mb-10'>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Nationalité <span className='text-rouge'>*</span>
 							</label>
 							<input
@@ -395,7 +396,7 @@ export function InscriptionChercheur() {
 							<p className='text-rouge text-xs'>{nationaliteError}</p>
 						</div>
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Ville <span className='text-rouge'>*</span>
 							</label>
 							<input
@@ -408,7 +409,7 @@ export function InscriptionChercheur() {
 						</div>
 
 						<div className='flex flex-col'>
-							<label className='text-violet text-xs font-bold'>
+							<label className='text-bleuF text-xs font-bold'>
 								Numéro de téléphone
 							</label>
 							<input
@@ -440,10 +441,13 @@ export function InscriptionChercheur() {
 									<object
 										data={pdfObjectUrl}
 										type='application/pdf'
-										className='w-16 h-16 bg-black'
+										className='w-16 h-16 border border-bleuF'
 									></object>
 								) : (
-									<img src={previewUrlCv} className={`w-16 h-16 bg-black`} />
+									<img
+										src={previewUrlCv}
+										className={`w-16 h-16 border border-bleuF`}
+									/>
 								)}
 							</div>
 							{!uploadedCv && (pdfObjectUrl || previewUrlCv) && (
@@ -459,14 +463,16 @@ export function InscriptionChercheur() {
 					</div>
 
 					<div className='flex justify-end mr-4'>
-						<ButtonRond
-							couleur={"rouge"}
-							couleurTexte={"violet"}
-							contenu={"Continuer"}
-							width={"w-1/4"}
-							height={"fit"}
-							onClick={() => handleClick()}
-						></ButtonRond>
+						<div className='w-1/4'>
+							<ButtonCarre
+								couleur={"rouge"}
+								couleurTexte={"violet"}
+								contenu={"Continuer"}
+								width={"w-full mt-2"}
+								height={"fit"}
+								onclick={handleClick}
+							></ButtonCarre>
+						</div>
 					</div>
 				</div>
 			)}

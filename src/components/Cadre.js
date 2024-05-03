@@ -9,6 +9,7 @@ import {
 import { MdLocationOn } from "react-icons/md";
 import { TiTime } from "react-icons/ti";
 import { ButtonRond } from "./ButtonRond";
+import { ButtonCarre } from "./ButtonCarre";
 import esi from "../assets/logo_esi.png";
 import { Modal } from "./Modal";
 import {
@@ -176,8 +177,8 @@ export function Cadre({ Offre }) {
 	}, []);
 
 	return (
-		<div className='bg-violet rounded-lg'>
-			<div className='flex px-4 py-2'>
+		<div className='bg-white rounded-lg border'>
+			<div className='flex px-4 py-2  rounded-lg'>
 				<img
 					className='rounded-full w-12 h-12'
 					src={urlAuth + Offre.employeur.image}
@@ -205,7 +206,7 @@ export function Cadre({ Offre }) {
 			</div>
 			<div>
 				<img
-					className='w-full h-48'
+					className='w-full h-48 bg-white'
 					src={Offre.image ? urlOffres + Offre.image : esi}
 					alt='image'
 				/>
@@ -246,14 +247,14 @@ export function Cadre({ Offre }) {
 
 			<div className='flex justify-between m-4 h-10'>
 				<ShareButtons url={"esi.dz"} title='' description={""} />
-				<ButtonRond
+				<ButtonCarre
 					couleur={"rouge"}
 					couleurTexte={"violet"}
-					contenu={"Condidater"}
+					contenu={"Candidater"}
 					width={"fit"}
 					height={"h-8"}
-					onClick={redirect}
-				></ButtonRond>
+					onclick={redirect}
+				></ButtonCarre>
 			</div>
 
 			{showPartageTab && (
