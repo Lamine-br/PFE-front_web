@@ -38,11 +38,15 @@ export function HomeChercheur() {
 	async function getResults(search, metier, lieu) {
 		try {
 			setLoading(true);
+			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.get("/offres/search", {
 				params: {
 					search: search ? search : undefined,
 					lieu: lieu ? lieu : undefined,
 					metier: metier ? metier : undefined,
+				},
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
 				},
 			});
 

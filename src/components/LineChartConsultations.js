@@ -1,46 +1,47 @@
 import React, { useEffect, useRef, useState } from "react";
 import ApexCharts from "apexcharts";
-
+import { axiosInstance } from "../util/axios";
 /**
  * statistic chart
  * @component
  * @returns {React.ReactElement}
  */
-export function ColumnChart({ title, data, onChange }) {
+export function LineChartConsultations({ title, data, onChange }) {
 	const chartRef = useRef(null);
 
-	const mois = [
-		"Janvier",
-		"Février",
-		"Mars",
-		"Avril",
-		"Mai",
-		"Juin",
-		"Juillet",
-		"Aout",
-		"Septembre",
-		"Octobre",
-		"Novembre",
-		"Décembre",
-	];
-	const annees = ["2023", "2024"];
-	const regions = ["Alger", "Oran", "Annaba", "Béjaia", "Paris"];
+	const labels = {
+		Semaine: ["Semaine1", "Semaine2", "Semaine3", "Semaine4"],
+		Mois: [
+			"Janvier",
+			"Février",
+			"Mars",
+			"Avril",
+			"Mai",
+			"Juin",
+			"Juillet",
+			"Aout",
+			"Septembre",
+			"Octobre",
+			"Novembre",
+			"Décembre",
+		],
+	};
 
-	const organizedData = data
-		? data.map(({ _id, total }) => ({
-				x: _id[0],
-				y: total,
-		  }))
-		: [];
+	const regions = ["Alger", "Paris", "Oran", "Annaba", "Béjaia"];
 
-	const [selectedMois, setSelectedMois] = useState("");
-	const [selectedAnnee, setSelectedAnnee] = useState("");
+	const dataUsed = {
+		Semaine: data.Semaine,
+		Mois: data.Mois,
+	};
+
+	const [selectedPeriod, setSelectedPeriod] = useState("Semaine");
 	const [selectedLieu, setSelectedLieu] = useState("");
+	const [selectedMetier, setSelectedMetier] = useState("");
 
 	useEffect(() => {
 		const options = {
 			chart: {
-				type: "bar",
+				type: "line",
 				background: "#EEEDFF",
 				height: 200,
 				width: "100%",
@@ -54,11 +55,11 @@ export function ColumnChart({ title, data, onChange }) {
 			series: [
 				{
 					name: title,
-					data: organizedData,
+					data: dataUsed[selectedPeriod],
 				},
 			],
 			xaxis: {
-				categories: organizedData.map((item) => item.x),
+				categories: labels[selectedPeriod],
 				labels: {
 					style: {
 						colors: "#465475",
@@ -73,9 +74,10 @@ export function ColumnChart({ title, data, onChange }) {
 				},
 			},
 			grid: {
-				show: false,
+				borderColor: "#B6CDE8",
+				borderOpacity: 0.2,
 			},
-			colors: ["#218261", "#FF0000"],
+			colors: ["#FF584D", "#FF0000"],
 		};
 
 		const chart = new ApexCharts(chartRef.current, options);
@@ -84,57 +86,34 @@ export function ColumnChart({ title, data, onChange }) {
 		return () => {
 			chart.destroy();
 		};
-	}, [selectedAnnee, selectedMois, selectedLieu, data]);
+	}, [selectedPeriod, selectedMetier, selectedMetier, data]);
 
-	const handleMoisChange = (e) => {
-		setSelectedMois(e.target.value);
-		onChange(selectedLieu, e.target.value, selectedAnnee);
-	};
-
-	const handleAnneeChange = (e) => {
-		setSelectedAnnee(e.target.value);
-		onChange(selectedLieu, selectedMois, e.target.value);
+	const handlePeriodChange = (e) => {
+		setSelectedPeriod(e.target.value);
 	};
 
 	const handleLieuChange = (e) => {
 		setSelectedLieu(e.target.value);
-		onChange(e.target.value, selectedMois, selectedAnnee);
+		onChange(e.target.value, selectedMetier);
 	};
 
 	return (
 		<div className='chart-container w-full rounded shadow pt-4 bg-violet'>
 			<div className='flex flex-row justify-between px-4'>
 				<div className='flex items-center'>
-					<label className='font-semibold text-bleuF text-xs'>Année </label>
+					<label className='font-semibold text-bleuF text-xs'>Par </label>
 					<select
 						className='appearance-none ml-2 border text-center text-xs text-bleuF border-bleuF rounded-md shadow-sm focus:border-success focus:outline-none px-2 py-1'
-						value={selectedAnnee}
-						onChange={handleAnneeChange}
+						value={selectedPeriod}
+						onChange={handlePeriodChange}
 					>
-						<option value=''></option>
-						{annees.map((item, index) => (
-							<option key={index} value={item}>
-								{item}
+						{Object.keys(labels).map((key, index) => (
+							<option key={index} value={key}>
+								{key}
 							</option>
 						))}
 					</select>
 				</div>
-				<div className='flex items-center'>
-					<label className='font-semibold text-bleuF text-xs'>Mois </label>
-					<select
-						className='appearance-none ml-2 border text-center text-xs text-bleuF border-bleuF rounded-md shadow-sm focus:border-success focus:outline-none px-2 py-1'
-						value={selectedMois}
-						onChange={handleMoisChange}
-					>
-						<option value=''></option>
-						{mois.map((item, index) => (
-							<option key={index} value={index + 1}>
-								{item}
-							</option>
-						))}
-					</select>
-				</div>
-
 				<div className='flex items-center'>
 					<label className='font-semibold text-bleuF text-xs'>Région </label>
 					<select

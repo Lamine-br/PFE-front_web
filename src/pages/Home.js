@@ -33,10 +33,6 @@ export function Home() {
 		}
 	}
 
-	useEffect(() => {
-		getOffres(city);
-	}, []);
-
 	const [offres, setOffres] = useState([]);
 
 	async function getResults(search, metier, lieu) {
@@ -133,6 +129,20 @@ export function Home() {
 
 	const [location, setLocation] = useState(null);
 	const [city, setCity] = useState(null);
+
+	const incrementConsultationCount = async (lieu) => {
+		try {
+			const response = await axiosInstance.post("/users/consultations", {
+				lieu,
+			});
+			console.log(response.data);
+		} catch (error) {
+			console.error(
+				"Erreur lors de l'incrémentation du nombre de consultations :",
+				error
+			);
+		}
+	};
 	useEffect(() => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
@@ -147,6 +157,7 @@ export function Home() {
 						);
 						const data = await response.json();
 						setCity(data.address.state);
+						incrementConsultationCount(data.address.state);
 						console.log(data);
 					} catch (error) {
 						console.error(
@@ -168,6 +179,10 @@ export function Home() {
 			);
 		}
 	}, []);
+
+	useEffect(() => {
+		getOffres(city);
+	}, [city]);
 
 	return (
 		<div className='min-h-screen bg-bleu pb-10'>

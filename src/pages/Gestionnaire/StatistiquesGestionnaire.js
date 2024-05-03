@@ -3,6 +3,7 @@ import {
 	HeaderGestionnaire,
 	NavBarGestionnaire,
 	LineChart,
+	LineChartConsultations,
 	ColumnChart,
 	Spinner,
 } from "../../components";
@@ -40,6 +41,11 @@ export function StatistiquesGestionnaire() {
 			total: 1,
 		},
 	]);
+
+	let [consultations, setConsultations] = useState({
+		Semaine: [10, 15, 20, 25],
+		Mois: [10, 15, 20, 25, 10, 15, 20, 25, 10, 15, 20, 25],
+	});
 
 	async function getStatistics() {
 		try {
@@ -217,12 +223,66 @@ export function StatistiquesGestionnaire() {
 		}
 	}
 
+	async function getConsultationsStatistics(lieu) {
+		try {
+			setLoading(true);
+			const response = await axiosInstance.get("/users/consultations", {
+				params: {
+					lieu: lieu ? lieu : undefined,
+				},
+			});
+
+			console.log(response);
+
+			if (response.status === 200) {
+				const statisticsSemaine = response.data.statisticsSemaine; // Tableau d'objets avec les statistiques Semaine
+				const statisticsMois = response.data.statisticsMois; // Tableau d'objets avec les statistiques Mois
+
+				const semaineData = Array(4).fill(0);
+				const moisData = Array(12).fill(0);
+
+				const dateActuelle = moment();
+
+				statisticsSemaine.forEach((stat) => {
+					const { _id, total } = stat;
+					const semaine = _id.semaine - 1;
+
+					const numSemaine = 4 - (dateActuelle.isoWeek() - semaine);
+
+					if (numSemaine <= 4) {
+						semaineData[numSemaine] = total;
+					}
+					console.log(dateActuelle.isoWeek(), semaine, numSemaine);
+				});
+
+				statisticsMois.forEach((stat) => {
+					const { _id, total } = stat;
+					const mois = _id.mois - 1;
+
+					moisData[mois] = total;
+				});
+
+				// Mettez à jour l'état candidatures avec les nouvelles données
+				setConsultations({
+					Semaine: semaineData,
+					Mois: moisData,
+				});
+
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
 	useEffect(() => {
 		getStatistics();
 		getCandidaturesStatistics("", "");
 		getOffresStatistics("", "");
 		getMetiersProposes();
 		getMetiersDemandes();
+		getConsultationsStatistics();
 	}, []);
 
 	return (
@@ -289,7 +349,7 @@ export function StatistiquesGestionnaire() {
 							Les métiers les plus demandés
 						</p>
 						<ColumnChart
-							title={"Nombre d’annonces"}
+							title={"Candidatures"}
 							data={metiersDemandes}
 							onChange={getMetiersDemandes}
 						></ColumnChart>
@@ -299,7 +359,7 @@ export function StatistiquesGestionnaire() {
 							Les métiers les plus proposés
 						</p>
 						<ColumnChart
-							title={"Nombre d’annonces"}
+							title={"Annonces"}
 							data={metiersProposes}
 							onChange={getMetiersProposes}
 						></ColumnChart>
@@ -308,10 +368,11 @@ export function StatistiquesGestionnaire() {
 				<div className='grid grid-cols-2 space-x-2'>
 					<div>
 						<p className='text-bleuF font-bold my-2'>Nombre de consultations</p>
-						<LineChart
-							title={"Nombre de candidatures"}
-							data={candidatures}
-						></LineChart>
+						<LineChartConsultations
+							title={"Consultations"}
+							data={consultations}
+							onChange={getConsultationsStatistics}
+						></LineChartConsultations>
 					</div>
 				</div>
 			</div>

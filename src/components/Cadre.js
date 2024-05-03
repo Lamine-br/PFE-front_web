@@ -184,7 +184,12 @@ export function Cadre({ Offre }) {
 					alt='logo'
 				/>
 				<div className='ml-4'>
-					<p className='text-bleuF font-bold'>{Offre.employeur.entreprise}</p>
+					<p
+						className='text-bleuF font-bold cursor-pointer'
+						onClick={() => window.open(Offre.employeur.site_web, "_blank")}
+					>
+						{Offre.employeur.entreprise}
+					</p>
 					<p className='text-bleuF'>{fDate(Offre.date)}</p>
 				</div>
 				<div className='ml-auto my-auto'>
