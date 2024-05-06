@@ -42,10 +42,10 @@ export function OffreEmployeur() {
 	}, []);
 
 	return (
-		<div className='min-h-screen bg-bleu pb-10'>
+		<div className='min-h-screen pb-10'>
 			<HeaderEmployeur></HeaderEmployeur>
 			<NavBarEmployeur selected={0}></NavBarEmployeur>
-			<div className='m-6 bg-white rounded-lg p-4'>
+			<div className='mx-6 my-2 bg-white rounded-lg p-4 border shadow'>
 				<div className='flex justify-between'>
 					<p className='text-xl font-bold text-bleuF'>
 						Mes offres {">"} {data.titre}

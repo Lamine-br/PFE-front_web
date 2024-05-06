@@ -187,11 +187,11 @@ export function OffresEmployeur() {
 	const [showNouvelleCategorie, setShowNouvelleCategorie] = useState(false);
 
 	return (
-		<div className='min-h-screen bg-bleu pb-10'>
+		<div className='min-h-screen pb-10'>
 			<HeaderEmployeur></HeaderEmployeur>
 			<NavBarEmployeur selected={0}></NavBarEmployeur>
 			<div className='grid grid-cols-4 mx-6 gap-6'>
-				<div className='my-6 bg-white rounded-lg p-4'>
+				<div className='bg-white rounded-lg p-4 mt-2 border shadow'>
 					<div className='flex justify-between'>
 						<p className='text-xl font-bold text-bleuF'>Mes catégories</p>
 						<div className='flex space-x-4'>
@@ -215,9 +215,9 @@ export function OffresEmployeur() {
 						></TableauCategories>
 					</div>
 				</div>
-				<div className='my-6 bg-white rounded-lg p-4 col-span-3'>
+				<div className='bg-white rounded-lg p-4 mt-2 col-span-3 border shadow'>
 					<div className='flex justify-between'>
-						<p className='text-xl font-bold text-bleuF'>
+						<p className='text-xl font-bold text-rouge'>
 							Mes offres {"> "}
 							{selectedCategorie}
 						</p>
