@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { HeaderChercheur, Spinner, ProfileC } from "../../components";
 import { axiosInstance } from "../../util/axios";
 import { FaPlus, FaUserPlus } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router-dom";
 import {
 	NouveauGroupe,
 	CadrePartage,
@@ -21,6 +22,9 @@ export function RelationsChercheur() {
 	const [showAmis, setShowAmis] = useState(true);
 
 	const [loading, setLoading] = useState(false);
+
+	const { id } = useParams();
+	const currentPath = window.location.pathname;
 
 	async function getGroupes() {
 		try {
@@ -118,11 +122,48 @@ export function RelationsChercheur() {
 		}
 	}
 
+	const navigate = useNavigate();
+	function handleGroupeClick(groupId) {
+		navigate(`/chercheur/relations/groupes/${groupId}`);
+	}
+
+	function handleAmiClick(amiId) {
+		navigate(`/chercheur/relations/amis/${amiId}`);
+	}
+
+	function updateSelectedGroupe(id, groupes, setShowAmis) {
+		if (id && currentPath.includes("groupes") && groupes.length > 0) {
+			const selectedGroupe = groupes.find((groupe) => groupe._id === id);
+			setSelectedGroupe(selectedGroupe);
+			setShowAmis(false);
+		}
+	}
+
+	function updateSelectedAmi(id, amis, setShowAmis) {
+		if (id && currentPath.includes("amis") && amis.length > 0) {
+			const selectedAmi = amis.find((ami) => ami.ami._id === id);
+			setSelectedAmi(selectedAmi);
+			setShowAmis(true);
+		}
+	}
+
 	useEffect(() => {
-		getGroupes();
-		getAmis();
-		getUrl();
+		const fetchData = async () => {
+			await getGroupes();
+			await getAmis();
+			getUrl();
+		};
+
+		(async () => {
+			await fetchData();
+			console.log(groupes, amis, selectedGroupe, selectedAmi);
+		})();
 	}, []);
+
+	useEffect(() => {
+		updateSelectedGroupe(id, groupes, setShowAmis);
+		updateSelectedAmi(id, amis, setShowAmis);
+	}, [groupes, amis]);
 
 	const [url, setUrl] = useState("");
 
@@ -176,7 +217,14 @@ export function RelationsChercheur() {
 						className={`px-3 pt-1 pb-2 cursor-pointer bg-violet text-bleuF font-bold rounded-full ${
 							showAmis ? "border border-bleuF" : ""
 						}`}
-						onClick={() => setShowAmis(true)}
+						onClick={() => {
+							setShowAmis(true);
+							if (selectedAmi.ami) {
+								navigate(`/chercheur/relations/amis/${selectedAmi.ami._id}`);
+							} else {
+								navigate(`/chercheur/relations/amis`);
+							}
+						}}
 					>
 						Amis
 					</p>
@@ -184,7 +232,14 @@ export function RelationsChercheur() {
 						className={`px-3 pt-1 pb-2 cursor-pointer bg-violet text-bleuF font-bold rounded-full ${
 							showAmis ? "" : "border border-bleuF"
 						}`}
-						onClick={() => setShowAmis(false)}
+						onClick={() => {
+							setShowAmis(false);
+							if (selectedGroupe && selectedGroupe._id) {
+								navigate(`/chercheur/relations/groupes/${selectedGroupe._id}`);
+							} else {
+								navigate(`/chercheur/relations/groupes`);
+							}
+						}}
 					>
 						Groupes
 					</p>
@@ -205,6 +260,7 @@ export function RelationsChercheur() {
 												setLoading(true);
 												setTimeout(() => {
 													setSelectedGroupe(item);
+													handleGroupeClick(item._id);
 													setLoading(false);
 												}, 500);
 											}}
@@ -243,6 +299,7 @@ export function RelationsChercheur() {
 												setLoading(true);
 												setTimeout(() => {
 													setSelectedAmi(item);
+													handleAmiClick(item.ami._id);
 													setLoading(false);
 												}, 500);
 											}}

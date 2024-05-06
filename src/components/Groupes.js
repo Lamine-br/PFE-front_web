@@ -31,6 +31,7 @@ import {
 import { axiosInstance } from "../util/axios";
 import { NouveauGroupe } from "./NouveauGroupe";
 import { AjouterUser } from "./AjouterUser";
+import { NouveauAmi } from "./NouveauAmi";
 
 // const NOTIFICATIONS = [
 // 	{
@@ -55,6 +56,11 @@ export default function Groupes() {
 	const [groupes, setGroupes] = useState([]);
 	const [showNouveauGroupe, setShowNouveauGroupe] = useState(false);
 
+	const [amis, setAmis] = useState([]);
+	const [showNouvelAmi, setShowNouvelAmi] = useState(false);
+
+	const [showAmis, setShowAmis] = useState(true);
+
 	async function getGroupes() {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
@@ -68,6 +74,25 @@ export default function Groupes() {
 
 			if (response.status === 200) {
 				setGroupes(response.data);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async function getAmis() {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/users/chercheur/amis", {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
+
+			console.log(response);
+
+			if (response.status === 200) {
+				setAmis(response.data);
 			}
 		} catch (e) {
 			console.log(e);
@@ -100,8 +125,35 @@ export default function Groupes() {
 		}
 	}
 
+	async function addAmi(email, numero) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				"/users/chercheur/addAmi",
+				{
+					email: email ? email : undefined,
+					numero: numero ? numero : undefined,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			console.log(response);
+
+			if (response.status === 201) {
+				getAmis();
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	useEffect(() => {
 		getGroupes();
+		getAmis();
 	}, []);
 
 	const [open, setOpen] = useState(null);
@@ -146,10 +198,24 @@ export default function Groupes() {
 			>
 				<Box sx={{ display: "flex", alignItems: "center", py: 2, px: 2.5 }}>
 					<Box sx={{ flexGrow: 1 }}>
-						<Typography variant='subtitle1'>Groupes</Typography>
-						<Typography variant='body2' sx={{ color: "text.secondary" }}>
-							Vous faites partie de {groupes.length} groupes
-						</Typography>
+						<div className='flex space-x-2'>
+							<p
+								className={`px-3 pt-1 pb-2 cursor-pointer bg-violet text-bleuF font-bold rounded-full ${
+									showAmis ? "border border-bleuF" : ""
+								}`}
+								onClick={() => setShowAmis(true)}
+							>
+								Amis
+							</p>
+							<p
+								className={`px-3 pt-1 pb-2 cursor-pointer bg-violet text-bleuF font-bold rounded-full ${
+									showAmis ? "" : "border border-bleuF"
+								}`}
+								onClick={() => setShowAmis(false)}
+							>
+								Groupes
+							</p>
+						</div>
 					</Box>
 
 					<Tooltip title=' Ajouter un groupe'>
@@ -157,7 +223,11 @@ export default function Groupes() {
 							color='primary'
 							onClick={() => {
 								handleClose();
-								setShowNouveauGroupe(true);
+								if (showAmis) {
+									setShowNouvelAmi(true);
+								} else {
+									setShowNouveauGroupe(true);
+								}
 							}}
 						>
 							<FaPlus />
@@ -168,13 +238,16 @@ export default function Groupes() {
 				<Divider sx={{ borderStyle: "dashed" }} />
 
 				<List disablePadding sx={{ maxHeight: 300, overflowY: "auto" }}>
-					{groupes.map((groupe) => (
-						<GroupeItem
-							key={groupe._id}
-							groupe={groupe}
-							onUpdate={getGroupes}
-						/>
-					))}
+					{!showAmis &&
+						groupes.map((groupe) => (
+							<GroupeItem
+								key={groupe._id}
+								groupe={groupe}
+								onUpdate={getGroupes}
+							/>
+						))}
+					{showAmis &&
+						amis.map((ami) => <AmiItem key={ami.ami._id} ami={ami} />)}
 				</List>
 
 				<Divider sx={{ borderStyle: "dashed" }} />
@@ -189,6 +262,13 @@ export default function Groupes() {
 				<NouveauGroupe
 					onDismiss={() => setShowNouveauGroupe(false)}
 					onConfirm={(nom, description) => addGroupe(nom, description)}
+				/>
+			)}
+
+			{showNouvelAmi && (
+				<NouveauAmi
+					onDismiss={() => setShowNouvelAmi(false)}
+					onConfirm={(email, numero) => addAmi(email, numero)}
 				/>
 			)}
 		</>
@@ -256,7 +336,9 @@ function GroupeItem({ groupe, onUpdate }) {
 
 	return (
 		<ListItemButton
-			onClick={() => {}}
+			onClick={() =>
+				(window.location.href = "/chercheur/relations/groupes/" + groupe._id)
+			}
 			sx={{
 				py: 1.5,
 				px: 2.5,
@@ -324,9 +406,66 @@ function GroupeItem({ groupe, onUpdate }) {
 	);
 }
 
+function AmiItem({ ami }) {
+	const { avatar, title } = renderAmi(ami);
+	const [url, setUrl] = useState("");
+	const [showAddUser, setShowAddUser] = useState(false);
+	const user = JSON.parse(localStorage.getItem("user"));
+
+	async function getUrl() {
+		try {
+			const response = await axiosInstance.get("/services/auth");
+			if (response.status === 200) {
+				setUrl(response.data);
+			} else {
+				setUrl("/");
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getUrl();
+	}, []);
+
+	return (
+		<ListItemButton
+			onClick={() =>
+				(window.location.href = "/chercheur/relations/amis/" + ami.ami._id)
+			}
+			sx={{
+				py: 1.5,
+				px: 2.5,
+				mt: "1px",
+				display: "flex",
+				alignItems: "center",
+			}}
+		>
+			<ListItemAvatar>
+				<Avatar
+					sx={{ bgcolor: "background.neutral" }}
+					src={url + avatar}
+					title={ami.ami.nom + " " + ami.ami.prenom}
+				>
+					{avatar}
+				</Avatar>
+			</ListItemAvatar>
+			<ListItemText primary={title} />
+		</ListItemButton>
+	);
+}
+
 function renderContent(groupe) {
 	let avatar = groupe.nom;
 	let title = groupe.nom;
+
+	return { avatar, title };
+}
+
+function renderAmi(ami) {
+	let avatar = ami.ami.image;
+	let title = ami.ami.nom + " " + ami.ami.prenom;
 
 	return { avatar, title };
 }

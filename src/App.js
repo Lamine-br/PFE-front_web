@@ -136,6 +136,22 @@ function App() {
 				/>
 				<Route path='/chercheur/favoris' element={<FavorisChercheur />} />
 				<Route path='/chercheur/relations' element={<RelationsChercheur />} />
+				<Route
+					path='/chercheur/relations/groupes'
+					element={<RelationsChercheur />}
+				/>
+				<Route
+					path='/chercheur/relations/groupes/:id'
+					element={<RelationsChercheur />}
+				/>
+				<Route
+					path='/chercheur/relations/amis'
+					element={<RelationsChercheur />}
+				/>
+				<Route
+					path='/chercheur/relations/amis/:id'
+					element={<RelationsChercheur />}
+				/>
 			</Routes>
 		</BrowserRouter>
 	);
