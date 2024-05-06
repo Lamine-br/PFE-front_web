@@ -37,7 +37,7 @@ import {
 	EmploisEmployeur,
 	EmploiEmployeur,
 	UtilisateurCGestionnaire,
-	GroupesChercheur,
+	RelationsChercheur,
 } from "./pages";
 
 function App() {
@@ -135,7 +135,7 @@ function App() {
 					element={<EnregistrementsChercheur />}
 				/>
 				<Route path='/chercheur/favoris' element={<FavorisChercheur />} />
-				<Route path='/chercheur/groupes' element={<GroupesChercheur />} />
+				<Route path='/chercheur/relations' element={<RelationsChercheur />} />
 			</Routes>
 		</BrowserRouter>
 	);

@@ -188,12 +188,12 @@ export function Home() {
 	return (
 		<div className='min-h-screen'>
 			<Header />
-			{/* {city && (
+			{city && (
 				<div className='flex items-center justify-center space-x-2 p-10'>
 					<IoMdLocate className='text-rouge' />
 					<p className='text-bleuF'>{city}</p>
 				</div>
-			)} */}
+			)}
 
 			<BarreRecherche
 				onSearch={handleSearch}

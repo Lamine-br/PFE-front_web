@@ -125,7 +125,7 @@ export function HomeChercheur() {
 	};
 
 	return (
-		<div className='min-h-screen bg-bleu pb-10'>
+		<div className='min-h-screen pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur></NavBarChercheur>
 			<BarreRecherche

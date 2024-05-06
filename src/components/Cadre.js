@@ -103,12 +103,38 @@ export function Cadre({ Offre }) {
 		}
 	}
 
-	async function partagerOffre(id_groupe, offre) {
+	async function partagerOffreDansGroupe(id_groupe, offre) {
 		try {
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.post(
 				"/users/chercheur/partagerOffreDansGroupe",
 				{ id_groupe, offre },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+			console.log(response);
+
+			if (response.status === 200) {
+				setMessage(response.data.message);
+				setShowMessage(true);
+				setTimeout(() => {
+					setShowMessage(false);
+				}, 1000);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async function partagerOffreAvecAmi(id_ami, offre) {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.post(
+				"/users/chercheur/partagerAmi",
+				{ id_ami, offre },
 				{
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
@@ -260,7 +286,8 @@ export function Cadre({ Offre }) {
 			{showPartageTab && (
 				<PartagerOffre
 					offre={Offre}
-					onConfirm={partagerOffre}
+					onGroupeShare={partagerOffreDansGroupe}
+					onFriendShare={partagerOffreAvecAmi}
 					onDismiss={() => setShowPartageTab(false)}
 				/>
 			)}

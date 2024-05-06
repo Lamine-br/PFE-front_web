@@ -35,4 +35,4 @@ export * from "./Chercheur/FavorisChercheur";
 export * from "./Employeur/EmploisEmployeur";
 export * from "./Employeur/EmploiEmployeur";
 export * from "./Gestionnaire/UtilisateurCGestionnaire";
-export * from "./Chercheur/GroupesChercheur";
+export * from "./Chercheur/RelationsChercheur";

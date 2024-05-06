@@ -115,7 +115,7 @@ export default function Groupes() {
 	};
 
 	const redirectToMainPage = () => {
-		window.location.href = "/chercheur/groupes";
+		window.location.href = "/chercheur/relations";
 	};
 
 	return (
@@ -126,7 +126,7 @@ export default function Groupes() {
 				sx={{ width: 40, height: 40 }}
 			>
 				<Badge badgeContent={groupes.length} color='error'>
-					<FaUsers color='EEEDFF' />
+					<FaUsers color='465475' />
 				</Badge>
 			</IconButton>
 

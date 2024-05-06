@@ -5,10 +5,21 @@ import { FaShareSquare, FaUserPlus } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
 import { CadrePartage } from "./CadrePartage";
 
-export function PartagerOffre({ offre, onConfirm, onDismiss }) {
+export function PartagerOffre({
+	offre,
+	onGroupeShare,
+	onFriendShare,
+	onDismiss,
+}) {
 	const [loading, setLoading] = useState(false);
+
+	const [showGroupe, setShowGroupe] = useState(false);
 	const [groupes, setGroupes] = useState([]);
 	const [selectedGroupe, setSelectedGroupe] = useState({});
+
+	const [showAmi, setShowAmi] = useState(false);
+	const [amis, setAmis] = useState([]);
+	const [selectedAmi, setSelectedAmi] = useState({});
 
 	const [url, setUrl] = useState("");
 
@@ -44,16 +55,48 @@ export function PartagerOffre({ offre, onConfirm, onDismiss }) {
 		}
 	}
 
+	async function getAmis() {
+		try {
+			let accessToken = localStorage.getItem("accessToken");
+			const response = await axiosInstance.get("/users/chercheur/amis", {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
+
+			console.log(response);
+
+			if (response.status === 200) {
+				setAmis(response.data);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	useEffect(() => {
 		getGroupes();
+		getAmis();
 		getUrl();
 	}, []);
 
-	const handleConfirm = async () => {
+	const handleGroupeConfirm = async () => {
 		try {
 			setLoading(true);
 
-			await onConfirm(selectedGroupe._id, offre._id);
+			await onGroupeShare(selectedGroupe._id, offre._id);
+			onDismiss();
+		} catch (error) {
+			console.error("Confirmation error:", error);
+			setLoading(false);
+		}
+	};
+
+	const handleFriendConfirm = async () => {
+		try {
+			setLoading(true);
+
+			await onFriendShare(selectedAmi.ami._id, offre._id);
 			onDismiss();
 		} catch (error) {
 			console.error("Confirmation error:", error);
@@ -75,67 +118,169 @@ export function PartagerOffre({ offre, onConfirm, onDismiss }) {
 						<div>
 							<CadrePartage Offre={offre} />
 						</div>
-						<div className='flex flex-col'>
-							<label className='text-bleuF text-xs font-bold'>Groupe</label>
-							<select
-								className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
-								onChange={(e) => {
-									const selectedGroupId = e.target.value;
-									const selectedGroup = groupes.find(
-										(group) => group._id === selectedGroupId
-									);
-									setSelectedGroupe(selectedGroup);
-								}}
-							>
-								<option value=''>Sélectionnez un groupe</option>
-								{groupes.map((item, index) => (
-									<option key={item._id} value={item._id}>
-										{item.nom}
-									</option>
-								))}
-							</select>
-						</div>
-						<div className='flex justify-between bg-bleu p-4 rounded-lg'>
-							<div>
-								<p className='text-sm text-bleuF font-bold'>
-									Groupe {selectedGroupe.nom}
+
+						{!showAmi && !showGroupe && (
+							<div className='flex flex-col justify-end space-y-2'>
+								<ButtonCarre
+									couleur={"bleuF"}
+									couleurTexte={"violet"}
+									contenu={"Partager avec un ami"}
+									width={"w-full text-xs"}
+									height={"fit"}
+									onclick={() => setShowAmi(true)}
+								></ButtonCarre>
+								<ButtonCarre
+									couleur={"rouge"}
+									couleurTexte={"violet"}
+									contenu={"Partager dans un groupe"}
+									width={"w-full text-xs"}
+									height={"fit"}
+									onclick={() => setShowGroupe(true)}
+								></ButtonCarre>
+							</div>
+						)}
+
+						{showAmi && (
+							<div className='space-y-2'>
+								<p className='text-sm font-bold text-bleuF'>
+									Partager avec un ami
 								</p>
-								<p className='text-sm text-bleuF font-semibold'>
-									{selectedGroupe.description}
-								</p>
-								<div className='flex gap-[5px] mt-2'>
-									{selectedGroupe.membres
-										? selectedGroupe.membres.map((item, index) => (
-												<img
-													key={index}
-													src={url + item.image}
-													alt={item.altText}
-													className='w-10 h-10 rounded-full -mr-3'
-												/>
-										  ))
-										: ""}
+								<div className='flex flex-col'>
+									<select
+										className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+										onChange={(e) => {
+											if (e.target.value) {
+												const selectedAmiId = e.target.value;
+												const selectedAmi = amis.find(
+													(ami) => ami._id === selectedAmiId
+												);
+												setSelectedAmi(selectedAmi);
+											} else {
+												setSelectedAmi({});
+											}
+										}}
+									>
+										<option value=''>Sélectionnez une personne</option>
+										{amis.map((item, index) => (
+											<option key={item._id} value={item._id}>
+												{item.ami.nom} {item.ami.prenom}
+											</option>
+										))}
+									</select>
+								</div>
+								<div className='flex justify-between bg-bleu p-4 rounded-lg'>
+									<div className='flex w-full items-center space-x-2'>
+										<div className='flex gap-[5px] mt-2'>
+											<div className='img-container'>
+												{selectedAmi.ami && (
+													<img
+														src={url + selectedAmi.ami.image}
+														className='w-10 h-10 rounded-full'
+													/>
+												)}
+											</div>
+										</div>
+										<p className='text-sm text-bleuF font-bold'>
+											{selectedAmi.ami ? selectedAmi.ami.nom : ""}{" "}
+											{selectedAmi.ami ? selectedAmi.ami.prenom : ""}
+										</p>
+									</div>
 								</div>
 							</div>
+						)}
+						{showGroupe && (
+							<div className='space-y-2'>
+								<p className='text-sm font-bold text-bleuF'>
+									Partager dans un groupe
+								</p>
+								<div className='flex flex-col'>
+									<select
+										className='bg-violet border border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
+										onChange={(e) => {
+											if (e.target.value) {
+												const selectedGroupId = e.target.value;
+												const selectedGroup = groupes.find(
+													(group) => group._id === selectedGroupId
+												);
+												setSelectedGroupe(selectedGroup);
+											} else {
+												setSelectedGroupe({});
+											}
+										}}
+									>
+										<option value=''>Sélectionnez un groupe</option>
+										{groupes.map((item, index) => (
+											<option key={item._id} value={item._id}>
+												{item.nom}
+											</option>
+										))}
+									</select>
+								</div>
+								<div className='flex justify-between bg-bleu p-4 rounded-lg'>
+									<div>
+										<p className='text-sm text-bleuF font-bold'>
+											Groupe {selectedGroupe.nom}
+										</p>
+										<p className='text-sm text-bleuF font-semibold'>
+											{selectedGroupe.description}
+										</p>
+										<div className='flex gap-[5px] mt-2'>
+											{selectedGroupe.membres
+												? selectedGroupe.membres.map((item, index) => (
+														<img
+															key={index}
+															src={url + item.image}
+															alt={item.altText}
+															className='w-10 h-10 rounded-full -mr-3'
+														/>
+												  ))
+												: ""}
+										</div>
+									</div>
+								</div>
+							</div>
+						)}
+					</div>
+					{showAmi && (
+						<div className='flex justify-end space-x-2'>
+							<ButtonCarre
+								couleur={"bleuF"}
+								couleurTexte={"violet"}
+								contenu={"Annuler"}
+								width={"fit text-xs"}
+								height={"fit"}
+								onclick={onDismiss}
+							></ButtonCarre>
+							<ButtonCarre
+								couleur={"rouge"}
+								couleurTexte={"violet"}
+								contenu={"Partager"}
+								width={"fit text-xs"}
+								height={"fit"}
+								onclick={handleFriendConfirm}
+							></ButtonCarre>
 						</div>
-					</div>
-					<div className='flex justify-end space-x-2'>
-						<ButtonCarre
-							couleur={"bleuF"}
-							couleurTexte={"violet"}
-							contenu={"Annuler"}
-							width={"fit text-xs"}
-							height={"fit"}
-							onclick={onDismiss}
-						></ButtonCarre>
-						<ButtonCarre
-							couleur={"rouge"}
-							couleurTexte={"violet"}
-							contenu={"Partager"}
-							width={"fit text-xs"}
-							height={"fit"}
-							onclick={handleConfirm}
-						></ButtonCarre>
-					</div>
+					)}
+					{showGroupe && (
+						<div className='flex justify-end space-x-2'>
+							<ButtonCarre
+								couleur={"bleuF"}
+								couleurTexte={"violet"}
+								contenu={"Annuler"}
+								width={"fit text-xs"}
+								height={"fit"}
+								onclick={onDismiss}
+							></ButtonCarre>
+							<ButtonCarre
+								couleur={"rouge"}
+								couleurTexte={"violet"}
+								contenu={"Partager"}
+								width={"fit text-xs"}
+								height={"fit"}
+								onclick={handleGroupeConfirm}
+							></ButtonCarre>
+						</div>
+					)}
 				</div>
 			)}
 			{loading && <Spinner />}
