@@ -238,7 +238,7 @@ export function CandidatureChercheur() {
 	};
 
 	return (
-		<div className='min-h-screen bg-bleu pb-10'>
+		<div className='min-h-screen pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur selected={0}></NavBarChercheur>
 			<div className='m-6 bg-white rounded-lg p-4'>

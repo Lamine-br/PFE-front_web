@@ -206,7 +206,7 @@ export function EmploiChercheur() {
 	}, []);
 
 	return (
-		<div className='min-h-screen bg-bleu pb-10'>
+		<div className='min-h-screen pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur selected={1}></NavBarChercheur>
 			<div className='mx-6 mt-2 bg-white rounded-lg p-4'>
