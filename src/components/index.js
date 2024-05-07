@@ -97,3 +97,4 @@ export * from "./ShareButtons";
 export * from "./LineChartConsultations";
 export * from "./Footer";
 export * from "./NouveauAmi";
+export * from "./DocumentViewer";

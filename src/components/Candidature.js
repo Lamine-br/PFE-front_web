@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
 	FaEllipsisV,
 	FaDollarSign,
@@ -16,6 +16,7 @@ import { axiosInstance } from "../util/axios";
 import { FiExternalLink } from "react-icons/fi";
 import { BloqueForm } from "./BloqueForm";
 import { EtiquetteForm } from "./EtiquetteForm";
+import { DocumentViewer } from "./DocumentViewer";
 
 export function Candidature({
 	candidature,
@@ -62,6 +63,8 @@ export function Candidature({
 	const handleExternalLinkClick = () => {
 		window.open(url + candidature.dossier.cv, "_blank");
 	};
+
+	const iframeRef = useRef(null);
 
 	return (
 		<div className='w-full bg-violet rounded-lg px-10 py-4'>
@@ -134,11 +137,11 @@ export function Candidature({
 								className='cursor-pointer'
 								onClick={handleExternalLinkClick}
 							/>
-							<object
-								data={candidature.dossier ? url + candidature.dossier.cv : ""}
-								type='application/pdf'
+							<iframe
+								ref={iframeRef}
+								src={candidature.dossier ? url + candidature.dossier.cv : ""}
 								width='100%'
-								height='400px'
+								height='350px'
 							/>
 						</div>
 					) : (

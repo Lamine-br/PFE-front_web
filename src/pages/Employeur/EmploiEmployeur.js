@@ -5,6 +5,7 @@ import {
 	CadreEmploi,
 	CadreChercheur,
 	Spinner,
+	DocumentViewer,
 } from "../../components";
 import { FaPlus, FaTimes, FaCheck } from "react-icons/fa";
 import { useParams } from "react-router-dom";
