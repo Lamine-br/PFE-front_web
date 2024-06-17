@@ -9,6 +9,10 @@ import { useParams } from "react-router-dom";
 import { axiosInstance } from "../../util/axios";
 import { FaPlus } from "react-icons/fa";
 import { ButtonCarre } from "../../components";
+import moment from "moment";
+import "moment/locale/fr";
+
+moment.locale("fr");
 
 export function CandidatureSpontaneeChercheur() {
 	const [data, setData] = useState([]);
@@ -45,13 +49,14 @@ export function CandidatureSpontaneeChercheur() {
 	}, []);
 
 	return (
-		<div className='min-h-screen bg-bleu pb-10'>
+		<div className='min-h-screen pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur selected={3}></NavBarChercheur>
 			<div className='m-6 bg-white rounded-lg p-4'>
 				<div className='flex justify-between'>
 					<p className='text-xl font-bold text-rouge mb-4'>
-						Candidature Spontanée
+						Candidature Spontanée faite le{" "}
+						{moment(data.createdAt).format("DD MMMM YYYY")}
 					</p>
 				</div>
 				<CandidatureSpontanee candidature={data} />

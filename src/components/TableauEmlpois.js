@@ -71,7 +71,7 @@ export function TableauEmplois({ data, onRowClick, onAddToAgenda, vide }) {
 											</p>
 										)
 									) : (
-										""
+										<p></p>
 									)}
 
 									<div className='flex justify-center items-center space-x-4'>

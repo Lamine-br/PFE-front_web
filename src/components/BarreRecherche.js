@@ -73,6 +73,7 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 			if (response.status === 200) {
 				const metiers = response.data.map((item) => item.nom);
 				setMetiers(metiers);
+				setCarouselItems(metiers);
 				setFilteredMetiers(metiers);
 			}
 		} catch (e) {
@@ -115,7 +116,7 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 		setFilteredSuggestions(filteredSuggestions);
 	};
 
-	const carouselItems = [
+	const [carouselItems, setCarouselItems] = useState([
 		"Développeur Web",
 		"Technicien",
 		"Technicien de Maintenance",
@@ -123,7 +124,17 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 		"Infirmier Intérimaire",
 		"Magasinier",
 		"Serveur/Serveuse en Intérim",
-	];
+		"Lamine",
+		"Lamine",
+		"Lamine",
+		"Lamine",
+		"Lamine",
+		"Lamine",
+		"Lamine",
+		"Lamine",
+		"Lamine",
+		"Lamine",
+	]);
 
 	useEffect(() => {
 		const handleClickOutside = (event) => {
@@ -158,7 +169,7 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 
 	return (
 		<div className='mt-20'>
-			<p className='text-center text-rouge font-semibold text-xl mb-4'>
+			<p className='text-center text-bleuF font-bold text-2xl mb-7'>
 				Trouvez votre offre d'intérim
 			</p>
 			<div className='mb-10 flex items-center justify-center w-full'>
@@ -173,7 +184,7 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 						<FaSearch className={`text-bleuF ml-4 mr-4 cursor-pointer`} />
 					</button>
 
-					<div className='w-1/2 relative'>
+					<div className='w-1/2 relative '>
 						<input
 							ref={searchRef}
 							placeholder='Rechercher ...'
@@ -189,7 +200,7 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 						{showSuggestions && (
 							<div
 								ref={suggestionsRef}
-								className='absolute left-0 top-full w-full bg-white border border-gray-300 overflow-hidden shadow-md'
+								className='absolute left-0 top-full w-full bg-white border border-gray-300 overflow-hidden shadow-md z-10'
 							>
 								{filteredSuggestions.map((suggestion, index) => (
 									<div
@@ -207,7 +218,7 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 						)}
 					</div>
 
-					<div className='w-1/2 relative'>
+					<div className='w-1/2 relative '>
 						<input
 							placeholder='Métier'
 							ref={metierRef}
@@ -223,7 +234,7 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 						{showMetiers && (
 							<div
 								ref={suggestionsRef}
-								className='absolute left-0 top-full w-full bg-white border border-gray-300 overflow-hidden shadow-md'
+								className='absolute left-0 top-full w-full bg-white border border-gray-300 overflow-hidden shadow-md z-10 '
 							>
 								{filtredMetiers.slice(0, 3).map((metier, index) => (
 									<div
@@ -256,7 +267,7 @@ export function BarreRecherche({ onSearch, onAdvancedSearch }) {
 
 						{showLieux && (
 							<div
-								className='absolute left-0 top-full w-full bg-white border border-gray-300 overflow-hidden shadow-md'
+								className='absolute left-0 top-full w-full bg-white border border-gray-300 overflow-hidden shadow-md z-10'
 								ref={suggestionsRef}
 							>
 								{filteredLieux.slice(0, 3).map((lieu, index) => (

@@ -19,7 +19,7 @@ export function Header() {
 		window.location.href = "/";
 	};
 	return (
-		<div className='py-4 sticky top-0 z-10 bg-white border-b'>
+		<div className='py-4 sticky top-0 z-10 bg-white border-b shadow-md'>
 			<div
 				className={`fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40 ${
 					connexionVisible || inscriptionVisible ? "block" : "hidden"

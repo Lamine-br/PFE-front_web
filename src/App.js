@@ -39,10 +39,12 @@ import {
 	UtilisateurCGestionnaire,
 	RelationsChercheur,
 } from "./pages";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
 	return (
 		<BrowserRouter>
+			<ScrollToTop />
 			<Routes>
 				<Route path='/' element={<Home />} />
 				<Route path='/register/employeur' element={<RegisterEmployeur />} />

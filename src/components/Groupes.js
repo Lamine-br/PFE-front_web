@@ -177,9 +177,7 @@ export default function Groupes() {
 				onClick={handleOpen}
 				sx={{ width: 40, height: 40 }}
 			>
-				<Badge badgeContent={groupes.length} color='error'>
-					<FaUsers color='465475' />
-				</Badge>
+				<FaUsers color='465475' />
 			</IconButton>
 
 			<Popover

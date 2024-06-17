@@ -226,6 +226,21 @@ export function CandidatureChercheur() {
 		}
 	};
 
+	const couleurStatus = (status) => {
+		switch (status) {
+			case "Validé":
+				return "vertF";
+			case "Refusé":
+				return "rouge";
+			case "Validé Refusé":
+				return "rouge";
+			case "Validé Validé":
+				return "vertF";
+			default:
+				return "bleuF";
+		}
+	};
+
 	const position = (emetteur) => {
 		switch (emetteur) {
 			case "chercheur":
@@ -243,9 +258,12 @@ export function CandidatureChercheur() {
 			<NavBarChercheur selected={0}></NavBarChercheur>
 			<div className='m-6 bg-white rounded-lg p-4'>
 				<div className='flex justify-between'>
-					<p className='text-xl font-bold text-bleuF'>
-						Candidatures {">"} {data.offre ? data.offre.titre : ""} (
-						{data.status})
+					<p className={`text-xl font-bold text-bleuF`}>
+						Candidatures {">"} {data.offre ? data.offre.titre : ""}
+						<span className={`text-${couleurStatus(data.status)}`}>
+							{" "}
+							({data.status})
+						</span>
 					</p>
 				</div>
 				<div className='mt-4'>

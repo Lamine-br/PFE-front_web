@@ -11,7 +11,7 @@ export function HeaderGestionnaire({}) {
 				<h1 className='text-2xl font-bold text-violet'>
 					Intérim - Gestionnaire
 				</h1>
-				<nav>
+				{/* <nav>
 					<ul className='flex space-x-6 items-center'>
 						<li className='cursor-pointer relative'>
 							<Notifications />
@@ -20,7 +20,7 @@ export function HeaderGestionnaire({}) {
 							<Compte />
 						</li>
 					</ul>
-				</nav>
+				</nav> */}
 			</div>
 		</div>
 	);

@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { ButtonRond } from "./ButtonRond";
 import { ButtonCarre } from "./ButtonCarre";
-import { FaFileUpload, FaCheck } from "react-icons/fa";
+import { FaFileUpload, FaCheck, FaTimes } from "react-icons/fa";
 import { axiosInstance } from "../util/axios";
 import { Spinner } from "./Spinner";
 import { InscriptionConfirmation } from "./InscriptionConfirmation";
+import {
+	Box,
+	Button,
+	Divider,
+	Stack,
+	TextField,
+	Typography,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem,
+	Grid,
+} from "@mui/material";
 
 export function InscriptionChercheur() {
 	const [loading, setLoading] = useState(false);
@@ -30,6 +43,7 @@ export function InscriptionChercheur() {
 	const [dateNaissanceError, setDateNaissanceError] = useState("");
 	const [nationaliteError, setNationaliteError] = useState("");
 	const [villeError, setVilleError] = useState("");
+	const [fileName, setFileName] = useState("");
 
 	function validateForm() {
 		let isValid = true;
@@ -83,6 +97,10 @@ export function InscriptionChercheur() {
 			setVilleError("");
 		}
 		return isValid;
+	}
+
+	function getFileNameFromUrl(url) {
+		return decodeURIComponent(url.split("/").pop());
 	}
 
 	function handleInputChange(event, field) {
@@ -167,7 +185,9 @@ export function InscriptionChercheur() {
 
 			if (fileType === "pdf") {
 				setPdfObjectUrl(URL.createObjectURL(file)); // Set PDF URL for object element
-				setPreviewUrlCv(null); // Reset image preview
+				setPreviewUrlCv(null);
+				setFileName(file.name);
+				// Reset image preview
 			} else if (
 				fileType === "jpeg" ||
 				fileType === "jpg" ||
@@ -310,37 +330,6 @@ export function InscriptionChercheur() {
 							></input>
 							<p className='text-rouge text-xs'>{passwordError}</p>
 						</div>
-						<div className='flex items-center space-x-4 justify-center'>
-							<label
-								htmlFor='imageInput'
-								className='rounded bg-violet text-bleuF text-sm h-fit font-bold px-2 py-1 cursor-pointer'
-							>
-								Importer
-							</label>
-
-							<input
-								id='imageInput'
-								className='hidden'
-								type='file'
-								onChange={handleImageChange}
-							/>
-
-							<div>
-								<img
-									src={previewUrlImage}
-									className={`w-16 h-16 rounded-full border border-bleuF`}
-								/>
-							</div>
-							{!uploadedImage && previewUrlImage && (
-								<button
-									className='rounded bg-violet text-bleuF text-sm font-bold px-2 py-2'
-									onClick={() => handleImageUpload()}
-								>
-									<FaCheck color='465475' />
-								</button>
-							)}
-							{uploadedImage && <FaCheck color='30CA3F' />}
-						</div>
 					</div>
 
 					<div className='grid grid-cols-3 gap-8 mx-4 mb-10'>
@@ -420,11 +409,68 @@ export function InscriptionChercheur() {
 						</div>
 					</div>
 
-					<div className='grid grid-cols-3 gap-8 mx-4 mb-6'>
+					<div className='grid grid-cols-2 gap-8 mx-2 mb-6'>
+						<div className='flex flex-col items-start space-y-2 space-x-10 justify-center'>
+							<label className='text-bleuF text-xs font-bold ml-2'>
+								Ajouter une photo de profil ?
+							</label>
+							<label
+								htmlFor='imageInput'
+								className={`rounded bg-violet text-bleuF text-sm h-fit font-bold px-2 py-1 cursor-pointer ${
+									previewUrlImage ? "hidden" : ""
+								}`}
+							>
+								Importer
+							</label>
+							<input
+								id='imageInput'
+								className={`hidden ${uploadedImage ? "hidden" : ""}`}
+								type='file'
+								onChange={handleImageChange}
+							/>
+							{previewUrlImage && (
+								<>
+									<div>
+										<img
+											src={previewUrlImage}
+											className='w-20 h-20 rounded-full border border-bleuF'
+										/>
+									</div>
+									{!uploadedImage && (
+										<div className='flex space-x-2'>
+											<button
+												className='rounded bg-violet text-bleuF text-sm font-bold px-2 py-2'
+												onClick={handleImageUpload}
+											>
+												<FaCheck color='465475' />
+											</button>
+											<label
+												htmlFor='imageInput'
+												className='rounded bg-violet text-bleuF text-sm h-fit font-bold px-2 py-2 cursor-pointer'
+											>
+												<FaTimes color='#FF0000' />
+											</label>
+											<input
+												id='imageInput'
+												className='hidden'
+												type='file'
+												onChange={handleImageChange}
+											/>
+										</div>
+									)}
+									{uploadedImage && <FaCheck color='30CA3F' />}
+								</>
+							)}
+						</div>
 						<div className='flex items-center space-x-4 justify-center'>
+							<label className='text-bleuF text-xs font-bold ml-2'>
+								Ajouter votre CV
+							</label>
 							<label
 								htmlFor='cvInput'
-								className='rounded bg-violet text-bleuF text-sm h-fit font-bold px-2 py-1 cursor-pointer'
+								className={`rounded bg-violet text-bleuF text-sm h-fit font-bold px-2 py-1 cursor-pointer ${
+									pdfObjectUrl ? "hidden" : ""
+								}`}
 							>
 								Importer
 							</label>
@@ -436,27 +482,39 @@ export function InscriptionChercheur() {
 								onChange={handleCvChange}
 							/>
 
-							<div>
-								{pdfObjectUrl ? (
-									<object
-										data={pdfObjectUrl}
-										type='application/pdf'
-										className='w-16 h-16 border border-bleuF'
-									></object>
-								) : (
-									<img
-										src={previewUrlCv}
-										className={`w-16 h-16 border border-bleuF`}
-									/>
+							<div style={{ display: pdfObjectUrl ? "block" : "none" }}>
+								{pdfObjectUrl && (
+									<a
+										href={pdfObjectUrl}
+										target='_blank'
+										rel='noopener noreferrer'
+										className='text-sm text-bleuF'
+									>
+										{fileName}
+									</a>
 								)}
 							</div>
 							{!uploadedCv && (pdfObjectUrl || previewUrlCv) && (
-								<button
-									className='rounded bg-violet text-bleuF text-sm font-bold px-2 py-2'
-									onClick={() => handleCvUpload()}
-								>
-									<FaCheck color='465475' />
-								</button>
+								<div className='flex space-x-2'>
+									<button
+										className='rounded bg-violet text-bleuF text-sm font-bold px-2 py-2'
+										onClick={() => handleCvUpload()}
+									>
+										<FaCheck color='465475' />
+									</button>
+									<label
+										htmlFor='cvInput'
+										className='rounded bg-violet text-bleuF text-sm h-fit font-bold px-2 py-2 cursor-pointer'
+									>
+										<FaTimes color='#FF0000' />
+									</label>
+									<input
+										id='cvInput'
+										className='hidden'
+										type='file'
+										onChange={handleCvChange}
+									/>
+								</div>
 							)}
 							{uploadedCv && <FaCheck color='30CA3F' />}
 						</div>

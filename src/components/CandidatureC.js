@@ -226,7 +226,7 @@ export function CandidatureC({
 						contenu={"Accepter"}
 						width={"fit"}
 						height={"fit"}
-						onClick={() => setShowRefuseConfirmation(true)}
+						onClick={() => setShowAcceptConfirmation(true)}
 					/>
 				</div>
 			) : (
