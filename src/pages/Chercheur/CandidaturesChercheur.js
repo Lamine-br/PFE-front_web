@@ -275,7 +275,7 @@ export function CandidaturesChercheur() {
 	}
 
 	useEffect(() => {
-		getCandidatures();
+		getCandidatures(selectedValue);
 		getCandidaturesPourFiltrage();
 	}, []);
 
@@ -283,7 +283,7 @@ export function CandidaturesChercheur() {
 		setData(filteredData);
 	};
 
-	const [selectedValue, setSelectedValue] = useState("");
+	const [selectedValue, setSelectedValue] = useState("Toutes");
 
 	const handleChange = (event) => {
 		setSelectedValue(event.target.value);

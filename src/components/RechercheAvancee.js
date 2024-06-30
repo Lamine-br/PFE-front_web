@@ -8,7 +8,7 @@ import {
 	FaMapMarkerAlt,
 	FaBriefcase,
 } from "react-icons/fa";
-import { ButtonRond } from "./ButtonRond";
+import { ButtonCarre } from "./ButtonCarre";
 
 export function RechercheAvancee({ onClose, onConfirm }) {
 	const entrepriseRef = useRef("");
@@ -129,13 +129,13 @@ export function RechercheAvancee({ onClose, onConfirm }) {
 
 				<div className='w-full mt-6'>
 					<div className='flex justify-end'>
-						<ButtonRond
+						<ButtonCarre
 							couleur={"rouge"}
 							couleurTexte={"violet"}
 							contenu={"Rechercher"}
 							width={"fit"}
 							height={"fit"}
-							onClick={() =>
+							onclick={() =>
 								onConfirm(
 									debutRef.current.value,
 									finRef.current.value,
@@ -146,7 +146,7 @@ export function RechercheAvancee({ onClose, onConfirm }) {
 									metierRef.current.value
 								)
 							}
-						></ButtonRond>
+						></ButtonCarre>
 					</div>
 				</div>
 			</div>

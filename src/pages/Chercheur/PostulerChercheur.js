@@ -13,6 +13,7 @@ export function PostulerChercheur() {
 	const [data, setData] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [candidatures, setCandidatures] = useState([]);
+	const [offres, setOffres] = useState([]);
 	const [showAvertissement, setShowAvertissement] = useState(false);
 
 	let { id } = useParams();
@@ -31,6 +32,28 @@ export function PostulerChercheur() {
 
 			if (response.status === 200) {
 				setCandidatures(response.data);
+				setLoading(false);
+			}
+		} catch (e) {
+			console.log(e);
+			setLoading(false);
+		}
+	}
+
+	async function getOffre(lieu) {
+		try {
+			setLoading(true);
+			const response = await axiosInstance.get("/offres", {
+				params: {
+					lieu: lieu ? lieu : undefined,
+				},
+			});
+			console.log(response);
+
+			if (response.status === 200) {
+				setOffres(response.data);
+				const offre = response.data.find((offre) => offre._id === id);
+				setData(offre || {});
 				setLoading(false);
 			}
 		} catch (e) {
@@ -70,6 +93,7 @@ export function PostulerChercheur() {
 
 	useEffect(() => {
 		getCandidatures();
+		getOffre();
 	}, []);
 
 	useEffect(() => {
@@ -77,11 +101,11 @@ export function PostulerChercheur() {
 	}, [candidatures]);
 
 	return (
-		<div className='min-h-screen bg-bleu pb-10'>
+		<div className='min-h-screen pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur></NavBarChercheur>
-			<div className='m-6 bg-white rounded-lg'>
-				<Apply data={candidatures} onConfirm={addCandidature} />
+			<div className='mx-6 my-4 bg-white rounded-lg shadow border '>
+				<Apply offre={data} data={candidatures} onConfirm={addCandidature} />
 			</div>
 			{loading && <Spinner />}
 			{showAvertissement && (

@@ -31,10 +31,7 @@ export function CadreEmploi({ Emploi, className, onClick }) {
 			onClick={onClick}
 		>
 			<div className='flex w-full px-4 py-2'>
-				<img
-					className='rounded-full w-12 h-12 border border-bleuF'
-					src={esi}
-				></img>
+				<img className='rounded-full w-12 h-12 bg-white' src={esi}></img>
 
 				<div className='flex flex-col w-full pl-4'>
 					<div className='flex justify-between'>

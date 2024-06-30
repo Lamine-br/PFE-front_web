@@ -38,7 +38,7 @@ export function Inscription({ onClose, onConnect }) {
 			</div>
 
 			<div className='w-3/4 m-4'>
-				<label className='flex items-center justify-start bg-violet w-full p-2 rounded-lg'>
+				<label className='flex items-center justify-start bg-violet w-full p-2 rounded-lg cursor-pointer'>
 					<input
 						type='radio'
 						name='options'
@@ -51,7 +51,7 @@ export function Inscription({ onClose, onConnect }) {
 					</span>
 				</label>
 
-				<label className='flex items-center justify-start mt-1 bg-violet w-full p-2 rounded-lg'>
+				<label className='flex items-center justify-start mt-1 bg-violet w-full p-2 rounded-lg cursor-pointer'>
 					<input
 						type='radio'
 						name='options'
@@ -62,7 +62,7 @@ export function Inscription({ onClose, onConnect }) {
 					<span className='ml-2 text-bleuF font-bold text-sm'> Employeur</span>
 				</label>
 
-				<label className='flex items-center justify-start  mt-1 bg-violet w-full p-2 rounded-lg'>
+				<label className='flex items-center justify-start  mt-1 bg-violet w-full p-2 rounded-lg cursor-pointer'>
 					<input
 						type='radio'
 						name='options'

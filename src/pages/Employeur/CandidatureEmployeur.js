@@ -241,10 +241,27 @@ export function CandidatureEmployeur() {
 			<HeaderEmployeur></HeaderEmployeur>
 			<NavBarEmployeur selected={1}></NavBarEmployeur>
 			<div className='mx-6 my-2 bg-white rounded-lg p-4 border shadow'>
-				<div className='flex justify-between'>
+				<div className='flex'>
 					<p className='text-xl font-bold text-bleuF'>
 						Candidatures {">"} {data.offre ? data.offre.titre : ""}
 					</p>
+					<span
+						className={`text-xl ${
+							data.status === "En attente" ? "text-bleuF" : ""
+						} ${
+							data.status === "Refusé" || data.status === "Supprimé"
+								? "text-rouge"
+								: ""
+						}${data.status === "Validé" ? "text-[#ffc107]" : ""} ${
+							data.status === "Validé Validé" ? "text-vertF" : ""
+						} text-sm font-semibold`}
+					>
+						{data.status === "En attente" ? " En attente" : ""}
+						{data.status === "Refusé" ? " Refusée" : ""}
+						{data.status === "Supprimé" ? " Supprimée" : ""}
+						{data.status === "Validé" ? " (Validée)" : ""}
+						{data.status === "Validé Validé" ? " Validé par le chercheur" : ""}
+					</span>
 				</div>
 				<div className='mt-4'>
 					<Candidature

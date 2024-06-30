@@ -32,7 +32,7 @@ export function CadreChercheur({ data, className, onClick }) {
 		>
 			<div className='flex w-full px-4 py-2'>
 				<img
-					className='rounded-full w-12 h-12 border border-bleuF'
+					className='rounded-full w-12 h-12'
 					src={data ? url + data.image : google}
 				></img>
 

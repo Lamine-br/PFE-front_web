@@ -120,10 +120,10 @@ export function InscriptionsGestionnaire() {
 	}
 
 	useEffect(() => {
-		getInscriptions();
+		getInscriptions(selectedValue);
 	}, []);
 
-	const [selectedValue, setSelectedValue] = useState("");
+	const [selectedValue, setSelectedValue] = useState("Toutes");
 
 	const handleChange = (event) => {
 		const value = event.target.value;
@@ -144,14 +144,14 @@ export function InscriptionsGestionnaire() {
 	const handleValidateInscription = async (id) => {
 		validateInscription(id);
 		setLoading(true);
-		await getInscriptions();
+		await getInscriptions(selectedValue);
 		setLoading(false);
 	};
 
 	const handleRefuseInscription = async (id) => {
 		refuseInscription(id);
 		setLoading(true);
-		await getInscriptions();
+		await getInscriptions(selectedValue);
 		setLoading(false);
 	};
 

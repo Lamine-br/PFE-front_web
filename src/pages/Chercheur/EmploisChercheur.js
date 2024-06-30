@@ -146,7 +146,7 @@ export function EmploisChercheur() {
 	}
 
 	useEffect(() => {
-		getEmplois();
+		getEmplois(selectedValue);
 		getEmploisPourFiltrage();
 	}, []);
 
@@ -154,7 +154,7 @@ export function EmploisChercheur() {
 		setData(filteredData);
 	};
 
-	const [selectedValue, setSelectedValue] = useState("");
+	const [selectedValue, setSelectedValue] = useState("Tous");
 
 	const handleChange = (event) => {
 		setSelectedValue(event.target.value);
@@ -206,7 +206,10 @@ export function EmploisChercheur() {
 					<TableauEmplois
 						data={data}
 						onRowClick={handleClick}
-						onAddToAgenda={(id) => addToAgenda(id)}
+						onAddToAgenda={(id) => {
+							addToAgenda(id);
+							getEmplois(selectedValue);
+						}}
 					></TableauEmplois>
 				</div>
 			</div>

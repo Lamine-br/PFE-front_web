@@ -3,7 +3,7 @@ import SpeechRecognition, {
 	useSpeechRecognition,
 } from "react-speech-recognition";
 import { FaTimes } from "react-icons/fa";
-import { ButtonRond } from "./ButtonRond";
+import { ButtonCarre } from "./ButtonCarre";
 import { FaMicrophone, FaMicrophoneSlash, FaRedo } from "react-icons/fa";
 
 export const VoiceRecognition = ({ onClose, onConfirm }) => {
@@ -78,14 +78,14 @@ export const VoiceRecognition = ({ onClose, onConfirm }) => {
 				</div>
 				<div className='w-full mt-4'>
 					<div className='flex justify-end'>
-						<ButtonRond
+						<ButtonCarre
 							couleur={"rouge"}
 							couleurTexte={"violet"}
 							contenu={"Lancer la recherche"}
 							width={"full"}
 							height={"fit"}
-							onClick={() => handleConfirm(transcript)}
-						></ButtonRond>
+							onclick={() => handleConfirm(transcript)}
+						></ButtonCarre>
 					</div>
 				</div>
 			</div>

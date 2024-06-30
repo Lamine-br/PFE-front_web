@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
-	HeaderChercheur,
-	NavBarChercheur,
-	CandidatureSpontanee,
+	HeaderEmployeur,
+	NavBarEmployeur,
+	CandidatureSpontaneeE,
 	Spinner,
 } from "../../components";
 import { useParams } from "react-router-dom";
@@ -14,7 +14,7 @@ import "moment/locale/fr";
 
 moment.locale("fr");
 
-export function CandidatureSpontaneeChercheur() {
+export function CandidatureSpontaneeEmployeur() {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const { id } = useParams();
@@ -24,7 +24,7 @@ export function CandidatureSpontaneeChercheur() {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.get(
-				"/candidatures/chercheur/spontanees/" + id,
+				"/candidatures/employeur/spontanees/" + id,
 				{
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
@@ -50,8 +50,8 @@ export function CandidatureSpontaneeChercheur() {
 
 	return (
 		<div className='min-h-screen pb-10'>
-			<HeaderChercheur></HeaderChercheur>
-			<NavBarChercheur selected={3}></NavBarChercheur>
+			<HeaderEmployeur></HeaderEmployeur>
+			<NavBarEmployeur selected={3}></NavBarEmployeur>
 			<div className='m-6 bg-white rounded-lg p-4 shadow border'>
 				<div className='flex justify-between'>
 					<p className='text-xl font-bold text-rouge mb-4'>
@@ -59,7 +59,7 @@ export function CandidatureSpontaneeChercheur() {
 						{moment(data.createdAt).format("DD MMMM YYYY")}
 					</p>
 				</div>
-				<CandidatureSpontanee candidature={data} />
+				<CandidatureSpontaneeE candidature={data} />
 			</div>
 
 			{loading && <Spinner />}

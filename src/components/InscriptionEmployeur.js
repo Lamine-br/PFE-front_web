@@ -54,7 +54,7 @@ export function InscriptionEmployeur({ onPass }) {
 		site_web: "",
 		facebook: "",
 		linkedin: "",
-		contacts: [{ nom: "", email: "", numero: "" }],
+		contacts: [],
 	});
 
 	const inputRefs = {
@@ -161,6 +161,8 @@ export function InscriptionEmployeur({ onPass }) {
 				setShowConfirmation(true);
 			}, 1000);
 		}
+
+		console.log(formData);
 	}
 
 	const [folderName, setFolderName] = useState("");

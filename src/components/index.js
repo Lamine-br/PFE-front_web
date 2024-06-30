@@ -98,3 +98,5 @@ export * from "./LineChartConsultations";
 export * from "./Footer";
 export * from "./NouveauAmi";
 export * from "./DocumentViewer";
+export * from "./TableauCandidaturesSpontaneesEmployeur";
+export * from "./CandidatureSpontaneeE";

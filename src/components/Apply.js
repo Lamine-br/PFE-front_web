@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { ButtonRond } from "./ButtonRond";
+import { ButtonCarre } from "./ButtonCarre";
 import { FaFileUpload, FaCheck } from "react-icons/fa";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { axiosInstance } from "../util/axios";
 import { CvCandidature } from "./CvCandidature";
 
-export function Apply({ data, onConfirm }) {
+export function Apply({ offre, data, onConfirm }) {
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 	const [selectedMotivation, setSelectedMotivation] = useState(-1);
 
@@ -173,10 +173,16 @@ export function Apply({ data, onConfirm }) {
 		window.location.href = "/chercheur/profile";
 	};
 
+	const redirectToCandidatures = () => {
+		window.location.href = "/chercheur/candidatures";
+	};
+
 	return (
 		<div className='overlay flex justify-center'>
 			<div className='justify-center items-center p-4 w-full h-4/5 rounded-lg'>
-				<h1 className='text-xl text-bleuF font-bold mb-10'>Postuler</h1>
+				<h1 className='text-xl text-bleuF font-bold mb-10'>
+					Postuler pour "{offre.titre ? offre.titre : ""}"
+				</h1>
 				<div className='grid grid-cols-4 gap-8 mb-10'>
 					<div className='flex flex-col'>
 						<label className='text-bleuF text-xs font-bold'>Nom</label>
@@ -286,7 +292,11 @@ export function Apply({ data, onConfirm }) {
 						</select>
 					</div>
 					<div>
-						<iframe src={url + selected} width='100%' height='500px' />
+						{selected ? (
+							<iframe src={url + selected} width='100%' height='500px' />
+						) : (
+							""
+						)}
 					</div>
 
 					<div className='flex w-full h-full col-span-2 items-center space-x-4 justify-center relative'>
@@ -397,17 +407,18 @@ export function Apply({ data, onConfirm }) {
 				</div>
 
 				<div className='flex justify-end'>
-					<ButtonRond
+					<ButtonCarre
 						couleur={"rouge"}
 						couleurTexte={"violet"}
 						contenu={"Continuer"}
 						width={"fit"}
 						height={"fit"}
-						onClick={() => {
+						onclick={() => {
 							console.log(candidature);
 							onConfirm(candidature);
+							redirectToCandidatures();
 						}}
-					></ButtonRond>
+					></ButtonCarre>
 				</div>
 			</div>
 		</div>

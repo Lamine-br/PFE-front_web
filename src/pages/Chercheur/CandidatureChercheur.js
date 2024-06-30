@@ -256,13 +256,26 @@ export function CandidatureChercheur() {
 		<div className='min-h-screen pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<NavBarChercheur selected={0}></NavBarChercheur>
-			<div className='m-6 bg-white rounded-lg p-4'>
+			<div className='m-6 bg-white rounded-lg p-4 shadow border'>
 				<div className='flex justify-between'>
 					<p className={`text-xl font-bold text-bleuF`}>
 						Candidatures {">"} {data.offre ? data.offre.titre : ""}
-						<span className={`text-${couleurStatus(data.status)}`}>
-							{" "}
-							({data.status})
+						<span
+							className={`text-xl ${
+								data.status === "En attente" ? "text-bleuF" : ""
+							} ${
+								data.status === "Refusé" || data.status === "Supprimé"
+									? "text-rouge"
+									: ""
+							}${data.status === "Validé" ? "text-[#ffc107]" : ""} ${
+								data.status === "Validé Validé" ? "text-vertF" : ""
+							} text-sm font-semibold`}
+						>
+							{data.status === "En attente" ? " En attente" : ""}
+							{data.status === "Refusé" ? " Refusée" : ""}
+							{data.status === "Supprimé" ? " Supprimée" : ""}
+							{data.status === "Validé" ? " Validée par l'employeur" : ""}
+							{data.status === "Validé Validé" ? " Validée" : ""}
 						</span>
 					</p>
 				</div>

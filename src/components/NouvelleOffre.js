@@ -61,10 +61,10 @@ export function NouvelleOffre({ onClose, onConfirm }) {
 		}
 	}
 
-	function handleClick() {
-		addOffre();
+	async function handleClick() {
+		await addOffre();
 		console.log(formData);
-		onConfirm();
+		await onConfirm();
 	}
 
 	const user = JSON.parse(localStorage.getItem("user"));

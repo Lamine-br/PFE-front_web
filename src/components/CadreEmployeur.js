@@ -32,7 +32,7 @@ export function CadreEmployeur({ data, className, onClick }) {
 		>
 			<div className='flex w-full px-4 py-2'>
 				<img
-					className='rounded-full w-12 h-12 border border-bleuF'
+					className='rounded-full w-12 h-12 bg-white'
 					src={data.image ? url + data.image : google}
 				></img>
 
@@ -46,8 +46,13 @@ export function CadreEmployeur({ data, className, onClick }) {
 								<div className='flex items-center'>
 									<MdLocationOn color='#465475' />
 									<p className='text-bleuF'>
-										{data.adresse ? data.adresse.rue : ""},{" "}
-										{data.adresse ? data.adresse.ville : ""}
+										{data.adresse && data.adresse.rue
+											? data.adresse.rue
+											: "Unkown"}
+										,{" "}
+										{data.adresse && data.adresse.ville
+											? data.adresse.ville
+											: "Unkown"}
 									</p>
 								</div>
 							</div>
@@ -66,14 +71,14 @@ export function CadreEmployeur({ data, className, onClick }) {
 						<div className='flex items-center mr-6 mt-2 space-x-4'>
 							<div className='flex items-center space-x-1'>
 								<FaEnvelope color='#465475' />
-								<p className='text-bleuF'>
-									{data.contacts ? data.contacts[0].email : ""}
-								</p>
+								<p className='text-bleuF'>{data.contacts ? data.email : ""}</p>
 							</div>
 							<div className='flex items-center space-x-1'>
 								<FaPhone color='#465475' />
 								<p className='text-bleuF'>
-									{data.contacts ? data.contacts[0].numero : ""}
+									{data.contacts && data.contacts.length > 0
+										? data.contacts[0].numero
+										: "Unkown"}
 								</p>
 							</div>
 						</div>

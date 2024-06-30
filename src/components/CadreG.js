@@ -70,7 +70,7 @@ export function CadreG({ id }) {
 	}, []);
 
 	return (
-		<div className='w-full bg-violet rounded-lg'>
+		<div className='w-full bg-violet rounded-lg pb-2'>
 			<div className='flex px-10 py-2'>
 				<div>
 					<p className='text-bleuF font-bold text-xl'>{offre.titre}</p>

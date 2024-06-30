@@ -61,7 +61,12 @@ export function NouvelleCandidatureSpontanee({
 			console.log(response);
 
 			if (response.status === 200) {
-				setEmployeurs(response.data);
+				// Filtrer les employeurs selon la propriété spontanee
+				const employeursFiltres = response.data.filter(
+					(employeur) => employeur.spontanee
+				);
+				// Mettre à jour l'état avec les employeurs filtrés
+				setEmployeurs(employeursFiltres);
 			}
 		} catch (e) {
 			console.log(e);
@@ -116,6 +121,10 @@ export function NouvelleCandidatureSpontanee({
 		window.location.href = "/chercheur/profile";
 	};
 
+	const redirectToCandidaturesSpontanees = () => {
+		window.location.href = "/chercheur/candidaturesSpontanees";
+	};
+
 	const handleSubmit = async () => {
 		const employeurs = selectedEmployeurs.map((employeur) => employeur._id);
 		const metiers = selectedMetiers.map((metier) => metier._id);
@@ -125,6 +134,7 @@ export function NouvelleCandidatureSpontanee({
 		if (employeurs.length > 0 && metiers.length > 0) {
 			onConfirm({ date_debut, date_fin, employeurs, metiers });
 			onDismiss();
+			redirectToCandidaturesSpontanees();
 		}
 	};
 	return (

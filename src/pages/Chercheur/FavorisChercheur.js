@@ -33,7 +33,7 @@ export function FavorisChercheur() {
 	}, []);
 
 	return (
-		<div className='min-h-screen bg-bleu pb-10'>
+		<div className='min-h-screen pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<p className='mt-10 ml-10 font-bold  text-bleuF text-xl'>Mes favoris</p>
 			<div className='grid grid-cols-3 gap-8 m-10'>

@@ -44,7 +44,7 @@ export function NavBarChercheur({ selected }) {
 							}`}
 						>
 							<NavLink to={"/chercheur/candidaturesSpontanees"}>
-								Candidature Spontanée
+								Candidatures Spontanées
 							</NavLink>
 						</li>
 					</ul>

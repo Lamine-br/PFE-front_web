@@ -66,10 +66,10 @@ export function EmploisEmployeur() {
 	}
 
 	useEffect(() => {
-		getEmplois();
+		getEmplois(selectedValue);
 	}, []);
 
-	const [selectedValue, setSelectedValue] = useState("");
+	const [selectedValue, setSelectedValue] = useState("Tous");
 
 	const handleChange = (event) => {
 		setSelectedValue(event.target.value);

@@ -37,3 +37,5 @@ export * from "./Employeur/EmploiEmployeur";
 export * from "./Gestionnaire/UtilisateurCGestionnaire";
 export * from "./Chercheur/RelationsChercheur";
 export * from "./Error";
+export * from "./Employeur/CandidaturesSpontaneesEmployeur";
+export * from "./Employeur/CandidatureSpontaneeEmployeur";

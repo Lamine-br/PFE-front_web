@@ -10,7 +10,7 @@ import { CommentaireForm } from "./CommentaireForm";
 import { Map } from "./Map";
 import { axiosInstance } from "../util/axios";
 
-export function CandidatureSpontanee({
+export function CandidatureSpontaneeE({
 	candidature,
 	onDelete,
 	onContact,
@@ -137,20 +137,6 @@ export function CandidatureSpontanee({
 				</div>
 			</div>
 			<div className='space-y-2'>
-				<div className='bg-white rounded-lg px-10 py-4 border border-bleuF'>
-					<div className='flex flex-col justify-center'>
-						<p className='text-rouge text-sm '>Liste des employeurs</p>
-						<div className='flex-col space-y-4'>
-							{candidature.employeurs
-								? candidature.employeurs.map((item) => (
-										<p className='text-lg text-bleuF font-bold'>
-											{item.entreprise}
-										</p>
-								  ))
-								: ""}
-						</div>
-					</div>
-				</div>
 				<div className='bg-white rounded-lg px-10 py-4 border border-bleuF'>
 					<div className='flex flex-col justify-center'>
 						<p className='text-rouge text-sm'>Liste des métiers</p>

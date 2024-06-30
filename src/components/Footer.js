@@ -33,7 +33,7 @@ export function Footer() {
 					>
 						Intérim
 					</h1>
-					<p>
+					<p className='text-bleuF'>
 						Découvrez le meilleur moyen de diffuser vos offres d'emploi
 						intérimaires et trouvez le candidat parfait pour votre entreprise,
 						pour des recrutements réussis !
@@ -52,18 +52,20 @@ export function Footer() {
 					<h1 className='text-lg font-bold text-bleuF mt-2 cursor-pointer'>
 						Fonctionnalités
 					</h1>
-					<p>Chercheur</p>
-					<p>Employeur</p>
-					<p>Agence</p>
+					<p className='text-bleuF'>Chercheur</p>
+					<p className='text-bleuF'>Employeur</p>
+					<p className='text-bleuF'>Agence</p>
 				</div>
 				<div className='flex flex-col p-10 space-y-4 mt-10'>
 					<h1 className='text-lg font-bold text-bleuF mt-2 cursor-pointer'>
 						A propos de nous
 					</h1>
-					<p>Nous contacter</p>
+					<p className='text-bleuF'>Nous contacter</p>
 				</div>
 			</div>
-			<p>© 2024 - Brahami Lamine. Tous droits réservés.</p>
+			<p className='text-bleuF'>
+				© 2024 - Brahami Lamine. Tous droits réservés.
+			</p>
 
 			{connexionVisible && <Connexion onClose={handleConnexionToggle} />}
 			{inscriptionVisible && <Inscription onClose={handleInscriptionToggle} />}

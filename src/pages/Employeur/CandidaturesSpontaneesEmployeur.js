@@ -1,30 +1,25 @@
 import React, { useState, useEffect } from "react";
 import {
-	HeaderChercheur,
-	NavBarChercheur,
-	CandidatureSpontanee,
+	HeaderEmployeur,
+	NavBarEmployeur,
+	TableauCandidaturesSpontaneesEmployeur,
 	Spinner,
 } from "../../components";
 import { useParams } from "react-router-dom";
 import { axiosInstance } from "../../util/axios";
 import { FaPlus } from "react-icons/fa";
 import { ButtonCarre } from "../../components";
-import moment from "moment";
-import "moment/locale/fr";
 
-moment.locale("fr");
-
-export function CandidatureSpontaneeChercheur() {
+export function CandidaturesSpontaneesEmployeur() {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
-	const { id } = useParams();
 
-	async function getCandidatureSpontanee() {
+	async function getCandidaturesSpontanees() {
 		try {
 			setLoading(true);
 			let accessToken = localStorage.getItem("accessToken");
 			const response = await axiosInstance.get(
-				"/candidatures/chercheur/spontanees/" + id,
+				"/candidatures/employeur/spontanees",
 				{
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
@@ -45,21 +40,29 @@ export function CandidatureSpontaneeChercheur() {
 	}
 
 	useEffect(() => {
-		getCandidatureSpontanee();
+		getCandidaturesSpontanees();
 	}, []);
+
+	const handleClick = (id) => {
+		window.location.href = `/employeur/candidaturesSpontanees/${id}`;
+	};
 
 	return (
 		<div className='min-h-screen pb-10'>
-			<HeaderChercheur></HeaderChercheur>
-			<NavBarChercheur selected={3}></NavBarChercheur>
-			<div className='m-6 bg-white rounded-lg p-4 shadow border'>
+			<HeaderEmployeur></HeaderEmployeur>
+			<NavBarEmployeur selected={3}></NavBarEmployeur>
+			<div className='mx-6 mt-2 bg-white rounded-lg p-4 border shadow'>
 				<div className='flex justify-between'>
-					<p className='text-xl font-bold text-rouge mb-4'>
-						Candidature Spontanée faite le{" "}
-						{moment(data.createdAt).format("DD MMMM YYYY")}
+					<p className='text-xl font-bold text-rouge'>
+						Candidatures Spontanées
 					</p>
 				</div>
-				<CandidatureSpontanee candidature={data} />
+				<div>
+					<TableauCandidaturesSpontaneesEmployeur
+						data={data}
+						onRowClick={handleClick}
+					></TableauCandidaturesSpontaneesEmployeur>
+				</div>
 			</div>
 
 			{loading && <Spinner />}

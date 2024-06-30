@@ -46,7 +46,7 @@ export function CadreP({ Offre, className, onClick, onDelete }) {
 		>
 			<div className='flex w-full px-4 py-2'>
 				<img
-					className='rounded-full w-12 h-12 border border-bleuF'
+					className='rounded-full w-12 h-12 bg-white'
 					src={Offre.employeur ? urlAuth + Offre.employeur.image : google}
 				></img>
 

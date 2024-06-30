@@ -38,6 +38,8 @@ import {
 	EmploiEmployeur,
 	UtilisateurCGestionnaire,
 	RelationsChercheur,
+	CandidaturesSpontaneesEmployeur,
+	CandidatureSpontaneeEmployeur,
 } from "./pages";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -66,6 +68,14 @@ function App() {
 				<Route path='/employeur/emplois' element={<EmploisEmployeur />} />
 				<Route path='/employeur/emplois/:id' element={<EmploiEmployeur />} />
 
+				<Route
+					path='/employeur/candidaturesSpontanees'
+					element={<CandidaturesSpontaneesEmployeur />}
+				/>
+				<Route
+					path='/employeur/candidaturesSpontanees/:id'
+					element={<CandidatureSpontaneeEmployeur />}
+				/>
 				<Route
 					path='register/employeur/abonnements/'
 					element={<AbonnementsEmployeur />}

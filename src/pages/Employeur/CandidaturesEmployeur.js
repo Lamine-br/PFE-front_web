@@ -149,7 +149,7 @@ export function CandidaturesEmployeur() {
 	}
 
 	useEffect(() => {
-		getCandidatures();
+		getCandidatures(selectedValue);
 		getCandidaturesPourRecherche();
 	}, []);
 
@@ -221,7 +221,7 @@ export function CandidaturesEmployeur() {
 		}
 	}
 
-	const [selectedValue, setSelectedValue] = useState("");
+	const [selectedValue, setSelectedValue] = useState("En attente");
 
 	const handleChange = (event) => {
 		setSelectedValue(event.target.value);

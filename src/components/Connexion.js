@@ -83,7 +83,7 @@ export function Connexion({ onClose, onInscription }) {
 					</div>
 
 					<div className='w-full m-4'>
-						<label className='flex items-center justify-start bg-violet w-full p-2 rounded-lg'>
+						<label className='flex items-center justify-start bg-violet w-full p-2 rounded-lg cursor-pointer'>
 							<input
 								type='radio'
 								name='options'
@@ -96,7 +96,7 @@ export function Connexion({ onClose, onInscription }) {
 							</span>
 						</label>
 
-						<label className='flex items-center justify-start mt-1 bg-violet w-full p-2 rounded-lg'>
+						<label className='flex items-center justify-start mt-1 bg-violet w-full p-2 rounded-lg cursor-pointer'>
 							<input
 								type='radio'
 								name='options'
@@ -110,7 +110,7 @@ export function Connexion({ onClose, onInscription }) {
 							</span>
 						</label>
 
-						<label className='flex items-center justify-start  mt-1 bg-violet w-full p-2 rounded-lg'>
+						<label className='flex items-center justify-start  mt-1 bg-violet w-full p-2 rounded-lg cursor-pointer'>
 							<input
 								type='radio'
 								name='options'

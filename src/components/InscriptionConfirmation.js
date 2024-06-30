@@ -44,7 +44,7 @@ export function InscriptionConfirmation({ data, onConfirm }) {
 
 	return (
 		<div className='overlay flex justify-center items-center w-full'>
-			<div className='z-50 justify-center items-center p-10 w-fit h-4/5 bg-white rounded-lg'>
+			<div className='z-50 justify-center items-center p-10 w-fit h-4/5 bg-white border border-bleuF rounded-lg'>
 				<div className='flex flex-col items-center justify-center space-y-4'>
 					{status ? (
 						<FaCheckCircle size={40} className='text-vertF' />

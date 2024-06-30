@@ -36,7 +36,7 @@ export function EnregistrementsChercheur() {
 	}, []);
 
 	return (
-		<div className='min-h-screen bg-bleu pb-10'>
+		<div className='min-h-screen pb-10'>
 			<HeaderChercheur></HeaderChercheur>
 			<p className='mt-10 ml-10 font-bold  text-bleuF text-xl'>
 				Mes enregistrements
