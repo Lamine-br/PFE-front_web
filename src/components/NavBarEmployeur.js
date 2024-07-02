@@ -58,13 +58,16 @@ export function NavBarEmployeur({ selected }) {
 							</NavLink>
 						</li>
 						<li
-							className={`px-3 pt-1 pb-2 cursor-pointer bg-violet text-bleuF text-base rounded-full border hover:filter hover:brightness-90 transition-all duration-300 ${
+							className={`px-3 pt-1 pb-2 cursor-pointer bg-violet text-bleuF text-base rounded-full ${
 								selectedItem === 3
 									? "border border-bleuF"
 									: "hover:filter hover:brightness-90 transition-all duration-300"
-							}`}
+							} ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
 						>
-							<NavLink to={"/employeur/candidaturesSpontanees"}>
+							<NavLink
+								to={"/employeur/candidaturesSpontanees"}
+								className={`${isDisabled ? "pointer-events-none" : ""}`}
+							>
 								Candidatures Spontanées
 							</NavLink>
 						</li>
