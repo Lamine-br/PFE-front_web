@@ -6,6 +6,7 @@ import { axiosInstance } from "../util/axios";
 export function NouvelleOffre({ onClose, onConfirm }) {
 	const [selected, setSelected] = useState("");
 	const [metiers, setMetiers] = useState([]);
+	const [error, setError] = useState("");
 
 	const [formData, setFormData] = useState({
 		titre: "",
@@ -21,9 +22,7 @@ export function NouvelleOffre({ onClose, onConfirm }) {
 	async function getMetiers() {
 		try {
 			const response = await axiosInstance.get("/offres/metiers");
-
 			console.log(response);
-
 			if (response.request.status === 200) {
 				setMetiers(response.data);
 			}
@@ -61,10 +60,22 @@ export function NouvelleOffre({ onClose, onConfirm }) {
 		}
 	}
 
+	function validateDates() {
+		const { debut, fin } = formData;
+		if (new Date(fin) <= new Date(debut)) {
+			setError("La date de fin doit être supérieure à la date de début.");
+			return false;
+		}
+		setError("");
+		return true;
+	}
+
 	async function handleClick() {
-		await addOffre();
-		console.log(formData);
-		await onConfirm();
+		if (validateDates()) {
+			await addOffre();
+			console.log(formData);
+			await onConfirm();
+		}
 	}
 
 	const user = JSON.parse(localStorage.getItem("user"));
@@ -201,6 +212,7 @@ export function NouvelleOffre({ onClose, onConfirm }) {
 							className='bg-violet border text-bleuF border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='date'
 							onChange={(e) => handleInputChange(e, "debut")}
+							onFocus={() => setError("")}
 						></input>
 					</div>
 					<div className='flex flex-col'>
@@ -209,7 +221,9 @@ export function NouvelleOffre({ onClose, onConfirm }) {
 							className='bg-violet border text-bleuF border-gray-400 rounded-md p-1 focus:outline-none focus:border-blue-500'
 							type='date'
 							onChange={(e) => handleInputChange(e, "fin")}
+							onFocus={() => setError("")}
 						></input>
+						{error && <p className='text-xs text-red-500'>{error}</p>}
 					</div>
 				</div>
 				<div className='grid grid-cols-3 gap-8 mb-4 w-full'>

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import P1 from "../assets/Work In Beanbag.png";
 import P2 from "../assets/3.png";
 import P3 from "../assets/Work In Desk.png";
+import { useEffect } from "react";
+import { axiosInstance } from "../util/axios";
 
 export function WelcomeDiv() {
 	return (
